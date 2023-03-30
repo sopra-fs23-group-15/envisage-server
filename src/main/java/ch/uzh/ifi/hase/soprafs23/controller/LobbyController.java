@@ -34,4 +34,6 @@ public class LobbyController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
+
+
 }
