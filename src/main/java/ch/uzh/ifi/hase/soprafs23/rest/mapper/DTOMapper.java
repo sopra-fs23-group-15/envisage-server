@@ -38,12 +38,12 @@ public interface DTOMapper {
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby createdLobby);
 
 
-  @Mapping(source = "userName", target = "userName")
+  @Mapping(source = "username", target = "userName")
   @Mapping(source = "isLobbyCreator", target = "isLobbyCreator")
   Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
 
 
-  @Mapping(source = "userName", target = "userName")
+  @Mapping(source = "userName", target = "username")
   @Mapping(source = "isLobbyCreator", target = "isLobbyCreator")
   @Mapping(source = "id", target = "id")
   @Mapping(source = "lobbyId", target = "lobbyId")

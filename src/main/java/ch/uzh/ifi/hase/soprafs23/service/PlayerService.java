@@ -40,7 +40,8 @@ public class PlayerService {
         //TODO: CheckIfLobbyExists
         checkIfUserNameUnique(newPlayer, lobbyId);
         newPlayer.setIsLobbyCreator(newPlayer.getIsLobbyCreator());
-        newPlayer.setLobbyId(newPlayer.getLobbyId());
+        newPlayer.setLobbyId(lobbyId);
+        log.debug(lobbyId + "_______________________________");
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newPlayer = playerRepository.save(newPlayer);
@@ -51,12 +52,12 @@ public class PlayerService {
     }
 
     private void checkIfUserNameUnique(Player player, long lobbyId){
-        Player playerFound = playerRepository.findByUserNameAndAndLobbyId(player.getUsername(), lobbyId);
+        Player playerFound = playerRepository.findByUserNameAndAndLobbyId(player.getUserName(), lobbyId);
 
         String baseErrorMessage = "Username %s is not unique";
         if (playerFound != null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format(baseErrorMessage, player.getUsername()));
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    String.format(baseErrorMessage, player.getUserName()));
         }
     }
 }
