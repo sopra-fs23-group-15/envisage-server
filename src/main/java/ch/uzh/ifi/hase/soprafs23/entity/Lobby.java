@@ -19,7 +19,6 @@ public class Lobby{
         this.pin = pin;
     }
 
-
     public Long getPin() {
         return pin;
     }

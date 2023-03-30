@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +29,6 @@ public class UserServiceTest {
     // given
     testUser = new User();
     testUser.setId(1L);
-    testUser.setName("testName");
     testUser.setUsername("testUsername");
 
     // when -> any object is being save in the userRepository -> return the dummy
@@ -48,10 +46,8 @@ public class UserServiceTest {
     Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
 
     assertEquals(testUser.getId(), createdUser.getId());
-    assertEquals(testUser.getName(), createdUser.getName());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertNotNull(createdUser.getToken());
-    assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
   }
 
   @Test
