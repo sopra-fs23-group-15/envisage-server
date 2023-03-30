@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Internal Lobby Representation

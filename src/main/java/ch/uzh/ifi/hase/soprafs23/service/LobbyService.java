@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -24,6 +25,8 @@ public class LobbyService {
     private final Logger log = LoggerFactory.getLogger(LobbyService.class);
 
     private final LobbyRepository lobbyRepository;
+
+    private Random rand = new SecureRandom();
 
     @Autowired
     public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
@@ -50,9 +53,9 @@ public class LobbyService {
      * if there already exists a Lobby with this Pin a new one will be generated
      */
     private long createPin(){
-        long tryPin = 10000000 + new Random().nextLong(90000000);
+        long tryPin = 10000000 + this.rand.nextLong(90000000);
         while(checkIfPinExists(tryPin)){
-            tryPin = 10000000 + new Random().nextLong(90000000);
+            tryPin = 10000000 + this.rand.nextLong(90000000);
         }
         return tryPin;
     }
