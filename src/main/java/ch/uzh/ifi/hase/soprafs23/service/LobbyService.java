@@ -2,13 +2,16 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -73,6 +76,16 @@ public class LobbyService {
             return false;
         }
         return true;
+    }
+
+    public void checkIfLobbyIdExists(long lobbyId){
+        Lobby lobbyByLobbyID = lobbyRepository.findByPin(lobbyId);
+
+        String baseErrorMessage = "No Lobby with LobbyId %d was found";
+        if (lobbyByLobbyID == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format(baseErrorMessage, lobbyId));
+        }
     }
 
 }
