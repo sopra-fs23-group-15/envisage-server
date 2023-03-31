@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import org.slf4j.Logger;
@@ -13,9 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.SecureRandom;
-import java.util.Random;
-import java.util.UUID;
 
 /**
  * Player Service
@@ -36,11 +32,17 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
+    /**
+     * method to create a new player
+     * @param newPlayer
+     * @param lobbyId
+     * @return
+     */
+
     public Player createPlayer(Player newPlayer, long lobbyId) {
         checkIfUserNameUnique(newPlayer, lobbyId);
         newPlayer.setIsLobbyCreator(newPlayer.getIsLobbyCreator());
         newPlayer.setLobbyId(lobbyId);
-        log.debug(lobbyId + "_______________________________");
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newPlayer = playerRepository.save(newPlayer);
@@ -50,6 +52,12 @@ public class PlayerService {
         return newPlayer;
     }
 
+    /**
+     * helper function which checks whether a given username already exists in a specific lobby
+     * if the username isn't unique an error is thrown
+     * @param player
+     * @param lobbyId
+     */
     private void checkIfUserNameUnique(Player player, long lobbyId){
         Player playerFound = playerRepository.findByUserNameAndAndLobbyId(player.getUserName(), lobbyId);
 
