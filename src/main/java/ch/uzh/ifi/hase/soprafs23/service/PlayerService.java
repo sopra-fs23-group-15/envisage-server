@@ -37,7 +37,6 @@ public class PlayerService {
     }
 
     public Player createPlayer(Player newPlayer, long lobbyId) {
-        //TODO: CheckIfLobbyExists
         checkIfUserNameUnique(newPlayer, lobbyId);
         newPlayer.setIsLobbyCreator(newPlayer.getIsLobbyCreator());
         newPlayer.setLobbyId(lobbyId);

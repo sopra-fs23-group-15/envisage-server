@@ -51,7 +51,7 @@ public class LobbyController {
     public PlayerGetDTO createPlayer(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable long lobbyId) {
         // convert API user to internal representation
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
-
+        lobbyService.checkIfLobbyIdExists(lobbyId);
         // create user
         Player createdPlayer = playerService.createPlayer(playerInput, lobbyId);
         // convert internal representation of user back to API
