@@ -1,16 +1,17 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
+import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
+import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 
 /**
@@ -25,46 +26,36 @@ public class PlayerService {
     private final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
     private final PlayerRepository playerRepository;
-
+    private final LobbyRepository lobbyRepository;
 
     @Autowired
-    public PlayerService(@Qualifier("playerRepository") PlayerRepository playerRepository) {
+    public PlayerService(@Qualifier("playerRepository") PlayerRepository playerRepository, LobbyRepository lobbyRepository) {
         this.playerRepository = playerRepository;
+        this.lobbyRepository = lobbyRepository;
     }
 
     /**
      * method to create a new player
      * @param newPlayer
-     * @param lobbyId
+     * @param lobbyPin
      * @return
      */
+    public Player addPlayer(Player newPlayer, long lobbyPin) {
+        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
+        // check if username is unique
+        Player foundPlayer = playerRepository.findPlayerByUserNameAndAndLobby_Pin(newPlayer.getUserName(), lobbyPin);
+        if(foundPlayer!=null){
+            throw new DuplicateUserException(foundPlayer.getUserName());
+        }
 
-    public Player createPlayer(Player newPlayer, long lobbyId) {
-        checkIfUserNameUnique(newPlayer, lobbyId);
-        newPlayer.setIsLobbyCreator(newPlayer.getIsLobbyCreator());
-        newPlayer.setLobbyId(lobbyId);
+        newPlayer.setLobbyCreator(lobbyByPin.getPlayers().isEmpty());
+        newPlayer.setLobby(lobbyByPin);
+        lobbyByPin.addPlayer(newPlayer);
+        // TODO: set game pin of the game the player is joining
         // saves the given entity but data is only persisted in the database once
         // flush() is called
-        newPlayer = playerRepository.save(newPlayer);
+        Player savedPlayer = playerRepository.save(newPlayer);
         playerRepository.flush();
-
-        log.debug("Created Information for Player: {}", newPlayer);
-        return newPlayer;
-    }
-
-    /**
-     * helper function which checks whether a given username already exists in a specific lobby
-     * if the username isn't unique an error is thrown
-     * @param player
-     * @param lobbyId
-     */
-    private void checkIfUserNameUnique(Player player, long lobbyId){
-        Player playerFound = playerRepository.findByUserNameAndAndLobbyId(player.getUserName(), lobbyId);
-
-        String baseErrorMessage = "Username %s is not unique";
-        if (playerFound != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    String.format(baseErrorMessage, player.getUserName()));
-        }
+        return savedPlayer;
     }
 }

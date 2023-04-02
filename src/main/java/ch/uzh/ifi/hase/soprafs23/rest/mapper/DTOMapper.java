@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -18,31 +17,23 @@ import org.mapstruct.factory.Mappers;
  * Always created one mapper for getting information (GET) and one mapper for
  * creating information (POST).
  */
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DTOMapper {
 
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "username", target = "username")
-  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
-
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "username", target = "username")
-  UserGetDTO convertEntityToUserGetDTO(User user);
-
-
   @Mapping(source = "pin", target = "pin")
+  @Mapping(source = "players", target = "players")
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby createdLobby);
 
 
-  @Mapping(source = "username", target = "userName")
-  @Mapping(source = "isLobbyCreator", target = "isLobbyCreator")
+  @Mapping(source = "userName", target = "userName")
   Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
 
 
-  @Mapping(source = "userName", target = "username")
-  @Mapping(source = "isLobbyCreator", target = "isLobbyCreator")
+  @Mapping(source = "userName", target = "userName")
+  @Mapping(source = "lobbyCreator", target = "lobbyCreator")
   @Mapping(source = "id", target = "id")
-  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "lobby.pin", target = "lobbyId")
   PlayerGetDTO convertEntityToPlayerGetDTO(Player createdPlayer);
 }

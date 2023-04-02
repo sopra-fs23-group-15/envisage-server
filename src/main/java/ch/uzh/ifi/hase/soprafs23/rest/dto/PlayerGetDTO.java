@@ -12,7 +12,7 @@ public class PlayerGetDTO {
     // true == lobbyCreator
     // false == not LobbyCreator
 
-    private boolean isLobbyCreator;
+    private boolean lobbyCreator;
 
     // pin is lobbyId
     private long lobbyId;
@@ -27,20 +27,20 @@ public class PlayerGetDTO {
     }
 
 
-    public String getUsername() {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUsername(String username) {
-        this.userName = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public boolean getIsLobbyCreator() {
-        return isLobbyCreator;
+    public boolean isLobbyCreator() {
+        return lobbyCreator;
     }
 
-    public void setIsLobbyCreator(boolean isLobbyCreator) {
-        this.isLobbyCreator = isLobbyCreator;
+    public void setLobbyCreator(boolean lobbyCreator) {
+        this.lobbyCreator = lobbyCreator;
     }
 
     public void setLobbyId(Long lobbyId) {

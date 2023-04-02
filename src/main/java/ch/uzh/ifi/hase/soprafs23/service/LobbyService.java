@@ -1,19 +1,22 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.List;
 
 /**
 * Lobby Service
@@ -68,23 +71,51 @@ public class LobbyService {
      * else true is returned
      * @param pin
      */
-    private boolean checkIfPinExists(long pin){
+    public boolean checkIfPinExists(long pin){
         Lobby lobbyByPin = lobbyRepository.findByPin(pin);
-        if (lobbyByPin == null)
-        {
-            return false;
-        }
-        return true;
+        return lobbyByPin != null;
     }
 
-    public void checkIfLobbyIdExists(long lobbyId){
-        Lobby lobbyByLobbyID = lobbyRepository.findByPin(lobbyId);
+    public Lobby findLobby(long lobbyPin){
+        return lobbyRepository.findByPin(lobbyPin);
+    }
 
-        String baseErrorMessage = "No Lobby with LobbyId %d was found";
-        if (lobbyByLobbyID == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format(baseErrorMessage, lobbyId));
+    // can be used to check if game can be started yet
+    public boolean minPlayersReached(long lobbyPin){
+        Lobby lobby = findLobby(lobbyPin);
+        if(lobby!=null){
+            return lobby.getPlayers().size() >= EnvisageConstants.MIN_PLAYERS;
+        } else{
+            throw new LobbyDoesNotExistException(lobbyPin);
         }
+    }
+
+    /**
+     * method to create a new player
+     * @param newPlayer
+     * @param lobbyPin
+     * @return
+     */
+    public Lobby addPlayer(Player newPlayer, long lobbyPin) {
+        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
+        if(lobbyByPin==null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+
+        List<Player> playerList = lobbyByPin.getPlayers();
+        newPlayer.setLobbyCreator(playerList.isEmpty());
+        for (Player player: playerList) {
+            if(player.getUserName().equalsIgnoreCase(newPlayer.getUserName())){
+                throw new DuplicateUserException(newPlayer.getUserName());
+            }
+        }
+        newPlayer.setLobby(lobbyByPin);
+        // saves the given entity but data is only persisted in the database once
+        // flush() is called
+        lobbyByPin.addPlayer(newPlayer);
+        Lobby newLobby = lobbyRepository.save(lobbyByPin);
+        lobbyRepository.flush();
+        return newLobby;
     }
 
 }
