@@ -1,42 +1,57 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "GAME")
 public class Game {
+
     @Id
-    private Long pin;
+    @GeneratedValue
+    private Long id;
 
-    private int numberOfRounds;
+    @OneToMany(mappedBy = "game")
+    private List<Round> rounds;
 
-    private int currentRound;
+    @OneToMany(mappedBy = "game")
+    private List<PlayerScore> playerScores;
 
+    @OneToOne
+    private Lobby lobby;
 
     // getters and setters
-    public Long getPin() {
-        return pin;
+    public Long getId() {
+        return id;
     }
 
-    public void setPin(Long pin) {
-        this.pin = pin;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public int getNumberOfRounds() {
-        return numberOfRounds;
+    public List<Round> getRounds() {
+        return rounds;
     }
 
-    public void setNumberOfRounds(int numberOfRounds) {
-        this.numberOfRounds = numberOfRounds;
+    public void setRounds(List<Round> rounds) {
+        this.rounds = rounds;
     }
 
-    public int getCurrentRound() {
-        return currentRound;
+    public void addRound(Round newRound){ rounds.add(newRound); }
+
+    public List<PlayerScore> getPlayerScores() {
+        return playerScores;
     }
 
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
+    public void setPlayerScores(List<PlayerScore> playerScores) {
+        this.playerScores = playerScores;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

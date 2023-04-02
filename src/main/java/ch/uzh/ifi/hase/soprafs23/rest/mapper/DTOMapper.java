@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -17,13 +16,14 @@ import org.mapstruct.factory.Mappers;
  * Always created one mapper for getting information (GET) and one mapper for
  * creating information (POST).
  */
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface DTOMapper {
 
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
   @Mapping(source = "pin", target = "pin")
   @Mapping(source = "players", target = "players")
+  @Mapping(source = "game", target = "game")
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby createdLobby);
 
 
@@ -36,4 +36,18 @@ public interface DTOMapper {
   @Mapping(source = "id", target = "id")
   @Mapping(source = "lobby.pin", target = "lobbyId")
   PlayerGetDTO convertEntityToPlayerGetDTO(Player createdPlayer);
+
+  @Mapping(source = "roundNumber", target = "roundNumber")
+  @Mapping(source = "game", target = "game")
+  RoundDTO convertEntityToRoundDTO(Round round);
+
+  @Mapping(source = "player", target = "player")
+  @Mapping(source = "game", target = "game")
+  @Mapping(source = "score", target = "score")
+  PlayerScoreDTO convertEntityToPlayerScoreDTO(PlayerScore playerScore);
+
+  @Mapping(source = "rounds", target = "rounds")
+  @Mapping(source = "playerScores", target = "playerScores")
+  @Mapping(source = "lobby", target = "lobby")
+  GameDTO convertEntityToGameDTO(Game game);
 }

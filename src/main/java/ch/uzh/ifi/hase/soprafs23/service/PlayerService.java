@@ -4,6 +4,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import org.slf4j.Logger;
@@ -42,7 +43,11 @@ public class PlayerService {
      */
     public Player addPlayer(Player newPlayer, long lobbyPin) {
         Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
-        // check if username is unique
+
+        if(lobbyByPin==null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+
         Player foundPlayer = playerRepository.findPlayerByUserNameAndAndLobby_Pin(newPlayer.getUserName(), lobbyPin);
         if(foundPlayer!=null){
             throw new DuplicateUserException(foundPlayer.getUserName());
