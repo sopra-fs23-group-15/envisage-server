@@ -61,7 +61,7 @@ public class LobbyController {
             // convert internal representation of user back to API
             return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(createdPlayer);
         } catch(LobbyDoesNotExistException lde){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, lde.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, lde.getMessage());
         } catch(DuplicateUserException due){
             throw new ResponseStatusException(HttpStatus.CONFLICT, due.getMessage());
         }
@@ -72,7 +72,7 @@ public class LobbyController {
     public LobbyGetDTO getLobby(@PathVariable long lobbyId){
         Lobby foundLobby = lobbyService.findLobby(lobbyId);
         if(foundLobby==null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyId));
         } else{
             return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
         }
