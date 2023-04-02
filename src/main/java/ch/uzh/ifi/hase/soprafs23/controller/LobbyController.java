@@ -1,12 +1,17 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.GameDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.PlayerService;
 import org.springframework.http.HttpStatus;
@@ -26,10 +31,12 @@ public class LobbyController {
 
     private final LobbyService lobbyService;
     private final PlayerService playerService;
+    private final GameService gameService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
+        this.gameService = gameService;
     }
 
     @PostMapping("/lobbies")
@@ -48,15 +55,15 @@ public class LobbyController {
     public PlayerGetDTO addPlayer(@RequestBody PlayerPostDTO playerPostDTO, @PathVariable long lobbyId) {
         // convert API user to internal representation
         Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
-        boolean pinExists = lobbyService.checkIfPinExists(lobbyId);
-
-        if(pinExists){
+        try{
             // create user
             Player createdPlayer = playerService.addPlayer(playerInput, lobbyId);
             // convert internal representation of user back to API
             return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(createdPlayer);
-        } else {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        } catch(LobbyDoesNotExistException lde){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, lde.getMessage());
+        } catch(DuplicateUserException due){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, due.getMessage());
         }
     }
 
@@ -69,5 +76,15 @@ public class LobbyController {
         } else{
             return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
         }
+    }
+
+    @PostMapping("/lobbies/{lobbyId}/game")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public GameDTO startGame(@PathVariable long lobbyId) {
+        // create game
+        Game createdGame = gameService.createGame(lobbyId);
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
 }

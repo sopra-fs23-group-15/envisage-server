@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
@@ -44,6 +45,8 @@ public class LobbyService {
     public Lobby createLobby() {
         Lobby newLobby = new Lobby();
         newLobby.setPin(createPin());
+        newLobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
+        newLobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
 
         // saves the given entity but data is only persisted in the database once
         // flush() is called

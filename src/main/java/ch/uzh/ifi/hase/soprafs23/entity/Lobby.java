@@ -16,8 +16,19 @@ public class Lobby{
     @Id
     private Long pin;
 
+    private int numberOfRounds;
+
+    private int roundDuration;
+
     @OneToMany(mappedBy = "lobby")
     private List<Player> players = new ArrayList<Player>();
+
+    @OneToOne
+    private Game game;
+
+    public void addPlayer(Player player){
+        players.add(player);
+    }
 
     // getters and setters
     public Long getPin() {
@@ -28,6 +39,22 @@ public class Lobby{
         this.pin = pin;
     }
 
+    public int getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public void setNumberOfRounds(int numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
+    }
+
+    public int getRoundDuration() {
+        return roundDuration;
+    }
+
+    public void setRoundDuration(int roundDuration) {
+        this.roundDuration = roundDuration;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -36,7 +63,11 @@ public class Lobby{
         this.players = players;
     }
 
-    public void addPlayer(Player player){
-        players.add(player);
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
