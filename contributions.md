@@ -11,9 +11,9 @@
 
 ## Moritz
 **Sprint1 Week1**
-https://github.com/sopra-fs23-group-15/envisage-client/issues/5
-https://github.com/sopra-fs23-group-15/envisage-client/issues/6
-https://github.com/sopra-fs23-group-15/envisage-client/issues/7
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/5 (if the username is already taken, promt user to provide a new one)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/6 (if game pin is wrong provide an error message)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/7 (go to the lobby page if username and game pin are provided)
 
 ## Nikita
 **Sprint1 Week1**
