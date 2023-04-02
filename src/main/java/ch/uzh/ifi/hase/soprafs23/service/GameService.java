@@ -41,6 +41,7 @@ public class GameService {
 
         Game game = new Game();
         game.setLobby(lobbyByPin);
+//        lobbyByPin.setGame(game);
         Game savedGame = gameRepository.save(game);
         gameRepository.flush();
         return savedGame;

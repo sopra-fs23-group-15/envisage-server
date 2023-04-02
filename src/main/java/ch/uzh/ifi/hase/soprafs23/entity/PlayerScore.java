@@ -16,6 +16,7 @@ public class PlayerScore {
     @JoinColumn(name="game_id")
     private Game game;
 
+    @Column(nullable = true)
     private int score;
 
 
