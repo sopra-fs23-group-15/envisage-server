@@ -27,11 +27,12 @@ public class Player implements Serializable {
     // true == lobbyCreator
     // false == not LobbyCreator
     @Column(nullable = false)
-    private boolean isLobbyCreator;
+    private boolean lobbyCreator;
 
-    // pin is lobbyId
-    @Column(nullable = false)
-    private long lobbyId;
+    // foreign key with JoinColumn to create association
+    @ManyToOne
+    @JoinColumn(name="lobby_id")
+    private Lobby lobby;
 
 
     public Long getId() {
@@ -51,20 +52,20 @@ public class Player implements Serializable {
         this.userName = userName;
     }
 
-    public boolean getIsLobbyCreator() {
-        return isLobbyCreator;
+    public boolean isLobbyCreator() {
+        return lobbyCreator;
     }
 
-    public void setIsLobbyCreator(boolean isLobbyCreator) {
-        this.isLobbyCreator = isLobbyCreator;
+    public void setLobbyCreator (boolean isLobbyCreator) {
+        this.lobbyCreator = isLobbyCreator;
     }
 
-    public void setLobbyId(Long lobbyId) {
-        this.lobbyId = lobbyId;
+    public Lobby getLobby() {
+        return lobby;
     }
 
-    public Long getLobbyId() {
-        return lobbyId;
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 
 }

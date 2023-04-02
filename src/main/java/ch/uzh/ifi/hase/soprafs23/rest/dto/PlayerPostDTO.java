@@ -4,27 +4,13 @@ public class PlayerPostDTO {
 
     private String userName;
 
-    // true == lobbyCreator
-    // false == not LobbyCreator
-
-    private boolean isLobbyCreator;
-
-
-    public String getUsername() {
+    public String getUserName() {
         return userName;
     }
 
-    public void setUsername(String username) {
+    public void setUserName(String username) {
         this.userName = username;
     }
 
-    public boolean getIsLobbyCreator() {
-        return isLobbyCreator;
-    }
-
-    public void setIsLobbyCreator(boolean isLobbyCreator) {
-        this.isLobbyCreator = isLobbyCreator;
-    }
-
-    }
+}
 
