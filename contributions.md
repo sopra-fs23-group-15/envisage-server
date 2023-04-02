@@ -10,6 +10,10 @@
 * GitHub Issue link you worked on
 
 ## Moritz
+**Sprint1 Week1**
+https://github.com/sopra-fs23-group-15/envisage-client/issues/5
+https://github.com/sopra-fs23-group-15/envisage-client/issues/6
+https://github.com/sopra-fs23-group-15/envisage-client/issues/7
 
 ## Nikita
 **Sprint1 Week1**
