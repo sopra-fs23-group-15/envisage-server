@@ -5,6 +5,8 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.sql.Blob;
+
 /**
  * DTOMapper
  * This class is responsible for generating classes that will automatically
@@ -37,17 +39,24 @@ public interface DTOMapper {
   @Mapping(source = "lobby.pin", target = "lobbyId")
   PlayerGetDTO convertEntityToPlayerGetDTO(Player createdPlayer);
 
+  @Mapping(source = "id", target = "id")
+  @Mapping(source = "player.userName", target = "player")
+  @Mapping(source = "votes", target = "votes")
+  PlayerImageDTO convertEntityToPlayerImageDTO(PlayerImage playerImage);
+
   @Mapping(source = "roundNumber", target = "roundNumber")
-  @Mapping(source = "game", target = "game")
+  @Mapping(source = "game.id", target = "gameId")
+  @Mapping(source = "playerImages", target = "playerImages")
   RoundDTO convertEntityToRoundDTO(Round round);
 
-  @Mapping(source = "player", target = "player")
-  @Mapping(source = "game", target = "game")
+  @Mapping(source = "player.userName", target = "player")
   @Mapping(source = "score", target = "score")
   PlayerScoreDTO convertEntityToPlayerScoreDTO(PlayerScore playerScore);
 
   @Mapping(source = "rounds", target = "rounds")
   @Mapping(source = "playerScores", target = "playerScores")
-  @Mapping(source = "lobby.pin", target = "lobby.pin")
+  @Mapping(source = "lobby.pin", target = "lobbyPin")
+  @Mapping(source = "status", target = "status")
   GameDTO convertEntityToGameDTO(Game game);
+
 }

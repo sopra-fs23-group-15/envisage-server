@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Round {
@@ -13,6 +15,9 @@ public class Round {
     @ManyToOne
     @JoinColumn(name="game_id")
     private Game game;
+
+    @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
+    private List<PlayerImage> playerImages = new ArrayList<PlayerImage>();
 
     public Long getId() {
         return id;
@@ -37,5 +42,13 @@ public class Round {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public List<PlayerImage> getPlayerImages() {
+        return playerImages;
+    }
+
+    public void setPlayerImages(List<PlayerImage> playerImages) {
+        this.playerImages = playerImages;
     }
 }

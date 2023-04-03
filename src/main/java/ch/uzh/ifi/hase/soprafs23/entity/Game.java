@@ -1,6 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,14 +14,17 @@ public class Game {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "game")
-    private List<Round> rounds;
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private List<Round> rounds = new ArrayList<Round>();
 
-    @OneToMany(mappedBy = "game")
-    private List<PlayerScore> playerScores;
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    private List<PlayerScore> playerScores = new ArrayList<PlayerScore>();
 
     @OneToOne
     private Lobby lobby;
+
+    @Enumerated(EnumType.STRING)
+    private GameStatus status;
 
     // getters and setters
     public Long getId() {
@@ -47,11 +53,23 @@ public class Game {
         this.playerScores = playerScores;
     }
 
+    public void addPlayerScore(PlayerScore playerScore){
+        playerScores.add(playerScore);
+    }
+
     public Lobby getLobby() {
         return lobby;
     }
 
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
     }
 }

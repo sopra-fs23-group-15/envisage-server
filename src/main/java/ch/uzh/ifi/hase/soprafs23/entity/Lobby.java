@@ -20,10 +20,10 @@ public class Lobby{
 
     private int roundDuration;
 
-    @OneToMany(mappedBy = "lobby")
+    @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
     private List<Player> players = new ArrayList<Player>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Game game;
 
     public void addPlayer(Player player){

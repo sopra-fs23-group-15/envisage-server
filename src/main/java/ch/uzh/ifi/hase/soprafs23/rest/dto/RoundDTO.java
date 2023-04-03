@@ -1,11 +1,15 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 
+import java.util.List;
+
 public class RoundDTO {
 
     private int roundNumber;
 
-    private GameDTO game;
+    private Long gameId;
+
+    private List<PlayerImageDTO> playerImages;
 
     // getters and setters
     public int getRoundNumber() {
@@ -16,12 +20,20 @@ public class RoundDTO {
         this.roundNumber = roundNumber;
     }
 
-    public GameDTO getGame() {
-        return game;
+    public Long getGameId() {
+        return gameId;
     }
 
-    public void setGame(GameDTO game) {
-        this.game = game;
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
+
+    public List<PlayerImageDTO> getPlayerImages() {
+        return playerImages;
+    }
+
+    public void setPlayerImages(List<PlayerImageDTO> playerImages) {
+        this.playerImages = playerImages;
     }
 }
 
