@@ -87,4 +87,23 @@ public class LobbyController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
+
+    @GetMapping("/lobbies/{lobbyId}/game")
+    @ResponseStatus(HttpStatus.OK)
+    public GameDTO getGame(@PathVariable long lobbyId) {
+        Game foundGame = null;
+        try {
+            foundGame = gameService.getGame(lobbyId);
+
+            if (foundGame == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Game with lobby pin %s does not exist", lobbyId));
+            }
+            else {
+                return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
+            }
+        }catch (LobbyDoesNotExistException ldne) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+        }
+    }
+
 }

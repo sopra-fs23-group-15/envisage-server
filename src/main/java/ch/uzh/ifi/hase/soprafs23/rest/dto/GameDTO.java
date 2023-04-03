@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
+
 import java.util.List;
 
 public class GameDTO {
@@ -9,7 +11,9 @@ public class GameDTO {
 
     private List<PlayerScoreDTO> playerScores;
 
-    private LobbyGetDTO lobby;
+    private Long lobbyPin;
+
+    private GameStatus status;
 
     // getters and setters
     public List<RoundDTO> getRounds() {
@@ -28,11 +32,19 @@ public class GameDTO {
         this.playerScores = playerScores;
     }
 
-    public LobbyGetDTO getLobby() {
-        return lobby;
+    public Long getLobbyPin() {
+        return lobbyPin;
     }
 
-    public void setLobby(LobbyGetDTO lobby) {
-        this.lobby = lobby;
+    public void setLobbyPin(Long lobbyPin) {
+        this.lobbyPin = lobbyPin;
+    }
+
+    public GameStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(GameStatus status) {
+        this.status = status;
     }
 }
