@@ -48,6 +48,6 @@ public interface DTOMapper {
 
   @Mapping(source = "rounds", target = "rounds")
   @Mapping(source = "playerScores", target = "playerScores")
-  @Mapping(source = "lobby", target = "lobby")
+  @Mapping(source = "lobby.pin", target = "lobby.pin")
   GameDTO convertEntityToGameDTO(Game game);
 }
