@@ -78,7 +78,7 @@ public class LobbyController {
         }
     }
 
-    @PostMapping("/lobbies/{lobbyId}/game")
+    @PostMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameDTO startGame(@PathVariable long lobbyId) {
@@ -88,7 +88,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
 
-    @GetMapping("/lobbies/{lobbyId}/game")
+    @GetMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable long lobbyId) {
         Game foundGame = null;
