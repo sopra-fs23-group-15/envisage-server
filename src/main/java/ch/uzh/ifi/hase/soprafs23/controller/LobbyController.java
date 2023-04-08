@@ -4,16 +4,14 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.GameDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
+import ch.uzh.ifi.hase.soprafs23.entity.Round;
+import ch.uzh.ifi.hase.soprafs23.exceptions.*;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.PlayerService;
+import ch.uzh.ifi.hase.soprafs23.service.RoundService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,11 +30,13 @@ public class LobbyController {
     private final LobbyService lobbyService;
     private final PlayerService playerService;
     private final GameService gameService;
+    private final RoundService roundService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
+        this.roundService = roundService;
     }
 
     @PostMapping("/lobbies")
@@ -64,6 +64,10 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, lde.getMessage());
         } catch(DuplicateUserException due){
             throw new ResponseStatusException(HttpStatus.CONFLICT, due.getMessage());
+        } catch(MaxPlayersReachedException mpre){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, mpre.getMessage());
+        } catch(GameInProgressException gipe){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, gipe.getMessage());
         }
     }
 
@@ -78,7 +82,7 @@ public class LobbyController {
         }
     }
 
-    @PostMapping("/lobbies/{lobbyId}/games")
+    @PostMapping("/lobbies/{lobbyId}/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameDTO startGame(@PathVariable long lobbyId) {
@@ -88,22 +92,41 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
 
-    @GetMapping("/lobbies/{lobbyId}/games")
+    @GetMapping("/lobbies/{lobbyId}/game")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable long lobbyId) {
-        Game foundGame = null;
         try {
-            foundGame = gameService.getGame(lobbyId);
-
-            if (foundGame == null) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Game with lobby pin %s does not exist", lobbyId));
-            }
-            else {
-                return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
-            }
-        }catch (LobbyDoesNotExistException ldne) {
+            Game foundGame = gameService.getGame(lobbyId);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
+        } catch (LobbyDoesNotExistException ldne) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
     }
 
+    @PostMapping("/lobbies/{lobbyId}/game/round")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public RoundDTO startRound(@PathVariable long lobbyId) {
+        // create round
+        try {
+            Round roundAddedGame = roundService.createRound(lobbyId);
+            return DTOMapper.INSTANCE.convertEntityToRoundDTO(roundAddedGame);
+        } catch(LobbyDoesNotExistException ldne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        } catch(GameDoesNotExistException gdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
+        }
+    }
+
+    @GetMapping("/lobbies/{lobbyId}/game/{roundId}")
+    @ResponseStatus(HttpStatus.OK)
+    public RoundDTO getRound(@PathVariable long lobbyId, @PathVariable int roundId) {
+        try {
+            long gameId = gameService.getGame(lobbyId).getId();
+            Round foundRound = roundService.getRound(roundId, gameId);
+            return DTOMapper.INSTANCE.convertEntityToRoundDTO(foundRound);
+        } catch (RoundDoesNotExistException rdne) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        }
+    }
 }
