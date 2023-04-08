@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-import java.sql.Blob;
 
 /**
  * DTOMapper
@@ -45,7 +44,7 @@ public interface DTOMapper {
   PlayerImageDTO convertEntityToPlayerImageDTO(PlayerImage playerImage);
 
   @Mapping(source = "roundNumber", target = "roundNumber")
-  @Mapping(source = "game.id", target = "gameId")
+//  @Mapping(source = "game.id", target = "gameId")
   @Mapping(source = "playerImages", target = "playerImages")
   RoundDTO convertEntityToRoundDTO(Round round);
 

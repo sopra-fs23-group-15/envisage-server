@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.NotEnoughPlayersException;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,11 @@ public class GameService {
         if(lobbyByPin==null){
             throw new LobbyDoesNotExistException(lobbyPin);
         }
+
+        if(lobbyByPin.getPlayers().size() < EnvisageConstants.MIN_PLAYERS){
+            throw new NotEnoughPlayersException();
+        }
+
         //create the game
         Game game = new Game();
         game.setLobby(lobbyByPin);
