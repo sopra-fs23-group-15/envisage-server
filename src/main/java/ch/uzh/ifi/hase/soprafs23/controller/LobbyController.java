@@ -4,16 +4,15 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.entity.Round;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.GameDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs23.service.PlayerService;
+import ch.uzh.ifi.hase.soprafs23.service.RoundService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,11 +31,13 @@ public class LobbyController {
     private final LobbyService lobbyService;
     private final PlayerService playerService;
     private final GameService gameService;
+    private final RoundService roundService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
+        this.roundService = roundService;
     }
 
     @PostMapping("/lobbies")
@@ -104,6 +105,16 @@ public class LobbyController {
         }catch (LobbyDoesNotExistException ldne) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
+    }
+    @PostMapping("/lobbies/{lobbyId}/game/{roundId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public RoundDTO startRound(@PathVariable long lobbyId, @PathVariable int roundId) {
+        // create round
+        Round roundAddedGame = roundService.createRound(lobbyId, roundId);
+        // convert internal representation of user back to API
+//        return DTOMapper.INSTANCE.convertEntityToGameDTO(roundAddedGame);
+        return DTOMapper.INSTANCE.convertEntityToRoundDTO(roundAddedGame);
     }
 
 }

@@ -7,7 +7,7 @@ public class RoundDTO {
 
     private int roundNumber;
 
-    private Long gameId;
+//    private Long gameId;
 
     private List<PlayerImageDTO> playerImages;
 
@@ -20,13 +20,13 @@ public class RoundDTO {
         this.roundNumber = roundNumber;
     }
 
-    public Long getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Long gameId) {
-        this.gameId = gameId;
-    }
+//    public Long getGameId() {
+//        return gameId;
+//    }
+//
+//    public void setGameId(Long gameId) {
+//        this.gameId = gameId;
+//    }
 
     public List<PlayerImageDTO> getPlayerImages() {
         return playerImages;
