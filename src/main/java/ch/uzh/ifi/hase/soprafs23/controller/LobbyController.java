@@ -79,7 +79,7 @@ public class LobbyController {
         }
     }
 
-    @PostMapping("/lobbies/{lobbyId}/game")
+    @PostMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameDTO startGame(@PathVariable long lobbyId) {
@@ -89,7 +89,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
 
-    @GetMapping("/lobbies/{lobbyId}/game")
+    @GetMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable long lobbyId) {
         Game foundGame = null;
@@ -103,10 +103,10 @@ public class LobbyController {
                 return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
             }
         }catch (LobbyDoesNotExistException ldne) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
         }
     }
-    @PostMapping("/lobbies/{lobbyId}/game/{roundId}")
+    @PostMapping("/lobbies/{lobbyId}/games/{roundId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RoundDTO startRound(@PathVariable long lobbyId, @PathVariable int roundId) {
