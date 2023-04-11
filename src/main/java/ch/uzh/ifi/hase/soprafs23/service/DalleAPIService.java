@@ -82,5 +82,3 @@ public class DalleAPIService {
         }
     }
 }
-
-https://stackoverflow.com/a/42399865/3647970
