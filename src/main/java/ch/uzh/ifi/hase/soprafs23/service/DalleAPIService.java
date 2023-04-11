@@ -19,8 +19,8 @@ import java.io.IOException;
 //        "size": "1024x1024"
 //        }'
 public class DalleAPIService {
-    private final String apiKey = "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";
-    private String prompt;
+    private final String apiKey = "provide-api-key-here";
+//    private String prompt;
     private int numImages = 1;
     private String responseFormat = "b64_json"; //url or b64_json
     private String apiUrl = "https://api.openai.com/v1/images/generations";
@@ -40,7 +40,7 @@ public class DalleAPIService {
         }
     }
 
-    public String getImageFromDALLE() throws IOException { //its not blob
+    public String getImageFromDALLE(String prompt) throws IOException { //its not blob
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost(apiUrl);
