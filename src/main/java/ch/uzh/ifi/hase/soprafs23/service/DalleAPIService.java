@@ -8,6 +8,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.io.IOException;
 
 //curl https://api.openai.com/v1/images/generations \
@@ -18,8 +21,10 @@ import java.io.IOException;
 //        "n": 1,
 //        "size": "1024x1024"
 //        }'
+@Service
+@Transactional
 public class DalleAPIService {
-    private final String apiKey = "provide-api-key-here";
+    private final String apiKey = System.getenv("DALLE-API-KEY");
 //    private String prompt;
     private int numImages = 1;
     private String responseFormat = "b64_json"; //url or b64_json
@@ -40,7 +45,7 @@ public class DalleAPIService {
         }
     }
 
-    public String getImageFromDALLE(String prompt) throws IOException { //its not blob
+    public String getImageFromDALLE(String prompt) { //its not blob
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost(apiUrl);
@@ -60,6 +65,7 @@ public class DalleAPIService {
 // Parse response JSON to get image URL
             JSONObject jsonResponse = new JSONObject(EntityUtils.toString(entity));
             String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64");
+//            String imageB64 = jsonResponse.getJSONObject("error").getString("code");
 
 // Download image and save locally
 //        HttpGet httpget = new HttpGet(imageUrl);
@@ -75,10 +81,9 @@ public class DalleAPIService {
             return imageB64;
 
         }
-        catch (
-                IOException e) {
+        catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return e.toString();
         }
     }
 }
