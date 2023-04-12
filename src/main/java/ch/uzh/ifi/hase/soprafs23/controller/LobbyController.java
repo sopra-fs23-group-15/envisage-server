@@ -1,18 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.Round;
-import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
+
+import ch.uzh.ifi.hase.soprafs23.entity.*;
+import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs23.service.GameService;
-import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs23.service.PlayerService;
-import ch.uzh.ifi.hase.soprafs23.service.RoundService;
+import ch.uzh.ifi.hase.soprafs23.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -33,11 +27,16 @@ public class LobbyController {
     private final GameService gameService;
     private final RoundService roundService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService) {
+    private final DalleAPIService dalleAPIService;
+    private final PlayerScoreService playerScoreService;
+
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
+        this.dalleAPIService = dalleAPIService;
+        this.playerScoreService = playerScoreService;
     }
 
     @PostMapping("/lobbies")
@@ -65,6 +64,10 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, lde.getMessage());
         } catch(DuplicateUserException due){
             throw new ResponseStatusException(HttpStatus.CONFLICT, due.getMessage());
+        } catch(MaxPlayersReachedException mpre){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, mpre.getMessage());
+        } catch(GameInProgressException gipe){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, gipe.getMessage());
         }
     }
 
@@ -92,29 +95,63 @@ public class LobbyController {
     @GetMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable long lobbyId) {
-        Game foundGame = null;
         try {
-            foundGame = gameService.getGame(lobbyId);
-
-            if (foundGame == null) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Game with lobby pin %s does not exist", lobbyId));
-            }
-            else {
-                return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
-            }
-        }catch (LobbyDoesNotExistException ldne) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+            Game foundGame = gameService.getGame(lobbyId);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
+        } catch (LobbyDoesNotExistException ldne) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
     }
-    @PostMapping("/lobbies/{lobbyId}/games/{roundId}")
+
+    @PostMapping("/lobbies/{lobbyId}/games/rounds")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public RoundDTO startRound(@PathVariable long lobbyId, @PathVariable int roundId) {
+    public RoundDTO startRound(@PathVariable long lobbyId) {
         // create round
-        Round roundAddedGame = roundService.createRound(lobbyId, roundId);
-        // convert internal representation of user back to API
-//        return DTOMapper.INSTANCE.convertEntityToGameDTO(roundAddedGame);
-        return DTOMapper.INSTANCE.convertEntityToRoundDTO(roundAddedGame);
+        try {
+            Round roundAddedGame = roundService.createRound(lobbyId);
+            return DTOMapper.INSTANCE.convertEntityToRoundDTO(roundAddedGame);
+        } catch(LobbyDoesNotExistException ldne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        } catch(GameDoesNotExistException gdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
+        }
     }
 
+    @GetMapping("/lobbies/{lobbyId}/games/{roundId}")
+    @ResponseStatus(HttpStatus.OK)
+    public RoundDTO getRound(@PathVariable long lobbyId, @PathVariable int roundId) {
+        try {
+            long gameId = gameService.getGame(lobbyId).getId();
+            Round foundRound = roundService.getRound(roundId, gameId);
+            return DTOMapper.INSTANCE.convertEntityToRoundDTO(foundRound);
+        } catch (RoundDoesNotExistException rdne) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        }
+    }
+
+
+    @PutMapping("/lobbies/{lobbyId}/games/votes")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
+        try {
+//            Game foundGame = gameService.getGame(lobbyId);
+            PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
+//            foundGame.setPlayerScore(playerScore);
+            Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
+        } catch (LobbyDoesNotExistException ldne) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+        }
+    }
+    
+
+    @PostMapping("/testdalle")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String testDalle(@RequestBody String prompt){
+        String base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
+        return base64encodedStringImage;
+    }
 }

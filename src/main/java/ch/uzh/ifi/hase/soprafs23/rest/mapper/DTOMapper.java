@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-import java.sql.Blob;
 
 /**
  * DTOMapper
@@ -58,5 +57,9 @@ public interface DTOMapper {
   @Mapping(source = "lobby.pin", target = "lobbyPin")
   @Mapping(source = "status", target = "status")
   GameDTO convertEntityToGameDTO(Game game);
+
+  @Mapping(source="player", target="player.userName")
+  @Mapping(source="score", target="score")
+  PlayerScore convertPlayerScoreDTOtoEntity(PlayerScoreDTO playerScoreDTO);
 
 }

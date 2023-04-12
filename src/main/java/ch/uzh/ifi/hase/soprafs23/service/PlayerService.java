@@ -1,10 +1,15 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
+import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.GameInProgressException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.MaxPlayersReachedException;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import org.slf4j.Logger;
@@ -48,6 +53,15 @@ public class PlayerService {
             throw new LobbyDoesNotExistException(lobbyPin);
         }
 
+        if(lobbyByPin.getPlayers().size() == EnvisageConstants.MAX_PLAYERS){
+            throw new MaxPlayersReachedException();
+        }
+
+        Game currentGame = lobbyByPin.getGame();
+        if(currentGame!=null && currentGame.getStatus().equals(GameStatus.IN_PROGRESS)){
+            throw new GameInProgressException();
+        }
+
         Player foundPlayer = playerRepository.findPlayerByUserNameAndAndLobby_Pin(newPlayer.getUserName(), lobbyPin);
         if(foundPlayer!=null){
             throw new DuplicateUserException(foundPlayer.getUserName());
@@ -55,8 +69,8 @@ public class PlayerService {
 
         newPlayer.setLobbyCreator(lobbyByPin.getPlayers().isEmpty());
         newPlayer.setLobby(lobbyByPin);
+
         lobbyByPin.addPlayer(newPlayer);
-        // TODO: set game pin of the game the player is joining
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         Player savedPlayer = playerRepository.save(newPlayer);
