@@ -64,7 +64,7 @@ public class DalleAPIService {
 
 // Parse response JSON to get image URL
             JSONObject jsonResponse = new JSONObject(EntityUtils.toString(entity));
-            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64");
+            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64_json");
 //            String imageB64 = jsonResponse.getJSONObject("error").getString("code");
 
 // Download image and save locally
