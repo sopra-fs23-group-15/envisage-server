@@ -41,6 +41,8 @@ jobs:
       - name: Deploy to App Engine
         id: deploy
         uses: google-github-actions/deploy-appengine@v0.2.0
+        env: 
+          DALLE-API-KEY: '${{ secrets.EZORED_AWS_KEY_ID }}'
         with:
           deliverables: app.yaml
           version: v1
