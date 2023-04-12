@@ -46,7 +46,7 @@ jobs:
 #           DALLE-API-KEY: '${{ secrets.OPEN_AI_KEY }}'
         with:
           env_vars: |-
-            DALLE-API-KEY=${{ secrets.OPEN_AI_KEY }}
+            DALLE-API-KEY: '${{ secrets.OPEN_AI_KEY }}'
           deliverables: app.yaml
           version: v1
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
