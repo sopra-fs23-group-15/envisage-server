@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.Round;
+import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
@@ -29,13 +26,15 @@ public class LobbyController {
     private final GameService gameService;
     private final RoundService roundService;
     private final DalleAPIService dalleAPIService;
+    private final PlayerScoreService playerScoreService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
         this.dalleAPIService = dalleAPIService;
+        this.playerScoreService = playerScoreService;
     }
 
     @PostMapping("/lobbies")
@@ -128,10 +127,26 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         }
     }
+
+    @PutMapping("/lobbies/{lobbyId}/game/vote")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
+        try {
+//            Game foundGame = gameService.getGame(lobbyId);
+            PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
+//            foundGame.setPlayerScore(playerScore);
+            Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
+        } catch (LobbyDoesNotExistException ldne) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+        }
+    }
+
     @PostMapping("/testdalle")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String testDalle(@RequestBody String prompt) {
+    public String testDalle(@RequestBody String prompt){
         String base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
         return base64encodedStringImage;
     }
