@@ -25,13 +25,15 @@ public class LobbyController {
     private final PlayerService playerService;
     private final GameService gameService;
     private final RoundService roundService;
+    private final DalleAPIService dalleAPIService;
     private final PlayerScoreService playerScoreService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
+        this.dalleAPIService = dalleAPIService;
         this.playerScoreService = playerScoreService;
     }
 
@@ -139,5 +141,13 @@ public class LobbyController {
         } catch (LobbyDoesNotExistException ldne) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
+    }
+
+    @PostMapping("/testdalle")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String testDalle(@RequestBody String prompt){
+        String base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
+        return base64encodedStringImage;
     }
 }
