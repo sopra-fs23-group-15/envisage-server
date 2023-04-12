@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
@@ -25,6 +26,7 @@ public class LobbyController {
     private final PlayerService playerService;
     private final GameService gameService;
     private final RoundService roundService;
+
     private final DalleAPIService dalleAPIService;
     private final PlayerScoreService playerScoreService;
 
@@ -80,7 +82,7 @@ public class LobbyController {
         }
     }
 
-    @PostMapping("/lobbies/{lobbyId}/game")
+    @PostMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameDTO startGame(@PathVariable long lobbyId) {
@@ -90,7 +92,7 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
 
-    @GetMapping("/lobbies/{lobbyId}/game")
+    @GetMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable long lobbyId) {
         try {
@@ -101,7 +103,7 @@ public class LobbyController {
         }
     }
 
-    @PostMapping("/lobbies/{lobbyId}/game/round")
+    @PostMapping("/lobbies/{lobbyId}/games/rounds")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RoundDTO startRound(@PathVariable long lobbyId) {
@@ -116,7 +118,7 @@ public class LobbyController {
         }
     }
 
-    @GetMapping("/lobbies/{lobbyId}/game/{roundId}")
+    @GetMapping("/lobbies/{lobbyId}/games/{roundId}")
     @ResponseStatus(HttpStatus.OK)
     public RoundDTO getRound(@PathVariable long lobbyId, @PathVariable int roundId) {
         try {
@@ -128,7 +130,8 @@ public class LobbyController {
         }
     }
 
-    @PutMapping("/lobbies/{lobbyId}/game/vote")
+
+    @PutMapping("/lobbies/{lobbyId}/games/votes")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
@@ -142,6 +145,7 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
     }
+    
 
     @PostMapping("/testdalle")
     @ResponseStatus(HttpStatus.CREATED)
