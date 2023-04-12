@@ -58,4 +58,8 @@ public interface DTOMapper {
   @Mapping(source = "status", target = "status")
   GameDTO convertEntityToGameDTO(Game game);
 
+  @Mapping(source="player", target="player.userName")
+  @Mapping(source="score", target="score")
+  PlayerScore convertPlayerScoreDTOtoEntity(PlayerScoreDTO playerScoreDTO);
+
 }
