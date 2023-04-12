@@ -8,11 +8,12 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class WebSocketController {
 
-
-    @MessageMapping("/hello")
-    //return value is broadcast to all subscribers of _____
-    @SendTo("/Bye")
-    public void hello(){
-
+    // Ignore this stuff, I will remove it when I'm completely done with the websockets
+    // @MessageMapping is used for repetitive messaging from server to clients
+    @MessageMapping("/lobbyId")
+    //return value is broadcast to all subscribers of /topic/{lobbyId}
+    @SendTo("/topic/{lobbyId}")
+    public String hello(){
+        return "hi";
     }
 }
