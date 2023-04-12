@@ -1,17 +1,11 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.Round;
+import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs23.service.GameService;
-import ch.uzh.ifi.hase.soprafs23.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs23.service.PlayerService;
-import ch.uzh.ifi.hase.soprafs23.service.RoundService;
+import ch.uzh.ifi.hase.soprafs23.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,12 +25,14 @@ public class LobbyController {
     private final PlayerService playerService;
     private final GameService gameService;
     private final RoundService roundService;
+    private final PlayerScoreService playerScoreService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
+        this.playerScoreService = playerScoreService;
     }
 
     @PostMapping("/lobbies")
@@ -127,6 +123,21 @@ public class LobbyController {
             return DTOMapper.INSTANCE.convertEntityToRoundDTO(foundRound);
         } catch (RoundDoesNotExistException rdne) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        }
+    }
+
+    @PutMapping("/lobbies/{lobbyId}/game/vote")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
+        try {
+//            Game foundGame = gameService.getGame(lobbyId);
+            PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
+//            foundGame.setPlayerScore(playerScore);
+            Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
+        } catch (LobbyDoesNotExistException ldne) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
     }
 }
