@@ -45,7 +45,7 @@ public class DalleAPIService {
         }
     }
 
-    public String getImageFromDALLE(String prompt) { //its not blob
+    public JSONObject getImageFromDALLE(String prompt) { //its not blob
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost(apiUrl);
@@ -64,7 +64,7 @@ public class DalleAPIService {
 
 // Parse response JSON to get image URL
             JSONObject jsonResponse = new JSONObject(EntityUtils.toString(entity));
-            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64_json");
+//            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64_json");
 //            String imageB64 = jsonResponse.getJSONObject("error").getString("code");
 
 // Download image and save locally
@@ -78,12 +78,12 @@ public class DalleAPIService {
             EntityUtils.consume(entity);
             response.close();
             httpclient.close();
-            return imageB64;
+            return jsonResponse;
 
         }
         catch (IOException e) {
             e.printStackTrace();
-            return e.toString();
+            return new JSONObject(e.toString());
         }
     }
 }

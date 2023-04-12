@@ -7,7 +7,9 @@ import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.*;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -145,13 +147,14 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
         }
     }
-    
 
-    @PostMapping("/testdalle")
+
+    @PostMapping(value="/testdalle", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String testDalle(@RequestBody String prompt){
-        String base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
-        return base64encodedStringImage;
+        JSONObject base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
+        System.out.println(base64encodedStringImage.toString());
+        return base64encodedStringImage.toString();
     }
 }
