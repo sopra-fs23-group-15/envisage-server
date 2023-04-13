@@ -8,9 +8,9 @@ on:
   # run the workflow manually from the Actions tab
   workflow_dispatch:
 
-env: 
-  DALLE_API_KEY: ${{ secrets.OPEN_AI_KEY }}
-  DUMMY_ENV_VAR: ${{ secrets.GCP_DUMMY_ENV_VAR }}
+# env: 
+#   DALLE_API_KEY: ${{ secrets.OPEN_AI_KEY }}
+#   DUMMY_ENV_VAR: ${{ secrets.GCP_DUMMY_ENV_VAR }}
 
   
 jobs:
@@ -50,10 +50,9 @@ jobs:
         # env: 
         #   DALLE-API-KEY: '${{ secrets.OPEN_AI_KEY }}'
         with:
-          env_vars: |-
-            DALLE_API_KEY=${{ env.DALLE_API_KEY }}
-            DUMMY_ENV_VAR=${{ env.GCP_DUMMY_ENV_VAR }}
-          
+          # env_vars: |-
+          #   DALLE_API_KEY=${{ env.DALLE_API_KEY }}
+          #   DUMMY_ENV_VAR=${{ env.GCP_DUMMY_ENV_VAR }}
           deliverables: app.yaml
           version: v1
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
