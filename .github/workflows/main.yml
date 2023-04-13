@@ -33,7 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+  
   deploy:
     name: Deploying to Google Cloud
     runs-on: ubuntu-latest
@@ -43,6 +43,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Echo variable to app.yaml
+        env: 
+            DALLE_API_KEY: ${{ secrets.OPEN_AI_KEY }}
+            DUMMY_ENV_VAR: ${{ secrets.GCP_DUMMY_ENV_VAR }}
+        run: |
+          echo "env_variables:" >> app.yaml
+          echo "  DALLE_API_KEY: $DALLE_API_KEY" >> app.yaml
+          echo "  DUMMY_ENV_VAR: $DUMMY_ENV_VAR" >> app.yaml
+        
       - name: Deploy to App Engine
         id: deploy
         uses: google-github-actions/deploy-appengine@v0.2.0
