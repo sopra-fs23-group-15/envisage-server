@@ -55,7 +55,19 @@ public class DalleAPIService {
             httppost.setHeader("Authorization", "Bearer " + apiKey);
 
 // Set request body
-            StringEntity requestEntity = new StringEntity("{\"response_format\":\"" + responseFormat + "\", \"prompt\": \"" + prompt + "\", \"n\": numImages, \"size\": \"256x256\"}");
+//            StringEntity requestEntity = new StringEntity("{\"response_format\":\"" + responseFormat + "\", \"prompt\": \"" + prompt + "\", \"n\": numImages, \"size\": \"256x256\"}");
+            // Define the JSON request body
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("prompt", prompt);
+            requestBody.put("n", numImages);
+            requestBody.put("size", "256x256");
+            requestBody.put("response_format", responseFormat);
+
+// Create a StringEntity from the JSON request body
+            StringEntity requestEntity = new StringEntity(requestBody.toString());
+
+// Set the content type of the request body
+            requestEntity.setContentType("application/json");
             httppost.setEntity(requestEntity);
 
 // Send request and get response
@@ -66,7 +78,8 @@ public class DalleAPIService {
             JSONObject jsonResponse = new JSONObject(EntityUtils.toString(entity));
 //            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64_json");
 //            String imageB64 = jsonResponse.getJSONObject("error").getString("code");
-            jsonResponse.append("DUMMY_VAR", System.getenv("DUMMY_ENV_VAR"));
+            jsonResponse.put("DUMMY_VAR", System.getenv("DUMMY_ENV_VAR"));
+            jsonResponse.put("request", requestBody);
 // Download image and save locally
 //        HttpGet httpget = new HttpGet(imageUrl);
 //        response = httpclient.execute(httpget);

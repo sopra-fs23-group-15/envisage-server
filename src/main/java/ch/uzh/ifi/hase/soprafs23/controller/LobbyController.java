@@ -152,7 +152,9 @@ public class LobbyController {
     @PostMapping(value="/testdalle", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String testDalle(@RequestBody String prompt){
+    public String testDalle(@RequestBody String requestBody){//also works when you just send string prompt NOT json but then comment the JOSNObject code below
+        JSONObject jsonObject = new JSONObject(requestBody);
+        String prompt = jsonObject.getString("prompt");
         JSONObject base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
         System.out.println(base64encodedStringImage.toString());
         return base64encodedStringImage.toString();
