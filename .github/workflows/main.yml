@@ -46,13 +46,14 @@ jobs:
       - name: Deploy to App Engine
         id: deploy
         uses: google-github-actions/deploy-appengine@v0.2.0
-        # with:
-        # env: 
-        #   DALLE-API-KEY: '${{ secrets.OPEN_AI_KEY }}'
         with:
-          # env_vars: |-
-          #   DALLE_API_KEY=${{ env.DALLE_API_KEY }}
-          #   DUMMY_ENV_VAR=${{ env.GCP_DUMMY_ENV_VAR }}
+          env: 
+            DALLE-API-KEY: '${{ secrets.OPEN_AI_KEY }}'
+            DUMMY_ENV_VAR: '${{ secrets.GCP_DUMMY_ENV_VAR }}'
+        # with:
+        #   env_vars: |-
+        #     DALLE_API_KEY=${{ env.DALLE_API_KEY }}
+        #     DUMMY_ENV_VAR=${{ env.GCP_DUMMY_ENV_VAR }}
           deliverables: app.yaml
           version: v1
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}

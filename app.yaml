@@ -4,5 +4,5 @@
 runtime: java17
 instance_class: F2
 env_variables:
-  DALLE_API_KEY: $ {{ secrets.OPEN_AI_KEY }}
-  DUMMY_ENV_VAR: $ {{ secrets.GCP_DUMMY_ENV_VAR }}
+  DALLE_API_KEY: $DALLE-API-KEY
+  DUMMY_ENV_VAR: $DUMMY_ENV_VAR
