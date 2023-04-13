@@ -50,9 +50,9 @@ jobs:
         # env: 
         #   DALLE-API-KEY: '${{ secrets.OPEN_AI_KEY }}'
         with:
-          # env_vars: |-
-          #   DALLE_API_KEY=${{ env.DALLE_API_KEY }}
-          #   DUMMY_ENV_VAR=${{ env.GCP_DUMMY_ENV_VAR }}
+          env_vars: |-
+            DALLE_API_KEY=${{ env.DALLE_API_KEY }}
+            DUMMY_ENV_VAR=${{ env.GCP_DUMMY_ENV_VAR }}
           
           deliverables: app.yaml
           version: v1
