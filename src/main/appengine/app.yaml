@@ -1,0 +1,4 @@
+runtime: java17
+env_variables:
+  DALLE_API_KEY: ${DALLE_API_KEY}
+  DUMMY_ENV_VAR: ${DUMMY_ENV_VAR}
