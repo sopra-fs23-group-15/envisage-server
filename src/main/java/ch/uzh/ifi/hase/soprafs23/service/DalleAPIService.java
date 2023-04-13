@@ -66,7 +66,7 @@ public class DalleAPIService {
             JSONObject jsonResponse = new JSONObject(EntityUtils.toString(entity));
 //            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64_json");
 //            String imageB64 = jsonResponse.getJSONObject("error").getString("code");
-            jsonResponse.append("DUMMY_VAR", System.getenv("GCP_DUMMY_ENV_VAR"));
+            jsonResponse.append("DUMMY_VAR", System.getenv("DUMMY_ENV_VAR"));
 // Download image and save locally
 //        HttpGet httpget = new HttpGet(imageUrl);
 //        response = httpclient.execute(httpget);
