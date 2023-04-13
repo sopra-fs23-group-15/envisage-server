@@ -24,7 +24,7 @@ import java.io.IOException;
 @Service
 @Transactional
 public class DalleAPIService {
-    private final String apiKey = System.getenv("DALLE-API-KEY");
+    private final String apiKey = System.getenv("DALLE_API_KEY");
 //    private String prompt;
     private int numImages = 1;
     private String responseFormat = "b64_json"; //url or b64_json
@@ -66,14 +66,14 @@ public class DalleAPIService {
             JSONObject jsonResponse = new JSONObject(EntityUtils.toString(entity));
 //            String imageB64 = jsonResponse.getJSONArray("data").getJSONObject(0).getString("b64_json");
 //            String imageB64 = jsonResponse.getJSONObject("error").getString("code");
-
+            jsonResponse.append("DUMMY_VAR", System.getenv("GCP_DUMMY_ENV_VAR"));
 // Download image and save locally
 //        HttpGet httpget = new HttpGet(imageUrl);
 //        response = httpclient.execute(httpget);
 //        entity = response.getEntity();
 //        OutputStream outputStream = new FileOutputStream(new File("image.jpg"));
 //        entity.writeTo(outputStream);
-
+            System.out.println(apiKey);
 // Clean up resources
             EntityUtils.consume(entity);
             response.close();
