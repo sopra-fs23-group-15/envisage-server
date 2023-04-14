@@ -15,6 +15,10 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/6 (if game pin is wrong provide an error message)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/7 (go to the lobby page if username and game pin are provided)
 
+**Sprint1 Week2**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/19
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/20
+
 ## Nikita
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/3
