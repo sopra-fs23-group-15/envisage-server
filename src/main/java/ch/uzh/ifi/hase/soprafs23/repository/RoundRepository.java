@@ -6,5 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository("roundRepository")
 public interface RoundRepository extends JpaRepository<Round, Integer> {
-    Round findByRoundNumber(int roundNumber);
+
+
+    // round number on its own not unique, gameId needed too
+    Round findByRoundNumberAndGame_Id(int roundNumber, long game_Id);
 }

@@ -52,6 +52,13 @@ public class Game {
     public void setPlayerScores(List<PlayerScore> playerScores) {
         this.playerScores = playerScores;
     }
+    public void setPlayerScore(PlayerScore playerScore) {
+        this.playerScores.stream()
+                .filter(_playerScore -> _playerScore.getPlayer().getUserName().equals(playerScore.getPlayer().getUserName()))
+                .forEach(
+                        score -> score.setScore(score.getScore() + playerScore.getScore())
+                );
+    }
 
     public void addPlayerScore(PlayerScore playerScore){
         playerScores.add(playerScore);
