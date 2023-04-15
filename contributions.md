@@ -34,6 +34,9 @@
 * [#27](https://github.com/sopra-fs23-group-15/envisage-server/issues/27)
 * [#28](https://github.com/sopra-fs23-group-15/envisage-server/issues/28)
 
+**Sprint1 Week2**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/13
+
 ## Xue
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/1 (Landing page and lobby creation page almost done, some css details need to be fixed later)
