@@ -6,8 +6,8 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/63 (check if username is unique when joining a lobby and throw correct HTTP error)
 
 **Sprint1 Week2**
-* GitHub Issue link you worked on
-* GitHub Issue link you worked on
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/71 (websocket connection of server and client)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/38 (implement method to get the first image prompt from the met museum API)
 
 ## Moritz
 **Sprint1 Week1**
