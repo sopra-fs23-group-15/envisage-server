@@ -28,7 +28,7 @@ public class MetMuseumAPIService {
 
 
     /**
-     * method which returns an Url to an jpg form of an image of the met Museum
+     * method which returns an Url to a jpg form of an image of the met Museum
      */
     public String getImageFromMetMuseum(){
         List<Integer> objectIDList = readFile();
@@ -45,6 +45,7 @@ public class MetMuseumAPIService {
         String fileName ="src/main/resources/metMuseumObjectIDs.txt";
         List<Integer> result = new ArrayList<>();
         try {
+            // remove all empty lines in metMuseumObjectID file, else it won't work
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null){
@@ -61,12 +62,12 @@ public class MetMuseumAPIService {
 
     /**
      * Method which returns the URL to jpg image
-     * @param ObjectID
+     * @param objectID
      * @return
      */
-    private String getImageUrl(int ObjectID){
+    private String getImageUrl(Integer objectID){
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpGet httpget = new HttpGet(apiUrlImage+ObjectID);
+        HttpGet httpget = new HttpGet(apiUrlImage + objectID);
         CloseableHttpResponse response = null;
         try {
             response = httpclient.execute(httpget);
@@ -83,6 +84,7 @@ public class MetMuseumAPIService {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
 }

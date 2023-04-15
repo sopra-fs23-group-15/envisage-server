@@ -43,7 +43,6 @@ public class LobbyService {
      * create a Lobby entity and save it to the lobbyRepository
      */
     public Lobby createLobby() {
-        log.debug("___________________________________________________________");
         Lobby newLobby = new Lobby();
         newLobby.setPin(createPin());
         newLobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
@@ -51,7 +50,6 @@ public class LobbyService {
 
         // saves the given entity but data is only persisted in the database once
         // flush() is called
-        log.debug("___________________________________________"+ newLobby);
         newLobby = lobbyRepository.save(newLobby);
         lobbyRepository.flush();
 
