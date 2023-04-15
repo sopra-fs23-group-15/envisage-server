@@ -1,9 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -33,7 +33,16 @@ class DTOMapperTest {
         assertEquals(lobby.getPin(), lobbyGetDTO.getPin());
         assertEquals(lobby.getPlayers(), lobbyGetDTO.getPlayers());
         assertEquals(lobby.getGame(), lobbyGetDTO.getGame());
+    }
 
+    @Test
+    public void testPlayerInput_fromPlayerPostDTO_toEntity_success() {
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setUserName("Gertrude");
+
+        Player player = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
+
+        assertEquals(player.getUserName(), playerPostDTO.getUserName());
 
     }
 
