@@ -3,7 +3,8 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 public class Challenge {
     private int durationInSeconds;
     private StyleRequirement styleRequirement;
-//    private ImagePrompt imageContent;
+
+    private ImagePrompt imagePrompt;
 
     public int getDurationInSeconds() {
         return durationInSeconds;
@@ -19,6 +20,14 @@ public class Challenge {
 
     public StyleRequirement getStyleRequirement() {
         return styleRequirement;
+    }
+
+    public void setImagePrompt(ImagePrompt imagePrompt){
+        this.imagePrompt = imagePrompt;
+    }
+
+    public ImagePrompt getImagePrompt(ImagePrompt imagePrompt){
+        return imagePrompt;
     }
 
     public void start(){;}

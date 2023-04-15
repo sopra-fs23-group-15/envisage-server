@@ -32,13 +32,16 @@ public class LobbyController {
     private final DalleAPIService dalleAPIService;
     private final PlayerScoreService playerScoreService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService) {
+    private final MetMuseumAPIService metMuseumAPIService;
+
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService, MetMuseumAPIService metMuseumAPIService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
         this.dalleAPIService = dalleAPIService;
         this.playerScoreService = playerScoreService;
+        this.metMuseumAPIService = metMuseumAPIService;
     }
 
     @PostMapping("/lobbies")
@@ -159,4 +162,15 @@ public class LobbyController {
         System.out.println(base64encodedStringImage.toString());
         return base64encodedStringImage.toString();
     }
+
+    // Just for testing can be removed later
+    @GetMapping(value="/metMuseum")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String testMetMuseum(){
+        String urlMet = metMuseumAPIService.getImageFromMetMuseum();
+        return urlMet;
+    }
+
+
 }
