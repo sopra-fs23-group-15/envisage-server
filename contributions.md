@@ -36,6 +36,7 @@
 
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/13
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/33
 
 ## Xue
 **Sprint1 Week1**
