@@ -29,9 +29,16 @@ class DTOMapperTest {
 
         LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
 
+        List<Player> playerList1 = lobby.getPlayers();
+        List<PlayerGetDTO> playerGetDTOS = new ArrayList<>();
+        for (Player player:  playerList1){
+            playerGetDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player));
+        }
+
+
         assertEquals(lobby.getPin(), lobbyGetDTO.getPin());
-        assertEquals(lobby.getPlayers(), lobbyGetDTO.getPlayers());
-        assertEquals(lobby.getGame(), lobbyGetDTO.getGame());
+        assertEquals(playerGetDTOS, lobbyGetDTO.getPlayers());
+        assertEquals(DTOMapper.INSTANCE.convertEntityToGameDTO(lobby.getGame()), lobbyGetDTO.getGame());
     }
 
     @Test
@@ -87,8 +94,14 @@ class DTOMapperTest {
 
         RoundDTO roundDTO = DTOMapper.INSTANCE.convertEntityToRoundDTO(round);
 
-        assertEquals(roundDTO.getRoundNumber(), round.getRoundNumber());
-        assertEquals(roundDTO.getPlayerImages(), round.getPlayerImages());
+        List<PlayerImage> playerImages1 = round.getPlayerImages();
+        List<PlayerImageDTO> playerImageDTOS = new ArrayList<>();
+        for (PlayerImage image:  playerImages1){
+            playerImageDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerImageDTO(image));
+        }
+
+        assertEquals(round.getRoundNumber(), roundDTO.getRoundNumber());
+        assertEquals(playerImageDTOS, roundDTO.getPlayerImages() );
 
     }
 
@@ -120,10 +133,22 @@ class DTOMapperTest {
 
         GameDTO gameDTO = DTOMapper.INSTANCE.convertEntityToGameDTO(game);
 
-        assertEquals(gameDTO.getRounds(), game.getRounds());
-        assertEquals(gameDTO.getPlayerScores(), game.getPlayerScores());
-        assertEquals(gameDTO.getLobbyPin(), game.getLobby().getPin());
-        assertEquals(gameDTO.getStatus(), game.getStatus());
+        List<Round> roundList2 = game.getRounds();
+        List<RoundDTO> roundDTOList = new ArrayList<>();
+        for (Round round:  roundList2){
+            roundDTOList.add(DTOMapper.INSTANCE.convertEntityToRoundDTO(round));
+        }
+
+        List<PlayerScore> playerScoresList = game.getPlayerScores();
+        List<PlayerScoreDTO> playerScoreDTOS = new ArrayList<>();
+        for (PlayerScore score:  playerScoresList){
+            playerScoreDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerScoreDTO(score));
+        }
+
+        assertEquals(roundDTOList, gameDTO.getRounds());
+        assertEquals(playerScoreDTOS, gameDTO.getPlayerScores());
+        assertEquals(game.getLobby().getPin(), gameDTO.getLobbyPin());
+        assertEquals(game.getStatus(), gameDTO.getStatus());
 
     }
 
