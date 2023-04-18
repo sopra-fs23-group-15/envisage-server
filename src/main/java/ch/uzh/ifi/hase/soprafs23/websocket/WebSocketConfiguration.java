@@ -28,7 +28,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
         // "/envisage" is HTTP URL the endpoint to which the client needs to connect for the webSocket handshake
-        registry.addEndpoint("/envisage").
+        registry.addEndpoint("/envisage-ws").
                 setAllowedOrigins(ORIGIN_LOCALHOST, ORIGIN_PROD).withSockJS();
     }
 
