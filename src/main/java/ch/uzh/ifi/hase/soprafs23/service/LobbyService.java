@@ -32,6 +32,8 @@ public class LobbyService {
 
     private final LobbyRepository lobbyRepository;
 
+
+
     private Random rand = new SecureRandom();
 
     @Autowired
@@ -47,7 +49,6 @@ public class LobbyService {
         newLobby.setPin(createPin());
         newLobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
         newLobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
-
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newLobby = lobbyRepository.save(newLobby);
