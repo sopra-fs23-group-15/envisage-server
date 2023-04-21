@@ -20,7 +20,7 @@ public class Lobby{
 
     private int roundDuration;
 
-    @OneToMany(mappedBy = "lobby", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "lobby", cascade = CascadeType.ALL)
     private List<Player> players = new ArrayList<Player>();
 
     @OneToOne(cascade = CascadeType.ALL)
