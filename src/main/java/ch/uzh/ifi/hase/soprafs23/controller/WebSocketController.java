@@ -44,7 +44,7 @@ public class WebSocketController {
 
 
     // @MessageMapping is used for repetitive messaging from server to clients
-    @MessageMapping("/lobbies/{lobbyId}/join")
+    @MessageMapping("/lobbies/{lobbyId}/lobbyJoin")
     //return value is broadcast to all subscribers of /topic/{lobbyId}
     @SendTo("/topic/lobbies/{lobbyId}")
     //@SubscribeMapping("/topic/lobbies/{lobbyId}")
