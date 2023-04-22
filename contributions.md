@@ -27,7 +27,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/25
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/26
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/62
-* 
+
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/64
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/65
