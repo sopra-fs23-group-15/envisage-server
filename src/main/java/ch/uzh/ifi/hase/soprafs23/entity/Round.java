@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity
 public class Round {
-
     @Id
     @GeneratedValue
     private Long id;

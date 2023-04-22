@@ -43,7 +43,6 @@ public class Player implements Serializable {
         this.id = id;
     }
 
-
     public String getUserName() {
         return userName;
     }

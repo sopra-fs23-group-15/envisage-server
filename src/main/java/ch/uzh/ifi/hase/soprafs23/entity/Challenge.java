@@ -1,10 +1,32 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import javax.persistence.*;
+
+@Entity
 public class Challenge {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private int durationInSeconds;
+
+    @OneToOne
+    private Round round;
+
+    @OneToOne
     private StyleRequirement styleRequirement;
 
+    @OneToOne
     private ImagePrompt imagePrompt;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public int getDurationInSeconds() {
         return durationInSeconds;
@@ -12,6 +34,14 @@ public class Challenge {
 
     public void setDurationInSeconds(int durationInSeconds) {
         this.durationInSeconds = durationInSeconds;
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
     }
 
     public void setStyleRequirement(StyleRequirement styleRequirement) {
@@ -30,5 +60,5 @@ public class Challenge {
         return imagePrompt;
     }
 
-    public void start(){;}
+    public void start(){}
 }
