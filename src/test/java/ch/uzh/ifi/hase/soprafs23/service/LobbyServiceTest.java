@@ -41,6 +41,6 @@ public class LobbyServiceTest {
         Player player = new Player();
         player.setUserName("testplayer1");
         Lobby newLobby = lobbyService.addPlayer(player, lobby.getPin());
-        assertEquals(newLobby.getPlayers().size(), 1);
+        assertEquals(1, newLobby.getPlayers().size());
     }
 }
