@@ -78,6 +78,7 @@ public class LobbyController {
         }
     }
 
+    // might be not needed anymore as Websocket returns lobby when player joins lobby
     @GetMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     public LobbyGetDTO getLobby(@PathVariable long lobbyId){

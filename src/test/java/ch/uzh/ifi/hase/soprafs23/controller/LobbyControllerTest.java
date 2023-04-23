@@ -3,6 +3,8 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,11 +66,86 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(lobbyPostDTO));
 
-        // then
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
-                .andExpect(jsonPath("$.numberOfRounds", is(lobbyPostDTO.getNoOfRounds())))
-                .andExpect(jsonPath("$.roundDuration", is(lobbyPostDTO.getRoundDurationInSeconds())));
+                .andExpect(jsonPath("$.numberOfRounds", is(lobby.getNumberOfRounds())))
+                .andExpect(jsonPath("$.roundDuration", is(lobby.getRoundDuration())))
+                .andExpect(jsonPath("$.players", is(lobby.getPlayers())))
+                .andExpect(jsonPath("$.game", is(lobby.getGame())));
+    }
+
+    @Test
+    public void createPlayer_success() throws Exception {
+        Player player = new Player();
+        player.setUserName("Rupert");
+        player.setLobbyCreator(true);
+        player.setId(1L);
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345678L);
+        player.setLobby(lobby);
+
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setUserName("Rupert");
+
+        given(playerService.addPlayer(Mockito.any(), Mockito.anyLong())).willReturn(player);
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", is(player.getId().intValue())))
+                .andExpect(jsonPath("$.userName", is(player.getUserName())))
+                .andExpect((jsonPath("$.lobbyCreator", is(player.isLobbyCreator()))))
+                .andExpect(jsonPath("$.lobbyId", is(player.getLobby().getPin().intValue())));
+    }
+
+    @Test
+    public void createPlayer_failure_noLobby() throws Exception {
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        playerPostDTO.setUserName("Rupert");
+        long lobbyPin = 12345678L;
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(String.format("Lobby with pin %s does not exist", lobbyPin))))
+                .given(playerService).addPlayer(Mockito.any(), Mockito.anyLong());
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void createPlayer_failure_nameConflict() throws Exception {
+        PlayerPostDTO playerPostDTO = new PlayerPostDTO();
+        String userName = "Rupert";
+        playerPostDTO.setUserName(userName);
+
+        willThrow(new ResponseStatusException(HttpStatus.CONFLICT, String.format("Username %s is not unique", userName)))
+                .given(playerService).addPlayer(Mockito.any(), Mockito.anyLong());
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerPostDTO));
+
+        mockMvc.perform(postRequest)
+                .andExpect(status().isConflict());
+    }
+
+
+
+    private String asJsonString(final Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        }
+        catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("The request body could not be created.%s", e.toString()));
+        }
+
     }
 
 }

@@ -56,7 +56,7 @@ public class Challenge {
         this.imagePrompt = imagePrompt;
     }
 
-    public ImagePrompt getImagePrompt(ImagePrompt imagePrompt){
+    public ImagePrompt getImagePrompt(){
         return imagePrompt;
     }
 
