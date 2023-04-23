@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +31,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LobbyControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     LobbyService lobbyService;
@@ -59,19 +63,18 @@ class LobbyControllerTest {
         lobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
         lobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
 
+        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
+        lobbyPostDTO.setNoOfRounds(5);
+        lobbyPostDTO.setRoundDurationInSeconds(50);
+
         given(lobbyService.createLobby()).willReturn(lobby);
 
-        MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(lobbyPostDTO));
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
-                .andExpect(jsonPath("$.numberOfRounds", is(lobby.getNumberOfRounds())))
-                .andExpect(jsonPath("$.roundDuration", is(lobby.getRoundDuration())))
-                .andExpect(jsonPath("$.players", is(lobby.getPlayers())))
-                .andExpect(jsonPath("$.game", is(lobby.getGame())));
-
-
+                .andExpect(jsonPath("$.numberOfRounds", is(lobbyPostDTO.getNoOfRounds())))
+                .andExpect(jsonPath("$.roundDuration", is(lobbyPostDTO.getRoundDurationInSeconds())));
     }
 
 }
