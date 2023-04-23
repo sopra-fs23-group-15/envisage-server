@@ -2,10 +2,26 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.ImageType;
 
+import javax.persistence.*;
+
+@Entity
 public class ImagePrompt {
+    @Id
+    @GeneratedValue
+    private Long id;
+
     private ImageType imageType;
 
     private String image;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setImageType (ImageType imageType){
         this.imageType = imageType;

@@ -47,9 +47,11 @@ public class LobbyController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyGetDTO createLobby() {
+    public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO) {
         // create lobby
-        Lobby createdLobby= lobbyService.createLobby();
+        Lobby createdLobby = lobbyService.createLobby();
+        createdLobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
+        createdLobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }

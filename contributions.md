@@ -9,6 +9,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/71 (websocket connection of server and client)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/38 (implement method to get the first image prompt from the met museum API)
 
+
 ## Moritz
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/5 (if the username is already taken, promt user to provide a new one)
@@ -19,16 +20,22 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/19
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/20
 
+
 ## Nikita
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/3
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/25
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/26
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/62
-* 
+
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/64
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/65
+
+**Sprint1 Week3**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/44
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/46
+
 ## Shantam
 **Sprint1 Week1**
 * [#27](https://github.com/sopra-fs23-group-15/envisage-server/issues/27)
@@ -44,3 +51,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/1 (Landing page and lobby creation page almost done, some css details need to be fixed later)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/2 (Trigger lobby creation endpoint by clicking the "Start a defaut game" button)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/3 (As a lobby creator, enter username and enter the lobby)
+
+**Sprint1 Week2**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/61
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/64
