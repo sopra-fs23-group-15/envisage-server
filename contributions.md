@@ -9,6 +9,10 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/71 (websocket connection of server and client)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/38 (implement method to get the first image prompt from the met museum API)
 
+**Sprint1 Week3**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/81 (subscribe to websocket to get notified when player joined the lobby and when a game starts all players get navigated to next page)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/32 (show same requirement to each player in the same lobby)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/31 (show same image to each player in the same image)
 
 ## Moritz
 **Sprint1 Week1**
