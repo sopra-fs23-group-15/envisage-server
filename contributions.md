@@ -59,3 +59,10 @@
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/61
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/64
+
+**Sprint1 Week3**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/23
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/27
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/28
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/29
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/30
