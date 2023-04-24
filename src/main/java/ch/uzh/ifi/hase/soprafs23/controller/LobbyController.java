@@ -53,10 +53,10 @@ public class LobbyController {
     public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO) {
         // create lobby
         Lobby createdLobby = lobbyService.createLobby();
-        createdLobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
-        createdLobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
+        // for configuring lobby with other settings than default ones
+        Lobby updatedLobby = lobbyService.updateLobbyConfiguration(createdLobby.getPin(), lobbyPostDTO);
         // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(updatedLobby);
     }
 
 

@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +121,15 @@ public class LobbyService {
         Lobby newLobby = lobbyRepository.save(lobbyByPin);
         lobbyRepository.flush();
         return newLobby;
+    }
+
+    public Lobby updateLobbyConfiguration(long lobbyPin, LobbyPostDTO lobbyPostDTO){
+        Lobby lobby = findLobby(lobbyPin);
+        lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
+        lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
+        Lobby updatedLobby = lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        return updatedLobby;
     }
 
     public List<Lobby> getLobbies() {
