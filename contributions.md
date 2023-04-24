@@ -59,7 +59,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/13
 
 **Sprint1 Week3**
-* Fixed Server Deployment issue on GitHub
+* Fixed Server Deployment issue on GCP App Engine
 
 ## Xue
 **Sprint1 Week1**
