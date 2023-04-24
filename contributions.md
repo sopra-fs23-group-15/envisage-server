@@ -71,6 +71,8 @@
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/61
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/64
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/21 (A big commit to issue#64 also closes this issue)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/22 (A big commit to issue#64 also closes this issue)
 
 **Sprint1 Week3**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/23
