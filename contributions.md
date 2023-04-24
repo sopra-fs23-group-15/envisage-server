@@ -52,6 +52,14 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/65
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/33
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/34
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/77
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/76
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/32
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/31
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/13
+
+**Sprint1 Week3**
+* Fixed Server Deployment issue on GitHub
 
 ## Xue
 **Sprint1 Week1**
