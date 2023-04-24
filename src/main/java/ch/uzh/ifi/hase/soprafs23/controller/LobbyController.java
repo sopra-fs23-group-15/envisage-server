@@ -54,9 +54,12 @@ public class LobbyController {
         // create lobby
         Lobby createdLobby = lobbyService.createLobby();
         // for configuring lobby with other settings than default ones
-        Lobby updatedLobby = lobbyService.updateLobbyConfiguration(createdLobby.getPin(), lobbyPostDTO);
+        //TODO: FIX this
+        //Lobby updatedLobby = lobbyService.updateLobbyConfiguration(createdLobby.getPin(), lobbyPostDTO);
         // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(updatedLobby);
+
+
+        return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
 
