@@ -122,4 +122,7 @@ public class LobbyService {
         return newLobby;
     }
 
+    public List<Lobby> getLobbies() {
+        return this.lobbyRepository.findAll();
+    }
 }
