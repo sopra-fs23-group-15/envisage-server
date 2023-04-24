@@ -69,7 +69,7 @@ class LobbyControllerTest {
 
         given(lobbyService.createLobby()).willReturn(lobby);
 
-        MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(lobbyPostDTO));
+        MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON).content(asJsonString(lobbyPostDTO));
 
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
@@ -141,7 +141,6 @@ class LobbyControllerTest {
     }
 
 
-
     private String asJsonString(final Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
@@ -150,7 +149,6 @@ class LobbyControllerTest {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("The request body could not be created.%s", e.toString()));
         }
-
     }
 
 }
