@@ -13,6 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 * Lobby Controller
 * This class is responsible for handling all REST request that are related to
@@ -55,6 +58,23 @@ public class LobbyController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
+
+
+    @GetMapping("/lobbies")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<LobbyGetDTO> getAllUsers() {
+        // fetch all users in the internal representation
+        List<Lobby> lobbies = lobbyService.getLobbies();
+        List<LobbyGetDTO> lobbyGetDTOS = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (Lobby lobby : lobbies) {
+            lobbyGetDTOS.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
+        }
+        return lobbyGetDTOS;
+    }
+
 
     @PostMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.CREATED)
