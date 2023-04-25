@@ -10,12 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Service
-@Transactional
 public class ChallengeService {
 
     private final MetMuseumAPIService metMuseumAPIService;
+
+    private Random rand = new SecureRandom();
 
     @Autowired
     public ChallengeService(MetMuseumAPIService metMuseumAPIService) {
@@ -48,10 +56,30 @@ public class ChallengeService {
     }
 
     private StyleRequirement getStyleRequirement(){
-        // TODO: actually implement this to get StyleRequirement
         StyleRequirement styleRequirement = new StyleRequirement();
-        styleRequirement.setStyle("Salvador Dali");
+        List<String> imagePrompt = readPromptFile();
+        String prompt = imagePrompt.get(this.rand.nextInt(imagePrompt.size()));
+        styleRequirement.setStyle(prompt);
         return styleRequirement;
     }
 
+
+    private List<String> readPromptFile() {
+        String fileName ="src/main/resources/imagePromptIdeas";
+        List<String> result = new ArrayList<>();
+        try {
+            // remove all empty lines in metMuseumObjectID file, else it won't work
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            String curLine;
+            while ((curLine = bufferedReader.readLine()) != null){
+                result.add(String.valueOf(curLine));
+            }
+            bufferedReader.close();
+            return result;
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

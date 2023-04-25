@@ -169,10 +169,11 @@ public class LobbyController {
     @PutMapping("/lobbies/{lobbyId}/games/{roundId}/{username}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
+    public String generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
-        playerImageService.createImage(keywords, lobbyId, roundId, username);
+        String imageURL = playerImageService.createImage(keywords, lobbyId, roundId, username);
+        return  imageURL;
         } catch (PlayerDoesNotExist pde){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pde.getMessage());
         } catch (GameDoesNotExistException gme){
