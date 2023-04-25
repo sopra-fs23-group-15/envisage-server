@@ -214,12 +214,5 @@ public class LobbyController {
         return base64encodedStringImage.toString();
     }
 
-    // Just for testing can be removed later
-    @GetMapping(value="/metMuseum")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public String testMetMuseum(){
-        String urlMet = metMuseumAPIService.getImageFromMetMuseum();
-        return urlMet;
-    }
+
 }
