@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
@@ -119,6 +120,7 @@ public class LobbyController {
     public GameDTO startGame(@PathVariable long lobbyId) {
         // create game
         Game createdGame = gameService.createGame(lobbyId);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
@@ -197,6 +199,4 @@ public class LobbyController {
         String urlMet = metMuseumAPIService.getImageFromMetMuseum();
         return urlMet;
     }
-
-
 }
