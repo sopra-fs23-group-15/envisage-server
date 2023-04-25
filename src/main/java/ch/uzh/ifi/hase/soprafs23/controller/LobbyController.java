@@ -183,6 +183,7 @@ public class LobbyController {
     @ResponseBody
     public String testDalle(@RequestBody String requestBody){//also works when you just send string prompt NOT json but then comment the JOSNObject code below
         JSONObject jsonObject = new JSONObject(requestBody);
+        System.out.println(jsonObject);
         String prompt = jsonObject.getString("prompt");
         JSONObject base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
         System.out.println(base64encodedStringImage.toString());
