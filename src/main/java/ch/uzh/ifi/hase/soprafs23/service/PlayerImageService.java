@@ -63,20 +63,20 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        JSONObject jsonData = jsonObject.getJSONObject("data");
-        String jUrl = jsonData.getString("url");
+        //JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+        //JSONObject jsonData = jsonObject.getJSONObject("data");
+        //String jUrl = jsonData.getString("url");
 
        // String generatedImage = base64encodedStringImage.toString();
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
-        log.info(jUrl);
+        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        log.info(generatedImage);
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
-        playerImage.setImage(jUrl);
+        playerImage.setImage(generatedImage);
         playerImage.setRound(roundFound);
 
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
-        return jUrl;
+        return generatedImage;
     }
 }
