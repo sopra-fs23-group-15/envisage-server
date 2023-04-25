@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
-import org.json.JSONArray;
-
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +10,7 @@ public class PlayerImage {
 
     @OneToOne
     private Player player;
-
+    @Lob
     private String image;
 
     private String keywords;
