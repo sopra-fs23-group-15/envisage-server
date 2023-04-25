@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
-import java.sql.Blob;
 
 @Entity
 public class PlayerImage {
@@ -11,7 +10,7 @@ public class PlayerImage {
 
     @OneToOne
     private Player player;
-
+    @Lob
     private String image;
 
     @ManyToOne()
