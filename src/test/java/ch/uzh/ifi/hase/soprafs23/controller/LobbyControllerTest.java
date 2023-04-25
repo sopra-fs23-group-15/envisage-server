@@ -56,6 +56,9 @@ class LobbyControllerTest {
     @MockBean
     MetMuseumAPIService metMuseumAPIService;
 
+    @MockBean
+    PlayerImageService playerImageService;
+
     @Test
     public void createLobby_success() throws Exception {
         Lobby lobby = new Lobby();
