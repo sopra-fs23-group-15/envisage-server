@@ -66,4 +66,6 @@ public interface DTOMapper {
   @Mapping(source="score", target="score")
   PlayerScore convertPlayerScoreDTOtoEntity(PlayerScoreDTO playerScoreDTO);
 
+  @Mapping(source="keywords", target = "keywords")
+  Keywords convertKeywordsDTOtoEntity(KeywordsDTO keywordsDTO);
 }

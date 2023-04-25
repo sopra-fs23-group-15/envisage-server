@@ -38,7 +38,9 @@ public class LobbyController {
 
     private final MetMuseumAPIService metMuseumAPIService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService, MetMuseumAPIService metMuseumAPIService) {
+    private final PlayerImageService playerImageService;
+
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService, MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
@@ -46,6 +48,7 @@ public class LobbyController {
         this.dalleAPIService = dalleAPIService;
         this.playerScoreService = playerScoreService;
         this.metMuseumAPIService = metMuseumAPIService;
+        this.playerImageService = playerImageService;
     }
 
     @PostMapping("/lobbies")
@@ -162,6 +165,24 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         }
     }
+
+    @PutMapping("/lobbies/{lobbyId}/games/{roundId}/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
+        try{
+        Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
+        playerImageService.createImage(keywords, lobbyId, roundId, username);
+        } catch (PlayerDoesNotExist pde){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pde.getMessage());
+        } catch (GameDoesNotExistException gme){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
+        } catch (RoundDoesNotExistException rdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        }
+
+    }
+
 
 
     @PutMapping("/lobbies/{lobbyId}/games/votes")

@@ -12,8 +12,7 @@ public class PlayerImage {
     @OneToOne
     private Player player;
 
-    @Lob
-    private Blob image;
+    private String image;
 
     @ManyToOne()
     @JoinColumn(name="round_id")
@@ -53,11 +52,11 @@ public class PlayerImage {
         this.votes = votes;
     }
 
-    public Blob getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }
