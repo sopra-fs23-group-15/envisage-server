@@ -27,7 +27,7 @@ public class DalleAPIService {
     private final String apiKey = System.getenv("DALLE_API_KEY");
 //    private String prompt;
     private int numImages = 1;
-    private String responseFormat = "b64_json"; //url or b64_json
+    private String responseFormat = "url"; //url or b64_json
     private String apiUrl = "https://api.openai.com/v1/images/generations";
 
     //    private int size = 512; //accepted values are 256, 512, or 1024

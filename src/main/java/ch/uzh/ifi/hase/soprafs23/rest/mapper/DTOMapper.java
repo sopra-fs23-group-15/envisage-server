@@ -23,6 +23,8 @@ public interface DTOMapper {
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
   @Mapping(source = "pin", target = "pin")
+  @Mapping(source = "numberOfRounds", target = "numberOfRounds")
+  @Mapping(source = "roundDuration", target = "roundDuration")
   @Mapping(source = "players", target = "players")
   @Mapping(source = "game", target = "game")
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby createdLobby);
@@ -66,4 +68,6 @@ public interface DTOMapper {
   @Mapping(source="score", target="score")
   PlayerScore convertPlayerScoreDTOtoEntity(PlayerScoreDTO playerScoreDTO);
 
+  @Mapping(source="keywords", target = "keywords")
+  Keywords convertKeywordsDTOtoEntity(KeywordsDTO keywordsDTO);
 }

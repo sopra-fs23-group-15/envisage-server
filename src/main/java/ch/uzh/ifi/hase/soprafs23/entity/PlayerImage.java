@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
-import java.sql.Blob;
 
 @Entity
 public class PlayerImage {
@@ -12,8 +11,7 @@ public class PlayerImage {
     @OneToOne
     private Player player;
 
-    @Lob
-    private Blob image;
+    private String image;
 
     @ManyToOne()
     @JoinColumn(name="round_id")
@@ -21,6 +19,7 @@ public class PlayerImage {
 
     private int votes;
 
+    // getters and setters
     public Long getId() {
         return id;
     }
@@ -53,11 +52,11 @@ public class PlayerImage {
         this.votes = votes;
     }
 
-    public Blob getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }
