@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
@@ -37,7 +38,9 @@ public class LobbyController {
 
     private final MetMuseumAPIService metMuseumAPIService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService, MetMuseumAPIService metMuseumAPIService) {
+    private final PlayerImageService playerImageService;
+
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService, MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
@@ -45,6 +48,7 @@ public class LobbyController {
         this.dalleAPIService = dalleAPIService;
         this.playerScoreService = playerScoreService;
         this.metMuseumAPIService = metMuseumAPIService;
+        this.playerImageService = playerImageService;
     }
 
     @PostMapping("/lobbies")
@@ -119,6 +123,7 @@ public class LobbyController {
     public GameDTO startGame(@PathVariable long lobbyId) {
         // create game
         Game createdGame = gameService.createGame(lobbyId);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
     }
@@ -161,6 +166,24 @@ public class LobbyController {
         }
     }
 
+    @PutMapping("/lobbies/{lobbyId}/games/{roundId}/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
+        try{
+        Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
+        playerImageService.createImage(keywords, lobbyId, roundId, username);
+        } catch (PlayerDoesNotExist pde){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pde.getMessage());
+        } catch (GameDoesNotExistException gme){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
+        } catch (RoundDoesNotExistException rdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        }
+
+    }
+
+
 
     @PutMapping("/lobbies/{lobbyId}/games/votes")
     @ResponseStatus(HttpStatus.OK)
@@ -198,6 +221,4 @@ public class LobbyController {
         String urlMet = metMuseumAPIService.getImageFromMetMuseum();
         return urlMet;
     }
-
-
 }
