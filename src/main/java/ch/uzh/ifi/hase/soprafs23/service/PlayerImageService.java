@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExist;
 import ch.uzh.ifi.hase.soprafs23.exceptions.RoundDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
@@ -28,6 +27,8 @@ public class PlayerImageService {
 
     private final DalleAPIService dalleAPIService;
 
+    private final MetMuseumAPIService metMuseumAPIService;
+
     private final GameRepository gameRepository;
 
     private final RoundRepository roundRepository;
@@ -37,10 +38,11 @@ public class PlayerImageService {
 
 
     @Autowired
-    public PlayerImageService(@Qualifier ("playerImageRepository")PlayerImageRepository playerImageRepository, PlayerRepository playerRepository, DalleAPIService dalleAPIService, GameRepository gameRepository, RoundRepository roundRepository) {
+    public PlayerImageService(@Qualifier ("playerImageRepository")PlayerImageRepository playerImageRepository, PlayerRepository playerRepository, DalleAPIService dalleAPIService, MetMuseumAPIService metMuseumAPIService, GameRepository gameRepository, RoundRepository roundRepository) {
         this.playerImageRepository = playerImageRepository;
         this.playerRepository = playerRepository;
         this.dalleAPIService = dalleAPIService;
+        this.metMuseumAPIService = metMuseumAPIService;
         this.gameRepository = gameRepository;
         this.roundRepository = roundRepository;
     }
@@ -61,16 +63,20 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        JSONObject base64encodedStringImage = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        String generatedImage = base64encodedStringImage.toString();
-        log.info(generatedImage);
+        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+        JSONObject jsonData = jsonObject.getJSONObject("data");
+        String jUrl = jsonData.getString("url");
+
+       // String generatedImage = base64encodedStringImage.toString();
+        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        log.info(jUrl);
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
-        playerImage.setImage(generatedImage);
+        playerImage.setImage(jUrl);
         playerImage.setRound(roundFound);
 
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
-        return generatedImage;
+        return jUrl;
     }
 }
