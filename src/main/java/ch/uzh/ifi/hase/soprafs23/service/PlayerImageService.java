@@ -46,7 +46,7 @@ public class PlayerImageService {
     }
 
 
-    public void createImage(Keywords keywords, long lobbyId, int roundId, String username) {
+    public String createImage(Keywords keywords, long lobbyId, int roundId, String username) {
         Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyId);
         if (playerFound == null){
             throw new PlayerDoesNotExist(username);
@@ -71,5 +71,6 @@ public class PlayerImageService {
 
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
+        return generatedImage;
     }
 }
