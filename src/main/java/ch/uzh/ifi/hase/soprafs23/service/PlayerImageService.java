@@ -69,7 +69,7 @@ public class PlayerImageService {
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        //adString generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
