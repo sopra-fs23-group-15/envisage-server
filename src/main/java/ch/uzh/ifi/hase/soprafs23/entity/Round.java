@@ -50,4 +50,16 @@ public class Round {
     public void setPlayerImages(List<PlayerImage> playerImages) {
         this.playerImages = playerImages;
     }
+    public void setPlayerImage(PlayerImage playerImage){
+        this.playerImages.stream()
+                .filter(_playerImage -> _playerImage.getPlayer().getUserName().equals(playerImage.getPlayer().getUserName()))
+                .forEach(
+                        image -> {
+                            image.setId(playerImage.getId());
+                            image.setImage(playerImage.getImage());
+                            image.setKeywords(playerImage.getKeywords());
+                            image.setRound(playerImage.getRound());
+                        }
+                );
+    }
 }
