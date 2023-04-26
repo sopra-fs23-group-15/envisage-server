@@ -60,5 +60,4 @@ public class Challenge {
         return imagePrompt;
     }
 
-    public void start(){}
 }

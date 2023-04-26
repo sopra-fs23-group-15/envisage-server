@@ -21,7 +21,7 @@ public class Lobby{
     private int roundDuration;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "lobby", cascade = CascadeType.ALL)
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Game game;

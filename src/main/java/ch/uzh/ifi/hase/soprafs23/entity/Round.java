@@ -16,7 +16,7 @@ public class Round {
     private Game game;
 
     @OneToMany(mappedBy = "round", cascade = CascadeType.ALL)
-    private List<PlayerImage> playerImages = new ArrayList<PlayerImage>();
+    private List<PlayerImage> playerImages = new ArrayList<>();
 
     public Long getId() {
         return id;

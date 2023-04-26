@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
-import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
@@ -214,9 +213,7 @@ public class LobbyController {
     @ResponseBody
     public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
         try {
-//            Game foundGame = gameService.getGame(lobbyId);
             PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
-//            foundGame.setPlayerScore(playerScore);
             Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         } catch (LobbyDoesNotExistException ldne) {

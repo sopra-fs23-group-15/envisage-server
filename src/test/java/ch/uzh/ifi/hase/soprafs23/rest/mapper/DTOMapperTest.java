@@ -194,4 +194,17 @@ class DTOMapperTest {
     }
 
 
+    @Test
+    public void test_fromLobbyPostDTO_toEntity(){
+        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
+        lobbyPostDTO.setNoOfRounds(3);
+        lobbyPostDTO.setRoundDurationInSeconds(40);
+
+        Lobby lobby = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
+
+        assertEquals(lobbyPostDTO.getNoOfRounds(), lobby.getNumberOfRounds());
+        assertEquals(lobbyPostDTO.getRoundDurationInSeconds(), lobby.getRoundDuration());
+    }
+
+
 }

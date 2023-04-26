@@ -10,8 +10,6 @@ import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoundRepository;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,6 @@ public class PlayerImageService {
     private final GameRepository gameRepository;
 
     private final RoundRepository roundRepository;
-    private final Logger log = LoggerFactory.getLogger(LobbyService.class);
 
 
 
@@ -69,7 +66,7 @@ public class PlayerImageService {
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        //adString generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        // String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
