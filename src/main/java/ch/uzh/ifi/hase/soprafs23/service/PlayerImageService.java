@@ -77,6 +77,7 @@ public class PlayerImageService {
         playerImage.setImage(generatedImage);
         playerImage.setRound(roundFound);
 
+        roundFound.setPlayerImage(playerImage);
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
         return generatedImage;
