@@ -121,7 +121,6 @@ public class LobbyController {
         try{
             // create game
             Game createdGame = gameService.createGame(lobbyId);
-            createdGame.setStatus(GameStatus.IN_PROGRESS);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
         } catch(LobbyDoesNotExistException ldne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
