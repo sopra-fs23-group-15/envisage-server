@@ -38,6 +38,7 @@ public class PlayerScoreService {
         game.setPlayerScore(playerScore);
         Game savedGame = gameRepository.save(game);
         gameRepository.flush();
+
         return savedGame;
 
     }

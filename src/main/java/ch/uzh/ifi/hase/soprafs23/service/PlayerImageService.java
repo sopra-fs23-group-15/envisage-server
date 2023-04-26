@@ -52,7 +52,7 @@ public class PlayerImageService {
     }
 
 
-    public String createImage(Keywords keywords, long lobbyId, int roundId, String username) {
+    public PlayerImage createImage(Keywords keywords, long lobbyId, int roundId, String username) {
         Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyId);
         if (playerFound == null){
             throw new PlayerDoesNotExistException(username);
@@ -67,11 +67,11 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+        //JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+        //String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
@@ -85,10 +85,10 @@ public class PlayerImageService {
         roundFound.setPlayerImages(getImagesFromRound(lobbyId, roundId));
         roundRepository.save(roundFound);
         roundRepository.flush();
-        playerImageRepository.save(playerImage);
+        playerImage = playerImageRepository.save(playerImage);
         playerImageRepository.flush();
 
-        return generatedImage;
+        return playerImage;
     }
 
     public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
@@ -112,5 +112,15 @@ public class PlayerImageService {
             }
         }
         return maxImage;
+    }
+
+    public void updatesVotesImages(long lobbyId, int roundNr, Player player){
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+        PlayerImage playerImage = playerImageRepository.findByLobbyIdAndRoundNrAndPlayer(lobbyId, roundNr, player);
+        System.out.println("LKKLKLKLKL");
+        playerImage.setVotes(playerImage.getVotes()+1);
+        System.out.println("HALLO");
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
     }
 }
