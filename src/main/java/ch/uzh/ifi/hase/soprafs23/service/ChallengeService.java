@@ -9,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.StyleRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

@@ -1,8 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 public class PlayerGetDTO {
     private Long id;
