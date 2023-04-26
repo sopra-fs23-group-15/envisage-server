@@ -2,6 +2,8 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,20 +20,31 @@ public class LobbyServiceTest {
     LobbyService lobbyService;
 
     @Test
-    public void createLobbyTest(){
-        Lobby lobby = lobbyService.createLobby();
+    public void createLobby_configureParameters(){
+        Lobby lobby = lobbyService.createLobby(2, 30);
         System.out.println("Pin: " + lobby.getPin());
         assertNotNull(lobby);
+        assertEquals(2, lobby.getNumberOfRounds());
+        assertEquals(30, lobby.getRoundDuration());
     }
 
     @Test
-    public void checkIfLobbyPinExistsTrueTest(){
+    public void createLobby(){
+        Lobby lobby = lobbyService.createLobby();
+        System.out.println("Pin: " + lobby.getPin());
+        assertNotNull(lobby);
+        assertEquals(5, lobby.getNumberOfRounds());
+        assertEquals(60, lobby.getRoundDuration());
+    }
+
+    @Test
+    public void checkIfLobbyPinExists(){
         Lobby lobby = lobbyService.createLobby();
         assertTrue(lobbyService.checkIfPinExists(lobby.getPin()));
     }
 
     @Test
-    public void checkIfLobbyPinExistsFalseTest() {
+    public void checkIfLobbyPinExists_noSuchPin() {
         assertFalse(lobbyService.checkIfPinExists(2));
     }
 
@@ -42,5 +55,26 @@ public class LobbyServiceTest {
         player.setUserName("testplayer1");
         Lobby newLobby = lobbyService.addPlayer(player, lobby.getPin());
         assertEquals(1, newLobby.getPlayers().size());
+    }
+
+    @Test
+    public void addPlayer_noSuchLobby(){
+        Lobby lobby = lobbyService.createLobby();
+        Player player = new Player();
+        player.setUserName("testplayer1");
+        Lobby newLobby = lobbyService.addPlayer(player, lobby.getPin());
+        assertThrows(LobbyDoesNotExistException.class, () -> lobbyService.addPlayer(player, 2));
+    }
+
+    @Test
+    public void addPlayer_duplicateUser(){
+        Lobby lobby = lobbyService.createLobby();
+        Player player = new Player();
+        player.setUserName("testplayer1");
+        Lobby newLobby = lobbyService.addPlayer(player, lobby.getPin());
+
+        Player duplicatePlayer = new Player();
+        duplicatePlayer.setUserName("testplayer1");
+        assertThrows(DuplicateUserException.class, () -> lobbyService.addPlayer(duplicatePlayer, newLobby.getPin()));
     }
 }

@@ -90,16 +90,6 @@ public class LobbyService {
         return lobbyRepository.findByPin(lobbyPin);
     }
 
-    // can be used to check if game can be started yet
-    public boolean minPlayersReached(long lobbyPin){
-        Lobby lobby = findLobby(lobbyPin);
-        if(lobby!=null){
-            return lobby.getPlayers().size() >= EnvisageConstants.MIN_PLAYERS;
-        } else{
-            throw new LobbyDoesNotExistException(lobbyPin);
-        }
-    }
-
     /**
      * method to create a new player
      * @param newPlayer

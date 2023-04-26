@@ -46,6 +46,22 @@ public class RoundServiceTest {
     }
 
     @Test
+    public void createRound(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i< EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testplayer"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+
+        Game game = gameService.createGame(lobby.getPin());
+        Round newRound = roundService.createRound(lobby.getPin());
+        assertEquals(2, newRound.getRoundNumber());
+        assertEquals(2, newRound.getGame().getRounds().size());
+        assertNotNull(newRound.getGame());
+    }
+
+    @Test
     public void createRound_lobbyDoesNotExist(){
         assertThrows(LobbyDoesNotExistException.class, () -> roundService.createRound(1));
     }
@@ -60,21 +76,5 @@ public class RoundServiceTest {
         }
 
         assertThrows(GameDoesNotExistException.class, () -> roundService.createRound(lobby.getPin()));
-    }
-
-    @Test
-    public void createRound(){
-        Lobby lobby = lobbyService.createLobby();
-        for(int i = 0; i< EnvisageConstants.MIN_PLAYERS; i++){
-            Player player = new Player();
-            player.setUserName("testplayer"+(i+1));
-            lobbyService.addPlayer(player, lobby.getPin());
-        }
-
-        Game game = gameService.createGame(lobby.getPin());
-        Round newRound = roundService.createRound(lobby.getPin());
-        assertEquals(2, newRound.getRoundNumber());
-        assertEquals(2, newRound.getGame().getRounds().size());
-        assertNotNull(newRound.getGame());
     }
 }

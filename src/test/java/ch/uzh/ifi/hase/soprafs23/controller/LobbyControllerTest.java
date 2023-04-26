@@ -61,23 +61,22 @@ class LobbyControllerTest {
 
     @Test
     public void createLobby_success() throws Exception {
-        Lobby lobby = new Lobby();
+        /* Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
-        lobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
         lobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
-
+        lobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
-        lobbyPostDTO.setNoOfRounds(5);
+        lobbyPostDTO.setNoOfRounds(4);
         lobbyPostDTO.setRoundDurationInSeconds(50);
 
-        // given(lobbyService.createLobby()).willReturn(lobby);
+        given(lobbyService.createLobby()).willReturn(lobby);
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(lobbyPostDTO));
 
         System.out.println("*********");
         System.out.println(mockMvc.perform(postRequest).andReturn().getResponse().getContentAsString());
-        /* mockMvc.perform(postRequest).andExpect(status().isCreated())
+        mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
                 .andExpect(jsonPath("$.numberOfRounds", is(lobbyPostDTO.getNoOfRounds())))
                 .andExpect(jsonPath("$.roundDuration", is(lobbyPostDTO.getRoundDurationInSeconds())))
