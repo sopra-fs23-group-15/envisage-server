@@ -13,6 +13,8 @@ public class PlayerImage {
     @Lob
     private String image;
 
+    private String keywords;
+
     @ManyToOne()
     @JoinColumn(name="round_id")
     private Round round;
@@ -57,5 +59,13 @@ public class PlayerImage {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getKeywords() {
+        return keywords;
     }
 }

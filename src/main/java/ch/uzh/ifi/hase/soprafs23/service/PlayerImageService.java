@@ -64,13 +64,16 @@ public class PlayerImageService {
         }
 
         JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        //JSONObject jsonData = jsonObject.getJSONObject("data");
-        //String jUrl = jsonData.getString("url");
-        String generatedImage = jsonObject.getJSONObject("data").getString("url");
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
-        log.info(generatedImage);
+
+        String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+
+
+//        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+
+        System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
+        playerImage.setKeywords(keywords.getKeywords());
         playerImage.setImage(generatedImage);
         playerImage.setRound(roundFound);
 
