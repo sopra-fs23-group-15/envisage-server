@@ -165,7 +165,7 @@ public class LobbyController {
     public String generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
-        return  playerImageService.createImage(keywords, lobbyId, roundId, username);
+        return playerImageService.createImage(keywords, lobbyId, roundId, username);
         } catch (PlayerDoesNotExist pde){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pde.getMessage());
         } catch (GameDoesNotExistException gme){
@@ -173,6 +173,19 @@ public class LobbyController {
         } catch (RoundDoesNotExistException rdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         }
+
+    }
+
+    @GetMapping("/lobbies/{lobbyId}/games/{roundId}/votes")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<PlayerImageGetDTO> getImagesForVoting(@PathVariable long lobbyId, @PathVariable int roundId){
+        List<PlayerImage> playerImageList = playerImageService.getImagesFromRound(lobbyId, roundId);
+        List<PlayerImageGetDTO> playerImageGetDTOList = new ArrayList<>();
+        for (PlayerImage playerImage : playerImageList) {
+            playerImageGetDTOList.add(DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(playerImage));
+        }
+        return playerImageGetDTOList;
 
     }
 

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class PlayerImageService {
@@ -68,7 +70,7 @@ public class PlayerImageService {
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-//        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
@@ -76,10 +78,20 @@ public class PlayerImageService {
         playerImage.setKeywords(keywords.getKeywords());
         playerImage.setImage(generatedImage);
         playerImage.setRound(roundFound);
+        playerImage.setLobbyId(lobbyId);
+        playerImage.setRoundNr(roundId);
 
         roundFound.setPlayerImage(playerImage);
+        roundRepository.save(roundFound);
+        roundRepository.flush();
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
+
         return generatedImage;
     }
+
+    public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
+      List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
+      return playerImageList;
+    };
 }

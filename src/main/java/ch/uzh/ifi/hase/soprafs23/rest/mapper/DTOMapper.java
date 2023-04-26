@@ -68,4 +68,10 @@ public interface DTOMapper {
 
   @Mapping(source="keywords", target = "keywords")
   Keywords convertKeywordsDTOtoEntity(KeywordsDTO keywordsDTO);
+
+  @Mapping(source = "id", target = "id")
+  @Mapping(source = "player.userName", target = "player")
+  @Mapping(source = "image", target = "image")
+  @Mapping(source = "keywords", target = "keywords")
+  PlayerImageGetDTO convertEntityToPlayerGetImageDTO(PlayerImage playerImage);
 }
