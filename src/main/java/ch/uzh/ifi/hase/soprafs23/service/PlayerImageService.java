@@ -66,7 +66,7 @@ public class PlayerImageService {
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        // String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
@@ -77,7 +77,7 @@ public class PlayerImageService {
         playerImage.setLobbyId(lobbyId);
         playerImage.setRoundNr(roundId);
 
-        roundFound.setPlayerImage(playerImage);
+        roundFound.setPlayerImages(getImagesFromRound(lobbyId, roundId));
         roundRepository.save(roundFound);
         roundRepository.flush();
         playerImageRepository.save(playerImage);
