@@ -68,4 +68,5 @@ class LobbyRepositoryTest {
         // then
         assertNull(found);
     }
+
 }

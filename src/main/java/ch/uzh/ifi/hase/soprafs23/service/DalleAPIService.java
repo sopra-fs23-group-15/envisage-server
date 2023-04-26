@@ -95,7 +95,6 @@ public class DalleAPIService {
 
         }
         catch (IOException e) {
-            e.printStackTrace();
             return new JSONObject(e.toString());
         }
     }

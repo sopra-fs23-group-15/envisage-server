@@ -59,7 +59,7 @@ public class GameService {
             playerScores.add(ps);
         }
         game.setPlayerScores(playerScores);
-        game.setStatus(GameStatus.READY);
+        game.setStatus(GameStatus.IN_PROGRESS);
 
         //create the first round
         Round round = new Round();

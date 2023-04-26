@@ -15,9 +15,12 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/38 (show same requirement to each player in the same lobby)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/31 (show same image to each player in the same image)
 
+**Sprint1 Week4**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/33 (send generated images to the frontend for voting (generates a list with images))
+
 ## Moritz
 **Sprint1 Week1**
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/5 (if the username is already taken, promt user to provide a new one)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/5 (if the username is already taken, prompt user to provide a new one)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/6 (if game pin is wrong provide an error message)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/7 (go to the lobby page if username and game pin are provided)
 
@@ -71,7 +74,7 @@
 ## Xue
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/1 (Landing page and lobby creation page almost done, some css details need to be fixed later)
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/2 (Trigger lobby creation endpoint by clicking the "Start a defaut game" button)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/2 (Trigger lobby creation endpoint by clicking the "Start a default game" button)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/3 (As a lobby creator, enter username and enter the lobby)
 
 **Sprint1 Week2**

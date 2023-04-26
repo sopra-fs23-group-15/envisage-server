@@ -15,10 +15,10 @@ public class Game {
     private Long id;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<Round> rounds = new ArrayList<Round>();
+    private List<Round> rounds = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
-    private List<PlayerScore> playerScores = new ArrayList<PlayerScore>();
+    private List<PlayerScore> playerScores = new ArrayList<>();
 
     @OneToOne
     private Lobby lobby;
