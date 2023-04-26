@@ -19,7 +19,7 @@ public class Challenge {
     @OneToOne
     private ImagePrompt imagePrompt;
 
-
+    // getters and setters
     public Long getId() {
         return id;
     }

@@ -7,7 +7,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,19 +41,26 @@ public class LobbyService {
     }
 
     /**
-     * create a Lobby entity and save it to the lobbyRepository
+     * create a Lobby entity with parameter configurations and save it to the lobbyRepository
      */
-    public Lobby createLobby() {
+    public Lobby createLobby(int numberOfRounds, int roundDuration) {
         Lobby newLobby = new Lobby();
         newLobby.setPin(createPin());
-        newLobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
-        newLobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
+        newLobby.setNumberOfRounds(numberOfRounds);
+        newLobby.setRoundDuration(roundDuration);
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         newLobby = lobbyRepository.save(newLobby);
         lobbyRepository.flush();
 
         return newLobby;
+    }
+
+    /**
+     * create a Lobby entity with default configurations and save it to the lobbyRepository
+     */
+    public Lobby createLobby() {
+        return createLobby(EnvisageConstants.DEFAULT_NO_OF_ROUNDS, EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
     }
 
     /**
@@ -120,15 +126,6 @@ public class LobbyService {
         Lobby newLobby = lobbyRepository.save(lobbyByPin);
         lobbyRepository.flush();
         return newLobby;
-    }
-
-    public Lobby updateLobbyConfiguration(long lobbyPin, LobbyPostDTO lobbyPostDTO){
-        Lobby lobby = findLobby(lobbyPin);
-        lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
-        lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
-        Lobby updatedLobby = lobbyRepository.save(lobby);
-        lobbyRepository.flush();
-        return updatedLobby;
     }
 
     public List<Lobby> getLobbies() {

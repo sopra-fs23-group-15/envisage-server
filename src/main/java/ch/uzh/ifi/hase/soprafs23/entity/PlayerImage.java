@@ -15,6 +15,7 @@ public class PlayerImage implements Serializable {
 
     @OneToOne
     private Player player;
+
     @Lob
     private String image;
 
@@ -30,6 +31,7 @@ public class PlayerImage implements Serializable {
 
     private int votes;
 
+    // getters and setters
     public Long getId() {
         return id;
     }

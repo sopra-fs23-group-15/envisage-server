@@ -12,7 +12,7 @@ public class StyleRequirement {
 
     private String style;
 
-
+    // getters and setters
     public Long getId() {
         return id;
     }

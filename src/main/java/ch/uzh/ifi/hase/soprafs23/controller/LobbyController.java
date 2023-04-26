@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
@@ -44,22 +45,23 @@ public class LobbyController {
         this.playerImageService = playerImageService;
     }
 
+    // creates new lobby
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO) {
+        // configuring lobby with other settings than default ones
+        int numberOfRounds =
+                (lobbyPostDTO.getNoOfRounds()>0)?lobbyPostDTO.getNoOfRounds(): EnvisageConstants.DEFAULT_NO_OF_ROUNDS;
+        int roundDuration =
+                (lobbyPostDTO.getRoundDurationInSeconds()>0)?lobbyPostDTO.getRoundDurationInSeconds(): EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS;
         // create lobby
-        Lobby createdLobby = lobbyService.createLobby();
-        // for configuring lobby with other settings than default ones
-        //TODO: FIX this
-        //Lobby updatedLobby = lobbyService.updateLobbyConfiguration(createdLobby.getPin(), lobbyPostDTO);
-        // convert internal representation of user back to API
-
+        Lobby createdLobby = lobbyService.createLobby(numberOfRounds, roundDuration);
 
         return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
     }
 
-
+    // retrieves users
     @GetMapping("/lobbies")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -75,7 +77,7 @@ public class LobbyController {
         return lobbyGetDTOS;
     }
 
-
+    // adds a player to the lobby (throws 404 if no such lobby exists or 409 in case of other conflicts)
     @PostMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -85,7 +87,6 @@ public class LobbyController {
         try{
             // create user
             Player createdPlayer = playerService.addPlayer(playerInput, lobbyId);
-            // convert internal representation of user back to API
             return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(createdPlayer);
         } catch(LobbyDoesNotExistException lde){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, lde.getMessage());
@@ -98,7 +99,9 @@ public class LobbyController {
         }
     }
 
+
     // might be not needed anymore as Websocket returns lobby when player joins lobby
+    // retrieves lobby (throws 404 if no such lobby exists)
     @GetMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     public LobbyGetDTO getLobby(@PathVariable long lobbyId){
@@ -110,17 +113,24 @@ public class LobbyController {
         }
     }
 
+    // starts a game (throws 404 if no such lobby exists or 409 when there are not enough players)
     @PostMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameDTO startGame(@PathVariable long lobbyId) {
-        // create game
-        Game createdGame = gameService.createGame(lobbyId);
-        createdGame.setStatus(GameStatus.IN_PROGRESS);
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
+        try{
+            // create game
+            Game createdGame = gameService.createGame(lobbyId);
+            createdGame.setStatus(GameStatus.IN_PROGRESS);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
+        } catch(LobbyDoesNotExistException ldne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        } catch(NotEnoughPlayersException nepe){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, nepe.getMessage());
+        }
     }
 
+    // retrieves game (throws 404 if no such lobby exists)
     @GetMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.OK)
     public GameDTO getGame(@PathVariable long lobbyId) {
@@ -128,10 +138,11 @@ public class LobbyController {
             Game foundGame = gameService.getGame(lobbyId);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(foundGame);
         } catch (LobbyDoesNotExistException ldne) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
         }
     }
 
+    // starts a round (throws 404 if no such lobby or game exists)
     @PostMapping("/lobbies/{lobbyId}/games/rounds")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -147,6 +158,7 @@ public class LobbyController {
         }
     }
 
+    // retrieves a round (throws 404 if no such round exists)
     @GetMapping("/lobbies/{lobbyId}/games/{roundId}")
     @ResponseStatus(HttpStatus.OK)
     public RoundDTO getRound(@PathVariable long lobbyId, @PathVariable int roundId) {
@@ -154,11 +166,14 @@ public class LobbyController {
             long gameId = gameService.getGame(lobbyId).getId();
             Round foundRound = roundService.getRound(roundId, gameId);
             return DTOMapper.INSTANCE.convertEntityToRoundDTO(foundRound);
+        } catch (LobbyDoesNotExistException ldne) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
         } catch (RoundDoesNotExistException rdne) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         }
     }
 
+    // generates images (throws 404 if no such player, game or round exists)
     @PutMapping("/lobbies/{lobbyId}/games/{roundId}/{username}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -166,8 +181,9 @@ public class LobbyController {
         try{
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
         return playerImageService.createImage(keywords, lobbyId, roundId, username);
-        } catch (PlayerDoesNotExist pde){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pde.getMessage());
+        } catch (PlayerDoesNotExistException pdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
+
         } catch (GameDoesNotExistException gme){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
         } catch (RoundDoesNotExistException rdne){
@@ -176,7 +192,8 @@ public class LobbyController {
 
     }
 
-    @GetMapping("/lobbies/{lobbyId}/games/{roundId}/votes")
+
+    @GetMapping("/lobbies/{lobbyId}/games/{roundId}/images")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<PlayerImageGetDTO> getImagesForVoting(@PathVariable long lobbyId, @PathVariable int roundId){
@@ -191,6 +208,8 @@ public class LobbyController {
 
 
 
+
+    // updates score (throws 404 if no such lobby exists)
     @PutMapping("/lobbies/{lobbyId}/games/votes")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -203,6 +222,8 @@ public class LobbyController {
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         } catch (LobbyDoesNotExistException ldne) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+        } catch(GameDoesNotExistException gdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
         }
     }
 

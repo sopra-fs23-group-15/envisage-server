@@ -3,7 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExist;
+import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.RoundDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
@@ -53,7 +53,7 @@ public class PlayerImageService {
     public String createImage(Keywords keywords, long lobbyId, int roundId, String username) {
         Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyId);
         if (playerFound == null){
-            throw new PlayerDoesNotExist(username);
+            throw new PlayerDoesNotExistException(username);
         }
         Game gameFound = gameRepository.findByLobbyPin(lobbyId);
         if (gameFound == null) {
@@ -66,7 +66,6 @@ public class PlayerImageService {
         }
 
         JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
