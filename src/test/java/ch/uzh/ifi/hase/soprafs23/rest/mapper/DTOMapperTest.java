@@ -172,10 +172,26 @@ class DTOMapperTest {
 
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
 
-
         assertEquals(keywords.getKeywords(), keywordsDTO.getKeywords());
     }
 
+    @Test
+    public void test_fromEntity_toPlayerGetImageDTO(){
+        PlayerImage playerImage = new PlayerImage();
+        Player player = new Player();
+        player.setUserName("Gertrude");
+        playerImage.setId(1L);
+        playerImage.setPlayer(player);
+        playerImage.setImage("image");
+        playerImage.setKeywords("running baby penguin");
+
+        PlayerImageGetDTO playerGetImageDTO = DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(playerImage);
+
+        assertEquals(playerGetImageDTO.getId(), playerImage.getId());
+        assertEquals(playerGetImageDTO.getImage(), playerImage.getImage());
+        assertEquals(playerGetImageDTO.getPlayer(), playerImage.getPlayer().getUserName());
+        assertEquals(playerGetImageDTO.getKeywords(), playerGetImageDTO.getKeywords());
+    }
 
 
 }
