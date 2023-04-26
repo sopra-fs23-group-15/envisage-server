@@ -1,10 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.Round;
 
-import javax.persistence.*;
-import java.sql.Blob;
 
 public class PlayerImageDTO {
 

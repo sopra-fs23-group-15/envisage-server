@@ -1,9 +1,14 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class PlayerImage {
+@Table(name = "PLAYERIMAGE")
+public class PlayerImage implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -15,6 +20,10 @@ public class PlayerImage {
     private String image;
 
     private String keywords;
+
+    private int roundNr;
+
+    private long lobbyId;
 
     @ManyToOne()
     @JoinColumn(name="round_id")
@@ -69,5 +78,21 @@ public class PlayerImage {
 
     public String getKeywords() {
         return keywords;
+    }
+
+    public long getLobbyId() {
+        return lobbyId;
+    }
+
+    public void setLobbyId(long lobbyId) {
+        this.lobbyId = lobbyId;
+    }
+
+    public int getRoundNr() {
+        return roundNr;
+    }
+
+    public void setRoundNr(int roundNr){
+        this.roundNr = roundNr;
     }
 }

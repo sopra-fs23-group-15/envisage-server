@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs23.entity.PlayerImage;
 import ch.uzh.ifi.hase.soprafs23.entity.Round;
 import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Service
@@ -64,6 +66,9 @@ public class RoundService {
         roundRepository.flush();
         return savedRound;
     }
+
+
+
 
 //    public Round updateRound(long lobbyPin, long roundId){
 //        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
