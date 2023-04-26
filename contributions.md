@@ -63,6 +63,11 @@
 * Fixed Server Deployment issue on GCP App Engine
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/66
 
+**Sprint1 Week4**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/83
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/79
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/29
+
 ## Xue
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/1 (Landing page and lobby creation page almost done, some css details need to be fixed later)
