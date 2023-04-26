@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@Transactional
 public class MetMuseumAPIService {
     private Random rand = new SecureRandom();
 

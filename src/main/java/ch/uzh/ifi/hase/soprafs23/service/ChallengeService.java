@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-@Transactional
 public class ChallengeService {
 
     private final MetMuseumAPIService metMuseumAPIService;
