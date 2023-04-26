@@ -10,6 +10,7 @@ public class PlayerImage {
 
     @OneToOne
     private Player player;
+
     @Lob
     private String image;
 
@@ -21,6 +22,7 @@ public class PlayerImage {
 
     private int votes;
 
+    // getters and setters
     public Long getId() {
         return id;
     }
