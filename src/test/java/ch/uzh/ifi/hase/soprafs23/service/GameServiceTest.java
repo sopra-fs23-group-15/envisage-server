@@ -60,7 +60,7 @@ public class GameServiceTest {
             assertEquals(0, playerScore.getScore());
             assertEquals("testplayer"+(i+1), playerScore.getPlayer().getUserName());
         }
-        assertEquals(GameStatus.READY, game.getStatus());
+        assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
         assertEquals(1, game.getRounds().size());
     }
 
