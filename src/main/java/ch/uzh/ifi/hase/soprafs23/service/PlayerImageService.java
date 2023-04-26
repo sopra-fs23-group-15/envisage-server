@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -32,6 +35,8 @@ public class PlayerImageService {
     private final GameRepository gameRepository;
 
     private final RoundRepository roundRepository;
+
+    private Random rand = new SecureRandom();
 
 
 
@@ -62,11 +67,11 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+        //JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+        //String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
@@ -89,5 +94,23 @@ public class PlayerImageService {
     public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
       List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
       return playerImageList;
-    };
+    }
+
+    public PlayerImage getWinningImage(long lobbyId, int roundNr){
+        List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
+        PlayerImage maxImage = playerImageList.get(0);
+        for (PlayerImage playerImage: playerImageList){
+            if (playerImage.getVotes() > maxImage.getVotes())
+                {maxImage = playerImage;
+                }
+            else if (playerImage.getVotes() == maxImage.getVotes()){
+                List<PlayerImage> randomImage = new ArrayList<>();
+                maxImage = randomImage.get(this.rand.nextInt(randomImage.size()));
+            }
+            else{
+                maxImage = maxImage;
+            }
+        }
+        return maxImage;
+    }
 }

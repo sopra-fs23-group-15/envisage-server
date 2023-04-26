@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.ImageType;
 import ch.uzh.ifi.hase.soprafs23.entity.Challenge;
 import ch.uzh.ifi.hase.soprafs23.entity.ImagePrompt;
+import ch.uzh.ifi.hase.soprafs23.entity.PlayerImage;
 import ch.uzh.ifi.hase.soprafs23.entity.StyleRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,14 @@ public class ChallengeService {
 
     private final MetMuseumAPIService metMuseumAPIService;
 
+    private final PlayerImageService playerImageService;
+
     private Random rand = new SecureRandom();
 
     @Autowired
-    public ChallengeService(MetMuseumAPIService metMuseumAPIService) {
+    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService) {
         this.metMuseumAPIService = metMuseumAPIService;
+        this.playerImageService = playerImageService;
     }
 
 
@@ -49,7 +53,9 @@ public class ChallengeService {
             imagePrompt.setImageType(ImageType.URL);
         }
         else{
-            // get winning image from database
+            PlayerImage winningImage = playerImageService.getWinningImage(lobbyPin, roundNumber);
+            imagePrompt.setImage(winningImage.getImage());
+            imagePrompt.setImageType(ImageType.URL);
         }
         return imagePrompt;
     }
@@ -71,7 +77,7 @@ public class ChallengeService {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null){
-                result.add(String.valueOf(curLine));
+                result.add(curLine);
             }
             bufferedReader.close();
             return result;
