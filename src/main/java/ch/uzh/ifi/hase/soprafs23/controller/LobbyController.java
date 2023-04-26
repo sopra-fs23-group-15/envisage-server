@@ -8,9 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.*;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,21 +31,16 @@ public class LobbyController {
     private final GameService gameService;
     private final RoundService roundService;
 
-    private final DalleAPIService dalleAPIService;
     private final PlayerScoreService playerScoreService;
-
-    private final MetMuseumAPIService metMuseumAPIService;
 
     private final PlayerImageService playerImageService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, DalleAPIService dalleAPIService, PlayerScoreService playerScoreService, MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService, PlayerImageService playerImageService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
-        this.dalleAPIService = dalleAPIService;
         this.playerScoreService = playerScoreService;
-        this.metMuseumAPIService = metMuseumAPIService;
         this.playerImageService = playerImageService;
     }
 
@@ -201,18 +194,6 @@ public class LobbyController {
         }
     }
 
-
-    @PostMapping(value="/testdalle", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public String testDalle(@RequestBody String requestBody){//also works when you just send string prompt NOT json but then comment the JOSNObject code below
-        JSONObject jsonObject = new JSONObject(requestBody);
-        System.out.println(jsonObject);
-        String prompt = jsonObject.getString("prompt");
-        JSONObject base64encodedStringImage = dalleAPIService.getImageFromDALLE(prompt);
-        System.out.println(base64encodedStringImage.toString());
-        return base64encodedStringImage.toString();
-    }
 
 
 }
