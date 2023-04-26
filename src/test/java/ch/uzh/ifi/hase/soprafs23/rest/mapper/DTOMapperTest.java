@@ -165,5 +165,17 @@ class DTOMapperTest {
     }
 
 
+    @Test
+    public void test_fromKeywordsDTO_toEntity(){
+        KeywordsDTO keywordsDTO = new KeywordsDTO();
+        keywordsDTO.setKeywords("Envisage");
+
+        Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
+
+
+        assertEquals(keywords.getKeywords(), keywordsDTO.getKeywords());
+    }
+
+
 
 }
