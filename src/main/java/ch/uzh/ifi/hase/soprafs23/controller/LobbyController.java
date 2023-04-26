@@ -165,8 +165,7 @@ public class LobbyController {
     public String generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
-        String imageURL = playerImageService.createImage(keywords, lobbyId, roundId, username);
-        return  imageURL;
+        return  playerImageService.createImage(keywords, lobbyId, roundId, username);
         } catch (PlayerDoesNotExist pde){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pde.getMessage());
         } catch (GameDoesNotExistException gme){
