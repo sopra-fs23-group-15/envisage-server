@@ -35,13 +35,16 @@ public class LobbyController {
 
     private final PlayerImageService playerImageService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService, PlayerImageService playerImageService) {
+    private final ChallengeService challengeService;
+
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService, PlayerImageService playerImageService, ChallengeService challengeService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
         this.playerScoreService = playerScoreService;
         this.playerImageService = playerImageService;
+        this.challengeService = challengeService;
     }
 
     // creates new lobby
@@ -173,12 +176,13 @@ public class LobbyController {
 
     // generates images (throws 404 if no such player, game or round exists)
     @PutMapping("/lobbies/{lobbyId}/games/{roundId}/{username}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
+    public PlayerImageGetDTO generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
-        return playerImageService.createImage(keywords, lobbyId, roundId, username);
+        PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
+        return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(playerImage);
         } catch (PlayerDoesNotExistException pdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
 
@@ -208,16 +212,18 @@ public class LobbyController {
 
 
     // updates score (throws 404 if no such lobby exists)
-    @PutMapping("/lobbies/{lobbyId}/games/votes")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/lobbies/{lobbyId}/games/{roundId}/votes")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
+    public GameDTO scoreUpdate(@PathVariable long lobbyId, @PathVariable int roundId, @RequestBody PlayerScoreDTO playerScoreDTO){
         try {
             PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
             Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
+            Player player = playerScore.getPlayer();
+            playerImageService.updatesVotesImages(lobbyId, roundId, player);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         } catch (LobbyDoesNotExistException ldne) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ldne.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
         } catch(GameDoesNotExistException gdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
         }
@@ -229,6 +235,13 @@ public class LobbyController {
     public PlayerImageGetDTO getWinnerImageOfRound(@PathVariable long lobbyId, @PathVariable int roundId){
         PlayerImage winningImage = playerImageService.getWinningImage(lobbyId, roundId);
         return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(winningImage);
+    }
+
+    @GetMapping("/lobbies/{lobbyId}/games/{roundId}/challenge")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Challenge getChallenge(@PathVariable long lobbyId, @PathVariable int roundId){
+        return challengeService.createChallengeForRound(lobbyId, roundId);
     }
 
 
