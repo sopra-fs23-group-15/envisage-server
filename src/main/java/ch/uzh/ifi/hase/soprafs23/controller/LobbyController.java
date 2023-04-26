@@ -173,7 +173,7 @@ public class LobbyController {
 
     // generates images (throws 404 if no such player, game or round exists)
     @PutMapping("/lobbies/{lobbyId}/games/{roundId}/{username}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public String generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
@@ -209,7 +209,7 @@ public class LobbyController {
 
     // updates score (throws 404 if no such lobby exists)
     @PutMapping("/lobbies/{lobbyId}/games/votes")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public GameDTO scoreUpdate(@PathVariable long lobbyId, @RequestBody PlayerScoreDTO playerScoreDTO){
         try {
@@ -223,6 +223,13 @@ public class LobbyController {
         }
     }
 
+    @GetMapping("/lobbies/{lobbyId}/games/{roundId}/winners")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerImageGetDTO getWinnerImageOfRound(@PathVariable long lobbyId, @PathVariable int roundId){
+        PlayerImage winningImage = playerImageService.getWinningImage(lobbyId, roundId);
+        return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(winningImage);
+    }
 
 
 }
