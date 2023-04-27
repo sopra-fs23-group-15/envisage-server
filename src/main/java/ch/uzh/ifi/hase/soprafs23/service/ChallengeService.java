@@ -3,10 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.ImageType;
-import ch.uzh.ifi.hase.soprafs23.entity.Challenge;
-import ch.uzh.ifi.hase.soprafs23.entity.ImagePrompt;
-import ch.uzh.ifi.hase.soprafs23.entity.PlayerImage;
-import ch.uzh.ifi.hase.soprafs23.entity.StyleRequirement;
+import ch.uzh.ifi.hase.soprafs23.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +22,15 @@ public class ChallengeService {
 
     private final PlayerImageService playerImageService;
 
+    private final RoundService roundService;
+
     private Random rand = new SecureRandom();
 
     @Autowired
-    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService) {
+    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService, RoundService roundService) {
         this.metMuseumAPIService = metMuseumAPIService;
         this.playerImageService = playerImageService;
+        this.roundService = roundService;
     }
 
 
@@ -39,6 +39,7 @@ public class ChallengeService {
         newChallenge.setDurationInSeconds(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
         ImagePrompt imagePrompt = getPromptImage(roundNumber, lobbyPin);
         newChallenge.setImagePrompt(imagePrompt);
+        newChallenge.setRoundNr(roundNumber);
         newChallenge.setStyleRequirement(getStyleRequirement());
 
         return newChallenge;
