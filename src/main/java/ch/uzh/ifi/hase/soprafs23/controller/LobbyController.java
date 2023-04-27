@@ -212,15 +212,15 @@ public class LobbyController {
 
 
     // updates score (throws 404 if no such lobby exists)
-    @PutMapping("/lobbies/{lobbyId}/games/{roundId}/votes")
+    @PutMapping("/lobbies/{lobbyId}/games/votes/{imageId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameDTO scoreUpdate(@PathVariable long lobbyId, @PathVariable int roundId, @RequestBody PlayerScoreDTO playerScoreDTO){
+    public GameDTO scoreUpdate(@PathVariable long lobbyId, @PathVariable long imageId, @RequestBody PlayerScoreDTO playerScoreDTO){
         try {
             PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
             Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
             Player player = playerScore.getPlayer();
-            playerImageService.updatesVotesImages(lobbyId, roundId, player);
+            playerImageService.updatesVotesImages(imageId);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         } catch (LobbyDoesNotExistException ldne) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
@@ -236,13 +236,5 @@ public class LobbyController {
         PlayerImage winningImage = playerImageService.getWinningImage(lobbyId, roundId);
         return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(winningImage);
     }
-
-    @GetMapping("/lobbies/{lobbyId}/games/{roundId}/challenge")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public Challenge getChallenge(@PathVariable long lobbyId, @PathVariable int roundId){
-        return challengeService.createChallengeForRound(lobbyId, roundId);
-    }
-
 
 }

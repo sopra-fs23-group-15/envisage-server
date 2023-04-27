@@ -53,7 +53,7 @@ public class ChallengeService {
             imagePrompt.setImageType(ImageType.URL);
         }
         else{
-            PlayerImage winningImage = playerImageService.getWinningImage(lobbyPin, roundNumber);
+            PlayerImage winningImage = playerImageService.getWinningImage(lobbyPin, (roundNumber-1));
             imagePrompt.setImage(winningImage.getImage());
             imagePrompt.setImageType(ImageType.URL);
         }

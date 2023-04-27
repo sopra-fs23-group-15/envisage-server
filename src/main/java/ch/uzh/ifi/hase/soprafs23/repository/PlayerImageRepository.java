@@ -12,5 +12,5 @@ public interface PlayerImageRepository extends JpaRepository<PlayerImage, Long> 
 
     List<PlayerImage> findAllByLobbyIdAndRoundNr(long lobbyId, int roundNr);
 
-    PlayerImage findByLobbyIdAndRoundNrAndPlayer(long lobbyId, int roundNr, Player player);
+    PlayerImage findById(long id);
 }

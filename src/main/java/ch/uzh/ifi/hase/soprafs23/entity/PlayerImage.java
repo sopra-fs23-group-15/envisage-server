@@ -13,7 +13,7 @@ public class PlayerImage implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @ManyToOne()
     private Player player;
 
     @Lob

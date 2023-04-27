@@ -67,13 +67,12 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        //JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        //String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+        String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
-        System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
         playerImage.setKeywords(keywords.getKeywords());
@@ -81,12 +80,16 @@ public class PlayerImageService {
         playerImage.setRound(roundFound);
         playerImage.setLobbyId(lobbyId);
         playerImage.setRoundNr(roundId);
+        List<PlayerImage> playerImageList = playerFound.getPlayerImages();
+        playerImageList.add(playerImage);
+        playerFound.setPlayerImages(playerImageList);
 
+        playerRepository.save(playerFound);
+
+        playerRepository.flush();
         roundFound.setPlayerImages(getImagesFromRound(lobbyId, roundId));
         roundRepository.save(roundFound);
         roundRepository.flush();
-        playerImage = playerImageRepository.save(playerImage);
-        playerImageRepository.flush();
 
         return playerImage;
     }
@@ -97,16 +100,19 @@ public class PlayerImageService {
     }
 
     public PlayerImage getWinningImage(long lobbyId, int roundNr){
-        List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
+        List<PlayerImage>  playerImageList = getImagesFromRound(lobbyId, roundNr);
         PlayerImage maxImage = playerImageList.get(0);
         for (PlayerImage playerImage: playerImageList){
-            if (playerImage.getVotes() > maxImage.getVotes())
+            if (playerImage.getVotes() >= maxImage.getVotes())
                 {maxImage = playerImage;
                 }
+            /** choose image randomly
             else if (playerImage.getVotes() == maxImage.getVotes()){
                 List<PlayerImage> randomImage = new ArrayList<>();
+                randomImage.add(maxImage);
+                randomImage.add(playerImage);
                 maxImage = randomImage.get(this.rand.nextInt(randomImage.size()));
-            }
+            }**/
             else{
                 maxImage = maxImage;
             }
@@ -114,12 +120,9 @@ public class PlayerImageService {
         return maxImage;
     }
 
-    public void updatesVotesImages(long lobbyId, int roundNr, Player player){
-        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-        PlayerImage playerImage = playerImageRepository.findByLobbyIdAndRoundNrAndPlayer(lobbyId, roundNr, player);
-        System.out.println("LKKLKLKLKL");
+    public void updatesVotesImages(long id){
+        PlayerImage playerImage = playerImageRepository.findById(id);
         playerImage.setVotes(playerImage.getVotes()+1);
-        System.out.println("HALLO");
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
     }
