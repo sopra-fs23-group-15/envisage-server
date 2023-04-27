@@ -2,10 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
-import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerImageDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.RoundDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -76,9 +74,53 @@ public class PlayerImageServiceTest {
         assertThrows(RoundDoesNotExistException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), 2, "testUser1"));
     }
 
-
     @Test
     public void updatesVotesImages_noSuchPlayerImage(){
         assertThrows(PlayerImageDoesNotExistException.class, () -> playerImageService.updatesVotesImages(1));
+    }
+
+    @Test
+    public void getImagesFromRound_Exception(){
+        assertThrows(ImagesDontExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
+    }
+
+    @Test
+    public void getImagesFromRound_success(){
+        PlayerImage playerImage = new PlayerImage();
+        playerImage.setLobbyId(1234L);
+        playerImage.setRoundNr(1);
+        playerImage.setKeywords("Envisage");
+        playerImage.setVotes(4);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+
+        PlayerImage playerImage2 = new PlayerImage();
+        playerImage2.setLobbyId(1234L);
+        playerImage2.setRoundNr(1);
+        playerImage2.setKeywords("Envisage2");
+        playerImage2.setVotes(3);
+        playerImageRepository.save(playerImage2);
+        playerImageRepository.flush();
+
+        List<PlayerImage> images = playerImageService.getImagesFromRound(1234L, 1);
+
+        assertEquals(images.size(), 2);
+
+    }
+
+
+    @Test
+    public void getWinningImage(){
+        PlayerImage playerImage = new PlayerImage();
+        playerImage.setLobbyId(1234L);
+        playerImage.setRoundNr(1);
+        playerImage.setKeywords("Envisage");
+        playerImage.setVotes(4);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+
+        PlayerImage winner = playerImageService.getWinningImage(1234L, 1);
+
+        assertEquals(winner, playerImage);
     }
 }
