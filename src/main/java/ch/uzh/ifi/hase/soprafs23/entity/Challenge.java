@@ -10,8 +10,8 @@ public class Challenge {
 
     private int durationInSeconds;
 
-    @OneToOne
-    private Round round;
+
+    private int roundNr;
 
     @OneToOne
     private StyleRequirement styleRequirement;
@@ -36,12 +36,12 @@ public class Challenge {
         this.durationInSeconds = durationInSeconds;
     }
 
-    public Round getRound() {
-        return round;
+    public int getRoundNr() {
+        return roundNr;
     }
 
-    public void setRound(Round round) {
-        this.round = round;
+    public void setRoundNr(int roundNr) {
+        this.roundNr = roundNr;
     }
 
     public void setStyleRequirement(StyleRequirement styleRequirement) {
