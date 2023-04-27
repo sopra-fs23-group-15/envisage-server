@@ -2,9 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 
 import ch.uzh.ifi.hase.soprafs23.entity.*;
-import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.RoundDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
@@ -15,10 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @Transactional
@@ -35,9 +30,6 @@ public class PlayerImageService {
     private final GameRepository gameRepository;
 
     private final RoundRepository roundRepository;
-
-    private Random rand = new SecureRandom();
-
 
 
 
@@ -96,6 +88,9 @@ public class PlayerImageService {
 
     public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
       List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
+      if (playerImageList.size() == 0){
+          throw new ImagesDontExist(lobbyId, roundNr);
+      }
       return playerImageList;
     }
 
@@ -106,22 +101,15 @@ public class PlayerImageService {
             if (playerImage.getVotes() >= maxImage.getVotes())
                 {maxImage = playerImage;
                 }
-            /** choose image randomly
-            else if (playerImage.getVotes() == maxImage.getVotes()){
-                List<PlayerImage> randomImage = new ArrayList<>();
-                randomImage.add(maxImage);
-                randomImage.add(playerImage);
-                maxImage = randomImage.get(this.rand.nextInt(randomImage.size()));
-            }**/
-            else{
-                maxImage = maxImage;
             }
-        }
         return maxImage;
     }
 
     public void updatesVotesImages(long id){
         PlayerImage playerImage = playerImageRepository.findById(id);
+        if (playerImage==null){
+            throw new PlayerImageDoesNotExist(id);
+        }
         playerImage.setVotes(playerImage.getVotes()+1);
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();

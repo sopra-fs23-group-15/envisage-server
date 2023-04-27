@@ -18,6 +18,9 @@
 **Sprint1 Week4**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/33 (send generated images to the frontend for voting (generates a list with images))
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/93 (update player images array in the game with the player name and respective generated image received after calling the dalle api)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/77 (create challenge entity that has StyleRequirement Entity and ImagePrompt Entity (Xue and I came up with imagePromptIdeas=StyleRequirements) and implement logic for challenge Entity)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/37 (if there are multiple winning images then one of the images is chosen randomly (not really randomly because that would lead to a conflict with the challengeEntity))
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/43 (with finishing the challenge entity this is done as well, because a met Museum image is chosen again)
 
 ## Moritz
 **Sprint1 Week1**

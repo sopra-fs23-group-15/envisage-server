@@ -176,7 +176,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_toPlayerGetImageDTO(){
+    public void test_fromEntity_toPlayerImageGetDTO(){
         PlayerImage playerImage = new PlayerImage();
         Player player = new Player();
         player.setUserName("Gertrude");
@@ -185,7 +185,7 @@ class DTOMapperTest {
         playerImage.setImage("image");
         playerImage.setKeywords("running baby penguin");
 
-        PlayerImageGetDTO playerGetImageDTO = DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(playerImage);
+        PlayerImageGetDTO playerGetImageDTO = DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
 
         assertEquals(playerGetImageDTO.getId(), playerImage.getId());
         assertEquals(playerGetImageDTO.getImage(), playerImage.getImage());
