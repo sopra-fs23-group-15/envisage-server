@@ -61,27 +61,33 @@ class LobbyControllerTest {
 
     @Test
     public void createLobby_success() throws Exception {
-        /* Lobby lobby = new Lobby();
+        // create lobby with default configuration
+        Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
-        lobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
-        lobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
+
+        // create lobbyPostDTO to be used for POST request with
+        // a different configuration of round duration and #rounds
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setNoOfRounds(4);
         lobbyPostDTO.setRoundDurationInSeconds(50);
+        lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
+        lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
 
-        given(lobbyService.createLobby()).willReturn(lobby);
+        // assert that a lobby is returned when calling createLobby
+        // with configuration parameters
+        given(lobbyService.createLobby(Mockito.anyInt(), Mockito.anyInt())).willReturn(lobby);
 
+        // perform the POST request /lobbies to create a lobby with the lobbyPostDTO above
         MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(lobbyPostDTO));
+                .content(asJsonString(lobbyPostDTO));
 
-        System.out.println("*********");
-        System.out.println(mockMvc.perform(postRequest).andReturn().getResponse().getContentAsString());
+        // assert values and status code are correct
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
                 .andExpect(jsonPath("$.numberOfRounds", is(lobbyPostDTO.getNoOfRounds())))
                 .andExpect(jsonPath("$.roundDuration", is(lobbyPostDTO.getRoundDurationInSeconds())))
                 .andExpect(jsonPath("$.players", is(lobby.getPlayers())))
-                .andExpect(jsonPath("$.game", is(lobby.getGame()))); */
+                .andExpect(jsonPath("$.game", is(lobby.getGame())));
     }
 
     @Test
