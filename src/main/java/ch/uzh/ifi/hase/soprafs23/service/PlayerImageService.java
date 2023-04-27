@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -33,6 +36,8 @@ public class PlayerImageService {
 
     private final RoundRepository roundRepository;
 
+    private Random rand = new SecureRandom();
+
 
 
 
@@ -47,7 +52,7 @@ public class PlayerImageService {
     }
 
 
-    public String createImage(Keywords keywords, long lobbyId, int roundId, String username) {
+    public PlayerImage createImage(Keywords keywords, long lobbyId, int roundId, String username) {
         Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyId);
         if (playerFound == null){
             throw new PlayerDoesNotExistException(username);
@@ -66,9 +71,8 @@ public class PlayerImageService {
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        // String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
-        System.out.println(generatedImage);
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
         playerImage.setKeywords(keywords.getKeywords());
@@ -76,18 +80,50 @@ public class PlayerImageService {
         playerImage.setRound(roundFound);
         playerImage.setLobbyId(lobbyId);
         playerImage.setRoundNr(roundId);
+        List<PlayerImage> playerImageList = playerFound.getPlayerImages();
+        playerImageList.add(playerImage);
+        playerFound.setPlayerImages(playerImageList);
 
-        roundFound.setPlayerImage(playerImage);
+        playerRepository.save(playerFound);
+
+        playerRepository.flush();
+        roundFound.setPlayerImages(getImagesFromRound(lobbyId, roundId));
         roundRepository.save(roundFound);
         roundRepository.flush();
-        playerImageRepository.save(playerImage);
-        playerImageRepository.flush();
 
-        return generatedImage;
+        return playerImage;
     }
 
     public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
       List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
       return playerImageList;
-    };
+    }
+
+    public PlayerImage getWinningImage(long lobbyId, int roundNr){
+        List<PlayerImage>  playerImageList = getImagesFromRound(lobbyId, roundNr);
+        PlayerImage maxImage = playerImageList.get(0);
+        for (PlayerImage playerImage: playerImageList){
+            if (playerImage.getVotes() >= maxImage.getVotes())
+                {maxImage = playerImage;
+                }
+            /** choose image randomly
+            else if (playerImage.getVotes() == maxImage.getVotes()){
+                List<PlayerImage> randomImage = new ArrayList<>();
+                randomImage.add(maxImage);
+                randomImage.add(playerImage);
+                maxImage = randomImage.get(this.rand.nextInt(randomImage.size()));
+            }**/
+            else{
+                maxImage = maxImage;
+            }
+        }
+        return maxImage;
+    }
+
+    public void updatesVotesImages(long id){
+        PlayerImage playerImage = playerImageRepository.findById(id);
+        playerImage.setVotes(playerImage.getVotes()+1);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+    }
 }

@@ -3,6 +3,8 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Internal Player Representation
@@ -34,7 +36,8 @@ public class Player implements Serializable {
     @JoinColumn(name="lobby_id")
     private Lobby lobby;
 
-
+    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+    private List<PlayerImage> playerImages = new ArrayList<>();
     public Long getId() {
         return id;
     }
@@ -66,5 +69,14 @@ public class Player implements Serializable {
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
+
+    public List<PlayerImage> getPlayerImages() {
+        return playerImages;
+    }
+
+    public void setPlayerImages(List<PlayerImage> playerImages) {
+        this.playerImages = playerImages;
+    }
+
 
 }

@@ -10,8 +10,7 @@ import java.util.List;
 @Repository("playerImageRepository")
 public interface PlayerImageRepository extends JpaRepository<PlayerImage, Long> {
 
-    PlayerImage findByPlayer(Player player);
-
     List<PlayerImage> findAllByLobbyIdAndRoundNr(long lobbyId, int roundNr);
 
+    PlayerImage findById(long id);
 }

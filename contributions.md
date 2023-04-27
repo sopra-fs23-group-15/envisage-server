@@ -17,6 +17,7 @@
 
 **Sprint1 Week4**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/33 (send generated images to the frontend for voting (generates a list with images))
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/93 (update player images array in the game with the player name and respective generated image received after calling the dalle api)
 
 ## Moritz
 **Sprint1 Week1**
