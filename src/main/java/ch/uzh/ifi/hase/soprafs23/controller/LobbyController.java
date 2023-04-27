@@ -35,16 +35,14 @@ public class LobbyController {
 
     private final PlayerImageService playerImageService;
 
-    private final ChallengeService challengeService;
 
-    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService, PlayerImageService playerImageService, ChallengeService challengeService) {
+    LobbyController(LobbyService lobbyService, PlayerService playerService, GameService gameService, RoundService roundService, PlayerScoreService playerScoreService, PlayerImageService playerImageService) {
         this.lobbyService = lobbyService;
         this.playerService = playerService;
         this.gameService = gameService;
         this.roundService = roundService;
         this.playerScoreService = playerScoreService;
         this.playerImageService = playerImageService;
-        this.challengeService = challengeService;
     }
 
     // creates new lobby
@@ -215,11 +213,10 @@ public class LobbyController {
     @PutMapping("/lobbies/{lobbyId}/games/votes/{imageId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameDTO scoreUpdate(@PathVariable long lobbyId, @PathVariable long imageId, @RequestBody PlayerScoreDTO playerScoreDTO){
+    public GameDTO scoreUpdate(@PathVariable long lobbyId, @PathVariable int imageId, @RequestBody PlayerScoreDTO playerScoreDTO){
         try {
             PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
             Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
-            Player player = playerScore.getPlayer();
             playerImageService.updatesVotesImages(imageId);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         } catch (LobbyDoesNotExistException ldne) {
@@ -236,5 +233,6 @@ public class LobbyController {
         PlayerImage winningImage = playerImageService.getWinningImage(lobbyId, roundId);
         return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(winningImage);
     }
+
 
 }
