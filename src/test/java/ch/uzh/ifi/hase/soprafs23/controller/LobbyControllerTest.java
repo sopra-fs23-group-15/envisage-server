@@ -26,6 +26,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -127,7 +129,7 @@ class LobbyControllerTest {
         PlayerPostDTO playerPostDTO = new PlayerPostDTO();
         playerPostDTO.setUserName("Rupert");
 
-        given(playerService.addPlayer(Mockito.any(), Mockito.anyLong())).willReturn(player);
+        given(playerService.addPlayer(Mockito.any(), anyLong())).willReturn(player);
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,7 +150,7 @@ class LobbyControllerTest {
         long lobbyPin = 12345678L;
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(String.format("Lobby with pin %s does not exist", lobbyPin))))
-                .given(playerService).addPlayer(Mockito.any(), Mockito.anyLong());
+                .given(playerService).addPlayer(Mockito.any(), anyLong());
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -165,7 +167,7 @@ class LobbyControllerTest {
         playerPostDTO.setUserName(userName);
 
         willThrow(new ResponseStatusException(HttpStatus.CONFLICT, String.format("Username %s is not unique", userName)))
-                .given(playerService).addPlayer(Mockito.any(), Mockito.anyLong());
+                .given(playerService).addPlayer(Mockito.any(), anyLong());
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -185,7 +187,7 @@ class LobbyControllerTest {
         lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
         lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
 
-        given(lobbyService.findLobby(Mockito.anyLong())).willReturn(lobby);
+        given(lobbyService.findLobby(anyLong())).willReturn(lobby);
 
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678").contentType(MediaType.APPLICATION_JSON);
@@ -210,7 +212,7 @@ class LobbyControllerTest {
         lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
-                .given(playerService).addPlayer(Mockito.any(), Mockito.anyLong());
+                .given(playerService).addPlayer(Mockito.any(), anyLong());
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/87654321").contentType(MediaType.APPLICATION_JSON);
 
@@ -230,7 +232,7 @@ class LobbyControllerTest {
         createdGame.setPlayerScores(playerScoreList);
         createdGame.setRounds(roundList);
 
-        given(gameService.createGame(Mockito.anyLong())).willReturn(createdGame);
+        given(gameService.createGame(anyLong())).willReturn(createdGame);
 
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678/games").contentType(MediaType.APPLICATION_JSON);
@@ -257,7 +259,7 @@ class LobbyControllerTest {
         createdGame.setRounds(roundList);
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
-                .given(gameService).createGame(Mockito.anyLong());
+                .given(gameService).createGame(anyLong());
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games").contentType(MediaType.APPLICATION_JSON);
 
@@ -279,7 +281,7 @@ class LobbyControllerTest {
         createdGame.setRounds(roundList);
 
         willThrow(new ResponseStatusException(HttpStatus.CONFLICT, String.format("Game cannot be started yet, you need at least %s players", EnvisageConstants.MIN_PLAYERS)))
-                .given(gameService).createGame(Mockito.anyLong());
+                .given(gameService).createGame(anyLong());
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678/games").contentType(MediaType.APPLICATION_JSON);
 
@@ -299,7 +301,7 @@ class LobbyControllerTest {
         createdGame.setPlayerScores(playerScoreList);
         createdGame.setRounds(roundList);
 
-        given(gameService.getGame(Mockito.anyLong())).willReturn(createdGame);
+        given(gameService.getGame(anyLong())).willReturn(createdGame);
 
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games").contentType(MediaType.APPLICATION_JSON);
@@ -326,7 +328,7 @@ class LobbyControllerTest {
         createdGame.setRounds(roundList);
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
-                .given(gameService).getGame(Mockito.anyLong());
+                .given(gameService).getGame(anyLong());
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/87654321/games").contentType(MediaType.APPLICATION_JSON);
 
@@ -341,8 +343,7 @@ class LobbyControllerTest {
         round.setRoundNumber(1);
         round.setGame(game);
 
-        given(roundService.createRound(Mockito.anyLong())).willReturn(round);
-
+        given(roundService.createRound(anyLong())).willReturn(round);
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678/games/rounds").contentType(MediaType.APPLICATION_JSON);
 
@@ -361,7 +362,7 @@ class LobbyControllerTest {
         Long lobbyPin = 12345678L;
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
-                .given(roundService).createRound(Mockito.anyLong());
+                .given(roundService).createRound(anyLong());
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games/rounds").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(postRequest).andExpect(status().isNotFound());
@@ -378,12 +379,11 @@ class LobbyControllerTest {
         Long lobbyPin = 12345678L;
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Game in lobby with lobbyPin %s does not exist", lobbyPin)))
-                .given(roundService).createRound(Mockito.anyLong());
+                .given(roundService).createRound(anyLong());
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games/rounds").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(postRequest).andExpect(status().isNotFound());
     }
-
 
     private String asJsonString(final Object object) {
         try {
