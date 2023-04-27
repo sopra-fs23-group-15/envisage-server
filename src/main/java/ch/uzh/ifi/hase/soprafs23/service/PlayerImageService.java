@@ -109,7 +109,7 @@ public class PlayerImageService {
     public void updatesVotesImages(long id){
         PlayerImage playerImage = playerImageRepository.findById(id);
         if (playerImage==null){
-            throw new PlayerImageDoesNotExist(id);
+            throw new PlayerImageDoesNotExistException(id);
         }
         playerImage.setVotes(playerImage.getVotes()+1);
         playerImageRepository.save(playerImage);

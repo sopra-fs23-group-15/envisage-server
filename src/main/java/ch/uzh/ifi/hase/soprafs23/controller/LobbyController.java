@@ -228,7 +228,7 @@ public class LobbyController {
         catch (GameDoesNotExistException gdne) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
         }
-        catch(PlayerImageDoesNotExist pide){
+        catch(PlayerImageDoesNotExistException pide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pide.getMessage());
         }
     }
