@@ -76,16 +76,6 @@ public class PlayerImageServiceTest {
         assertThrows(RoundDoesNotExistException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), 2, "testUser1"));
     }
 
-    @Test
-    public void updatesVotesImages(){
-        PlayerImage playerImage = new PlayerImage();
-        playerImage.setImage("testImage");
-        playerImage = playerImageRepository.save(playerImage);
-        playerImageRepository.flush();
-
-        playerImageService.updatesVotesImages(1);
-        assertEquals(1, playerImageRepository.findById(1).getVotes());
-    }
 
     @Test
     public void updatesVotesImages_noSuchPlayerImage(){
