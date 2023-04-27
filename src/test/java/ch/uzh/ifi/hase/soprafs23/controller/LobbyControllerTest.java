@@ -4,8 +4,11 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.KeywordsDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerScoreDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,17 +23,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,6 +66,7 @@ class LobbyControllerTest {
 
     @MockBean
     PlayerImageService playerImageService;
+
 
     @Test
     public void createLobby_success() throws Exception {
@@ -390,6 +392,88 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games/rounds").contentType(MediaType.APPLICATION_JSON);
         mockMvc.perform(postRequest).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getRound_success() throws Exception{
+        Game game = new Game();
+        game.setId(1L);
+        Round round = new Round();
+        round.setId(1L);
+        round.setRoundNumber(1);
+        round.setGame(game);
+        given(gameService.getGame(anyLong())).willReturn(game);
+        given(roundService.getRound(anyInt(), anyLong())).willReturn(round);
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/5").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.roundNumber", is(round.getRoundNumber())))
+                .andExpect(jsonPath("$.playerImages", is(round.getPlayerImages())));
+    }
+
+    @Test
+    public void generateImages_success() throws Exception{
+        KeywordsDTO keywordsDTO = new KeywordsDTO();
+        keywordsDTO.setKeywords("blabla");
+
+        PlayerImage playerImage = new PlayerImage();
+        Player player = new Player();
+        player.setUserName("Tom");
+        playerImage.setPlayer(player);
+        String string = "blabla";
+        playerImage.setImage(string);
+        String keywordstring = "blabla";
+        playerImage.setKeywords(keywordstring);
+
+        given(playerImageService.createImage(any(), anyLong(), anyInt(), anyString())).willReturn(playerImage);
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/5/games/5/Tom").contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(keywordsDTO));
+        mockMvc.perform(putRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.player", is(playerImage.getPlayer().getUserName())))
+                .andExpect(jsonPath("$.image", is(playerImage.getImage())))
+                .andExpect(jsonPath("$.keywords", is(playerImage.getKeywords())));
+    }
+
+    @Test
+    public void getImagesForVoting_success() throws Exception{
+        PlayerImage playerImage = new PlayerImage();
+        Player player = new Player();
+        player.setUserName("Tom");
+        playerImage.setPlayer(player);
+        String string = "blabla";
+        playerImage.setImage(string);
+        String keywordstring = "blabla";
+        playerImage.setKeywords(keywordstring);
+
+        List<PlayerImage> playerImageList = Collections.singletonList(playerImage);
+
+        given(playerImageService.getImagesFromRound(anyInt(), anyInt())).willReturn(playerImageList);
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/5/games/5/images");
+        mockMvc.perform(getRequest).andExpect(status().isOk());
+    }
+
+    @Test
+    public void scoreUpdate_success() throws Exception{
+        PlayerScoreDTO playerScoreDto = new PlayerScoreDTO();
+        playerScoreDto.setScore(4);
+        playerScoreDto.setPlayer("Tom");
+
+        Game createdGame = new Game();
+        Lobby lobby = new Lobby();
+        List<PlayerScore> playerScoreList = new ArrayList<>();
+        List<Round> roundList = new ArrayList<>();
+        lobby.setPin(12345678L);
+        createdGame.setId(1L);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
+        createdGame.setLobby(lobby);
+        createdGame.setPlayerScores(playerScoreList);
+        createdGame.setRounds(roundList);
+
+        given(playerScoreService.updatePlayerScore(anyInt(), any())).willReturn(createdGame);
+        //given(playerImageService.updatesVotesImages(anyInt())).willReturn(null);
+        MockHttpServletRequestBuilder putRequest = put("/lobbies/5/games/votes/5").contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(playerScoreDto));
+        mockMvc.perform(putRequest).andExpect(status().isOk());
     }
 
     private String asJsonString(final Object object) {
