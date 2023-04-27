@@ -3,8 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.entity.Challenge;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.PlayerImage;
-import ch.uzh.ifi.hase.soprafs23.entity.Round;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.*;
@@ -13,25 +11,19 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
-import javax.swing.plaf.PanelUI;
-import java.util.List;
-
 @Controller
 public class WebSocketController {
 
     private final WebSocketService webSocketService;
 
     private final LobbyService lobbyService;
-    private final GameService gameService;
-    private final RoundService roundService;
+
     private final ChallengeService challengeService;
 
 
-    WebSocketController(WebSocketService webSocketService, LobbyService lobbyService, GameService gameService, RoundService roundService, ChallengeService challengeService) {
+    WebSocketController(WebSocketService webSocketService, LobbyService lobbyService, ChallengeService challengeService) {
         this.webSocketService = webSocketService;
         this.lobbyService = lobbyService;
-        this.gameService = gameService;
-        this.roundService = roundService;
         this.challengeService = challengeService;
     }
 

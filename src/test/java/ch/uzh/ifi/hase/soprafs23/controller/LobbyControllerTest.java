@@ -20,6 +20,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -61,27 +65,26 @@ class LobbyControllerTest {
 
     @Test
     public void createLobby_success() throws Exception {
-        /* Lobby lobby = new Lobby();
+        Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
-        lobby.setRoundDuration(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
-        lobby.setNumberOfRounds(EnvisageConstants.DEFAULT_NO_OF_ROUNDS);
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setNoOfRounds(4);
         lobbyPostDTO.setRoundDurationInSeconds(50);
+        lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
+        lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
 
-        given(lobbyService.createLobby()).willReturn(lobby);
+
+        given(lobbyService.createLobby(Mockito.anyInt(), Mockito.anyInt())).willReturn(lobby);
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(lobbyPostDTO));
+                .content(asJsonString(lobbyPostDTO));
 
-        System.out.println("*********");
-        System.out.println(mockMvc.perform(postRequest).andReturn().getResponse().getContentAsString());
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
                 .andExpect(jsonPath("$.numberOfRounds", is(lobbyPostDTO.getNoOfRounds())))
                 .andExpect(jsonPath("$.roundDuration", is(lobbyPostDTO.getRoundDurationInSeconds())))
                 .andExpect(jsonPath("$.players", is(lobby.getPlayers())))
-                .andExpect(jsonPath("$.game", is(lobby.getGame()))); */
+                .andExpect(jsonPath("$.game", is(lobby.getGame()))); 
     }
 
     @Test
@@ -144,6 +147,32 @@ class LobbyControllerTest {
         mockMvc.perform(postRequest)
                 .andExpect(status().isConflict());
     }
+
+    @Test
+    public void getAllLobbies_success() throws Exception {
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345678L);
+        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
+        lobbyPostDTO.setNoOfRounds(4);
+        lobbyPostDTO.setRoundDurationInSeconds(50);
+        lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
+        lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
+
+        List<Lobby> allLobbies = Collections.singletonList(lobby);
+        given(lobbyService.getLobbies()).willReturn(allLobbies);
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].pin", is(lobby.getPin().intValue())))
+                .andExpect(jsonPath("$[0].numberOfRounds", is(lobbyPostDTO.getNoOfRounds())))
+                .andExpect(jsonPath("$[0].roundDuration", is(lobbyPostDTO.getRoundDurationInSeconds())))
+                .andExpect(jsonPath("$[0].players", is(lobby.getPlayers())))
+                .andExpect(jsonPath("$[0].game", is(lobby.getGame())));
+    }
+
+
 
 
     private String asJsonString(final Object object) {
