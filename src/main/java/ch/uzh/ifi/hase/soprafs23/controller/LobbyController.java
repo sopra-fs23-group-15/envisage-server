@@ -180,7 +180,7 @@ public class LobbyController {
         try{
         Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
         PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
-        return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(playerImage);
+        return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
         } catch (PlayerDoesNotExistException pdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
         } catch (GameDoesNotExistException gme){
@@ -200,7 +200,7 @@ public class LobbyController {
             List<PlayerImage> playerImageList = playerImageService.getImagesFromRound(lobbyId, roundId);
             List<PlayerImageGetDTO> playerImageGetDTOList = new ArrayList<>();
             for (PlayerImage playerImage : playerImageList) {
-                playerImageGetDTOList.add(DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(playerImage));
+                playerImageGetDTOList.add(DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage));
             }
             return playerImageGetDTOList;
         } catch (ImagesDontExist ide){
@@ -241,7 +241,7 @@ public class LobbyController {
     public PlayerImageGetDTO getWinnerImageOfRound(@PathVariable long lobbyId, @PathVariable int roundId){
         try {
             PlayerImage winningImage = playerImageService.getWinningImage(lobbyId, roundId);
-            return DTOMapper.INSTANCE.convertEntityToPlayerGetImageDTO(winningImage);
+            return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(winningImage);
         } catch (ImagesDontExist ide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
         }
