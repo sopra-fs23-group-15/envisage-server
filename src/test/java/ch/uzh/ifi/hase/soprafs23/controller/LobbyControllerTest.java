@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
@@ -211,7 +212,7 @@ class LobbyControllerTest {
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
                 .given(playerService).addPlayer(Mockito.any(), Mockito.anyLong());
 
-        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/87654321").contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest).andExpect(status().isNotFound());
     }
@@ -241,6 +242,147 @@ class LobbyControllerTest {
                 .andExpect(jsonPath("$.status", is("IN_PROGRESS")));
     }
 
+    @Test
+    public void startGame_failure_noLobby () throws Exception {
+        Game createdGame = new Game();
+        Lobby lobby = new Lobby();
+        List<PlayerScore> playerScoreList = new ArrayList<>();
+        List<Round> roundList = new ArrayList<>();
+        Long lobbyPin = 12345678L;
+        lobby.setPin(lobbyPin);
+        createdGame.setId(1L);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
+        createdGame.setLobby(lobby);
+        createdGame.setPlayerScores(playerScoreList);
+        createdGame.setRounds(roundList);
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
+                .given(gameService).createGame(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(postRequest).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void startGame_failure_notEnoughPlayers () throws Exception {
+        Game createdGame = new Game();
+        Lobby lobby = new Lobby();
+        List<PlayerScore> playerScoreList = new ArrayList<>();
+        List<Round> roundList = new ArrayList<>();
+        Long lobbyPin = 12345678L;
+        lobby.setPin(lobbyPin);
+        createdGame.setId(1L);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
+        createdGame.setLobby(lobby);
+        createdGame.setPlayerScores(playerScoreList);
+        createdGame.setRounds(roundList);
+
+        willThrow(new ResponseStatusException(HttpStatus.CONFLICT, String.format("Game cannot be started yet, you need at least %s players", EnvisageConstants.MIN_PLAYERS)))
+                .given(gameService).createGame(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678/games").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(postRequest).andExpect(status().isConflict());
+    }
+
+    @Test
+    public void getGame_success () throws Exception {
+        Game createdGame = new Game();
+        Lobby lobby = new Lobby();
+        List<PlayerScore> playerScoreList = new ArrayList<>();
+        List<Round> roundList = new ArrayList<>();
+        lobby.setPin(12345678L);
+        createdGame.setId(1L);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
+        createdGame.setLobby(lobby);
+        createdGame.setPlayerScores(playerScoreList);
+        createdGame.setRounds(roundList);
+
+        given(gameService.getGame(Mockito.anyLong())).willReturn(createdGame);
+
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.rounds", is(createdGame.getRounds())))
+                .andExpect(jsonPath("$.playerScores", is(createdGame.getPlayerScores())))
+                .andExpect(jsonPath("$.lobbyPin", is(createdGame.getLobby().getPin().intValue())))
+                .andExpect(jsonPath("$.status", is("IN_PROGRESS")));
+    }
+
+    @Test
+    public void getGame_failure_noLobby () throws Exception {
+        Game createdGame = new Game();
+        Lobby lobby = new Lobby();
+        List<PlayerScore> playerScoreList = new ArrayList<>();
+        List<Round> roundList = new ArrayList<>();
+        Long lobbyPin = 12345678L;
+        lobby.setPin(lobbyPin);
+        createdGame.setId(1L);
+        createdGame.setStatus(GameStatus.IN_PROGRESS);
+        createdGame.setLobby(lobby);
+        createdGame.setPlayerScores(playerScoreList);
+        createdGame.setRounds(roundList);
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
+                .given(gameService).getGame(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/87654321/games").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void startRound_success() throws Exception{
+        Round round = new Round();
+        Game game = new Game();
+        round.setId(1L);
+        round.setRoundNumber(1);
+        round.setGame(game);
+
+        given(roundService.createRound(Mockito.anyLong())).willReturn(round);
+
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678/games/rounds").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(postRequest).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.roundNumber", is(round.getRoundNumber())))
+                .andExpect(jsonPath("$.playerImages", is(round.getPlayerImages())));
+    }
+
+    @Test
+    public void startRound_failure_noLobby() throws Exception{
+        Round round = new Round();
+        Game game = new Game();
+        round.setId(1L);
+        round.setRoundNumber(1);
+        round.setGame(game);
+        Long lobbyPin = 12345678L;
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
+                .given(roundService).createRound(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games/rounds").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(postRequest).andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void startRound_failure_noGame() throws Exception{
+        Round round = new Round();
+        Game game = new Game();
+        round.setId(1L);
+        round.setRoundNumber(1);
+        round.setGame(game);
+        Long lobbyPin = 12345678L;
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Game in lobby with lobbyPin %s does not exist", lobbyPin)))
+                .given(roundService).createRound(Mockito.anyLong());
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/87654321/games/rounds").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(postRequest).andExpect(status().isNotFound());
+    }
 
 
     private String asJsonString(final Object object) {
