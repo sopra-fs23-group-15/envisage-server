@@ -7,7 +7,6 @@ import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoundRepository;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -59,11 +58,11 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+        //JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+        //String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 
 
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
@@ -89,7 +88,7 @@ public class PlayerImageService {
     public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
       List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
       if (playerImageList.size() == 0){
-          throw new ImagesDontExist(lobbyId, roundNr);
+          throw new ImagesDontExistException(lobbyId, roundNr);
       }
       return playerImageList;
     }

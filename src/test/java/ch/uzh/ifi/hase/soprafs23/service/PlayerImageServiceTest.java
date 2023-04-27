@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.entity.Keywords;
-import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
+import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.RoundDoesNotExistException;
@@ -30,22 +27,6 @@ public class PlayerImageServiceTest {
     @Autowired
     GameService gameService;
 
-
-    @Test
-    public void createImage(){
-        /* Lobby lobby = lobbyService.createLobby();
-        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
-            Player player = new Player();
-            player.setUserName("testUser"+(i+1));
-            lobbyService.addPlayer(player, lobby.getPin());
-        }
-
-        Game game = gameService.createGame(lobby.getPin());
-        Keywords keywords = new Keywords();
-        keywords.setKeywords("test");
-        String image = playerImageService.createImage(keywords, lobby.getPin(), 1, "testUser1");
-        assertNotNull(image); */
-    }
 
     @Test
     public void createImage_playerDoesNotExist(){

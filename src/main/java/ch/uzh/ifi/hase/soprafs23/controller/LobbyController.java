@@ -191,7 +191,7 @@ public class LobbyController {
 
     }
 
-
+    // retrieves images (throws 404 if images do not exist)
     @GetMapping("/lobbies/{lobbyId}/games/{roundId}/images")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -203,7 +203,7 @@ public class LobbyController {
                 playerImageGetDTOList.add(DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage));
             }
             return playerImageGetDTOList;
-        } catch (ImagesDontExist ide){
+        } catch (ImagesDontExistException ide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
         }
     }
@@ -211,7 +211,7 @@ public class LobbyController {
 
 
 
-    // updates score (throws 404 if no such lobby exists)
+    // updates score (throws 404 if no such lobby, game or playerImage exist)
     @PutMapping("/lobbies/{lobbyId}/games/votes/{imageId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -230,11 +230,10 @@ public class LobbyController {
         }
         catch(PlayerImageDoesNotExist pide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pide.getMessage());
-
         }
     }
 
-
+    // retrieves winning image (throws 404 if images do not exist)
     @GetMapping("/lobbies/{lobbyId}/games/{roundId}/winners")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -242,11 +241,8 @@ public class LobbyController {
         try {
             PlayerImage winningImage = playerImageService.getWinningImage(lobbyId, roundId);
             return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(winningImage);
-        } catch (ImagesDontExist ide){
+        } catch (ImagesDontExistException ide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
         }
-
     }
-
-
 }
