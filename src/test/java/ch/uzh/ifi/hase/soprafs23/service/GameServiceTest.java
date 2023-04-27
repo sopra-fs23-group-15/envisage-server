@@ -12,9 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class GameServiceTest {
@@ -46,6 +44,7 @@ public class GameServiceTest {
 
     @Test
     public void createGame(){
+        // create lobby and add min. no. of players necessary to start a game
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -53,13 +52,19 @@ public class GameServiceTest {
             lobbyService.addPlayer(player, lobby.getPin());
         }
 
+        // create game and assert its lobby pin
         Game game = gameService.createGame(lobby.getPin());
         assertEquals(lobby.getPin(), game.getLobby().getPin());
+
+        // assert player scores have been set with the correct information
         for(int i = 0; i<game.getPlayerScores().size(); i++){
             PlayerScore playerScore = game.getPlayerScores().get(i);
             assertEquals(0, playerScore.getScore());
+            assertNotNull(playerScore.getGame());
             assertEquals("testplayer"+(i+1), playerScore.getPlayer().getUserName());
         }
+
+        // assert game status has been set and first round is ready
         assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
         assertEquals(1, game.getRounds().size());
     }

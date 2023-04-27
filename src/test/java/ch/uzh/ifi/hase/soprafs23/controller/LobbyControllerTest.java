@@ -68,20 +68,27 @@ class LobbyControllerTest {
 
     @Test
     public void createLobby_success() throws Exception {
+        // create lobby with default configuration
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
+
+        // create lobbyPostDTO to be used for POST request with
+        // a different configuration of round duration and #rounds
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setNoOfRounds(4);
         lobbyPostDTO.setRoundDurationInSeconds(50);
         lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
-        lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
 
 
+        // assert that a lobby is returned when calling createLobby
+        // with configuration parameters
         given(lobbyService.createLobby(Mockito.anyInt(), Mockito.anyInt())).willReturn(lobby);
 
+        // perform the POST request /lobbies to create a lobby with the lobbyPostDTO above
         MockHttpServletRequestBuilder postRequest = post("/lobbies").contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(lobbyPostDTO));
 
+        // assert values and status code are correct
         mockMvc.perform(postRequest).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.pin", is(lobby.getPin().intValue())))
                 .andExpect(jsonPath("$.numberOfRounds", is(lobby.getNumberOfRounds())))
