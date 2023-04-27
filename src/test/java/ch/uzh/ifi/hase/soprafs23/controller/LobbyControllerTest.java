@@ -434,6 +434,7 @@ class LobbyControllerTest {
                 .andExpect(jsonPath("$.keywords", is(playerImage.getKeywords())));
     }
 
+
     @Test
     public void getImagesForVoting_success() throws Exception{
         PlayerImage playerImage = new PlayerImage();
@@ -470,13 +471,32 @@ class LobbyControllerTest {
         createdGame.setRounds(roundList);
 
         given(playerScoreService.updatePlayerScore(anyInt(), any())).willReturn(createdGame);
-        //given(playerImageService.updatesVotesImages(anyInt())).willReturn(null);
         MockHttpServletRequestBuilder putRequest = put("/lobbies/5/games/votes/5").contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(playerScoreDto));
         mockMvc.perform(putRequest).andExpect(status().isOk());
     }
 
-    private String asJsonString(final Object object) {
+
+    @Test
+    public void getWinnerImageOfRound_success() throws Exception {
+        PlayerImage playerImage = new PlayerImage();
+        long lobbyPin = 12345678L;
+        int roundNr = 1;
+        playerImage.setRoundNr(roundNr);
+
+        playerImage.setLobbyId(lobbyPin);
+        playerImage.setKeywords("Envisage");
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No images for Lobby with pin %s and roundNr %s exist", lobbyPin, roundNr)))
+                .given(playerImageService).getWinningImage(anyLong(), anyInt());
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/votes/1/winners").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isNotFound());
+
+    }
+
+        private String asJsonString(final Object object) {
         try {
             String json =objectMapper.writeValueAsString(object);
             return json;

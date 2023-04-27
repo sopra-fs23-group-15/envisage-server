@@ -21,6 +21,9 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/77 (create challenge entity that has StyleRequirement Entity and ImagePrompt Entity (Xue and I came up with imagePromptIdeas=StyleRequirements) and implement logic for challenge Entity)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/37 (if there are multiple winning images then one of the images is chosen randomly (not really randomly because that would lead to a conflict with the challengeEntity))
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/43 (with finishing the challenge entity this is done as well, because a met Museum image is chosen again)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/37 (players get a new style requirement each round with websocket)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/36 (weboscket endpoint "/lobbies/{lobbyId}/challengeForRounds/{roundId}" with a new style requirement prompt)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/35 (weboscket endpoint "/lobbies/{lobbyId}/challengeForRounds/{roundId}" with the most voted on image from the previous round)
 
 ## Moritz
 **Sprint1 Week1**
