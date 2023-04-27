@@ -4,7 +4,9 @@ import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.PlayerImageDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.RoundDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,9 @@ public class PlayerImageServiceTest {
 
     @Autowired
     PlayerImageService playerImageService;
+
+    @Autowired
+    PlayerImageRepository playerImageRepository;
 
     @Autowired
     LobbyService lobbyService;
@@ -69,5 +74,21 @@ public class PlayerImageServiceTest {
         Keywords keywords = new Keywords();
         keywords.setKeywords("test");
         assertThrows(RoundDoesNotExistException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), 2, "testUser1"));
+    }
+
+    @Test
+    public void updatesVotesImages(){
+        PlayerImage playerImage = new PlayerImage();
+        playerImage.setImage("testImage");
+        playerImage = playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+
+        playerImageService.updatesVotesImages(1);
+        assertEquals(1, playerImageRepository.findById(1).getVotes());
+    }
+
+    @Test
+    public void updatesVotesImages_noSuchPlayerImage(){
+        assertThrows(PlayerImageDoesNotExistException.class, () -> playerImageService.updatesVotesImages(1));
     }
 }
