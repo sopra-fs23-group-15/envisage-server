@@ -63,16 +63,20 @@ public class PlayerServiceTest {
 
     @Test
     public void addPlayer_gameInProgress(){
+        // create a lobby with necessary amount of players to start a game
         Lobby lobby = lobbyService.createLobby();
         for(int i =0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
             player.setUserName("testplayer"+(i+1));
             playerService.addPlayer(player, lobby.getPin());
         }
+
+        // create a game and put its status to "in progress" to mimic a game being started
         Game game = new Game();
         game.setStatus(GameStatus.IN_PROGRESS);
         lobby.setGame(game);
 
+        // assert that GameInProgressException is thrown when a new player tries to join game
         Player player = new Player();
         player.setUserName("testPlayer"+(EnvisageConstants.MIN_PLAYERS+1));
         assertThrows(GameInProgressException.class, () -> {playerService.addPlayer(player, lobby.getPin());});
