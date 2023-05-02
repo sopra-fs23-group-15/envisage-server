@@ -89,9 +89,9 @@
 
 ## Xue
 **Sprint1 Week1**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/1 (Landing page and lobby creation page almost done, some css details need to be fixed later)
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/2 (Trigger lobby creation endpoint by clicking the "Start a default game" button)
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/3 (As a lobby creator, enter username and enter the lobby)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/1
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/2
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/3
 
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/61
@@ -105,3 +105,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/28
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/29
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/30
+
+**Sprint1 Week4**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/25
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/36
