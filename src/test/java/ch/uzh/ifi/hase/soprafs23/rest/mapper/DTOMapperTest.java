@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DTOMapperTest {
 
     @Test
-    public void test_fromEntity_toLobbyGetDTO_success() {
+    void test_fromEntity_toLobbyGetDTO_success() {
         Lobby lobby = new Lobby();
         List<Player> playerList = new ArrayList<>();
 
@@ -42,7 +42,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromPlayerPostDTO_toEntity_success() {
+    void test_fromPlayerPostDTO_toEntity_success() {
         PlayerPostDTO playerPostDTO = new PlayerPostDTO();
         playerPostDTO.setUserName("Gertrude");
 
@@ -52,7 +52,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_toPlayerGetDTO_success() {
+    void test_fromEntity_toPlayerGetDTO_success() {
         Player player = new Player();
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
@@ -70,7 +70,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_toPlayerImageDTO(){
+    void test_fromEntity_toPlayerImageDTO(){
         PlayerImage playerImage = new PlayerImage();
         Player player = new Player();
         player.setUserName("Gertrude");
@@ -86,7 +86,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_toRoundDTO(){
+    void test_fromEntity_toRoundDTO(){
         Round round = new Round();
         List<PlayerImage> playerImages = new ArrayList<>();
         round.setRoundNumber(5);
@@ -106,7 +106,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_toPlayerScoreDTO(){
+    void test_fromEntity_toPlayerScoreDTO(){
         PlayerScore playerScore = new PlayerScore();
         Player player = new Player();
         player.setUserName("Albert");
@@ -120,7 +120,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_GameDTO(){
+    void test_fromEntity_GameDTO(){
         Game game =  new Game();
         List<Round> roundList = new ArrayList<>();
         List<PlayerScore> playerScoreList = new ArrayList<>();
@@ -153,7 +153,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromPlayerScoreDTO_toEntity(){
+    void test_fromPlayerScoreDTO_toEntity(){
         PlayerScoreDTO playerScoreDTO = new PlayerScoreDTO();
         playerScoreDTO.setPlayer("Gertrude");
         playerScoreDTO.setScore(23);
@@ -166,7 +166,7 @@ class DTOMapperTest {
 
 
     @Test
-    public void test_fromKeywordsDTO_toEntity(){
+    void test_fromKeywordsDTO_toEntity(){
         KeywordsDTO keywordsDTO = new KeywordsDTO();
         keywordsDTO.setKeywords("Envisage");
 
@@ -176,7 +176,7 @@ class DTOMapperTest {
     }
 
     @Test
-    public void test_fromEntity_toPlayerImageGetDTO(){
+    void test_fromEntity_toPlayerImageGetDTO(){
         PlayerImage playerImage = new PlayerImage();
         Player player = new Player();
         player.setUserName("Gertrude");
@@ -195,7 +195,7 @@ class DTOMapperTest {
 
 
     @Test
-    public void test_fromLobbyPostDTO_toEntity(){
+    void test_fromLobbyPostDTO_toEntity(){
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
         lobbyPostDTO.setNoOfRounds(3);
         lobbyPostDTO.setRoundDurationInSeconds(40);

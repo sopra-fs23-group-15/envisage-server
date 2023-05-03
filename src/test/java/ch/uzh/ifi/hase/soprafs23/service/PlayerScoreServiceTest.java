@@ -30,7 +30,7 @@ public class PlayerScoreServiceTest {
     PlayerScoreService playerScoreService;
 
     @Test
-    public void updatePlayerScore(){
+    void updatePlayerScore(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -46,7 +46,7 @@ public class PlayerScoreServiceTest {
     }
 
     @Test
-    public void updatePlayerScore_lobbyDoesNotExist(){
+    void updatePlayerScore_lobbyDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testUser1");
@@ -59,7 +59,7 @@ public class PlayerScoreServiceTest {
     }
 
     @Test
-    public void updatePlayerScore_gameDoesNotExist(){
+    void updatePlayerScore_gameDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testUser1");

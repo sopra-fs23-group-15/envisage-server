@@ -17,7 +17,7 @@ class DalleAPIServiceTest {
     private DalleAPIService dalleAPIService;
 
     @Test
-    public void getImageFromMetMuseum(){
+    void getImageFromMetMuseum(){
         assertNotNull(dalleAPIService.getImageFromDALLE("Envisage"));
     }
 

@@ -26,7 +26,7 @@ public class LobbyServiceTest {
 
 
     @Test
-    public void createLobby_configureParameters(){
+    void createLobby_configureParameters(){
         Lobby lobby = lobbyService.createLobby(2, 30);
         System.out.println("Pin: " + lobby.getPin());
         assertNotNull(lobby);
@@ -35,7 +35,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void createLobby(){
+    void createLobby(){
         Lobby lobby = lobbyService.createLobby();
         System.out.println("Pin: " + lobby.getPin());
         assertNotNull(lobby);
@@ -44,18 +44,18 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void checkIfLobbyPinExists(){
+    void checkIfLobbyPinExists(){
         Lobby lobby = lobbyService.createLobby();
         assertTrue(lobbyService.checkIfPinExists(lobby.getPin()));
     }
 
     @Test
-    public void checkIfLobbyPinExists_noSuchPin() {
+    void checkIfLobbyPinExists_noSuchPin() {
         assertFalse(lobbyService.checkIfPinExists(2));
     }
 
     @Test
-    public void addPlayer(){
+    void addPlayer(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testplayer1");
@@ -64,7 +64,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void addPlayer_noSuchLobby(){
+    void addPlayer_noSuchLobby(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testplayer1");
@@ -73,7 +73,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void addPlayer_duplicateUser(){
+    void addPlayer_duplicateUser(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testplayer1");

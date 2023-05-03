@@ -25,7 +25,7 @@ public class GameServiceTest {
 
 
     @Test
-    public void getGame(){
+    void getGame(){
        Lobby lobby = lobbyService.createLobby();
        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
            Player player = new Player();
@@ -38,12 +38,12 @@ public class GameServiceTest {
     }
 
     @Test
-    public void getGame_lobbyDoesNotExist(){
+    void getGame_lobbyDoesNotExist(){
         assertThrows(LobbyDoesNotExistException.class, () -> {gameService.getGame(1L);});
     }
 
     @Test
-    public void createGame(){
+    void createGame(){
         // create lobby and add min. no. of players necessary to start a game
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
@@ -70,12 +70,12 @@ public class GameServiceTest {
     }
 
     @Test
-    public void createGame_lobbyDoesNotExist(){
+    void createGame_lobbyDoesNotExist(){
         assertThrows(LobbyDoesNotExistException.class, () -> {gameService.createGame(1L);});
     }
 
     @Test
-    public void createGame_notEnoughPlayers(){
+    void createGame_notEnoughPlayers(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testplayer");

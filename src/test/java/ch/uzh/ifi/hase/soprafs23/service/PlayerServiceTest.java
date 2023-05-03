@@ -28,7 +28,7 @@ public class PlayerServiceTest {
     PlayerService playerService;
 
     @Test
-    public void addPlayer(){
+    void addPlayer(){
         Player player = new Player();
         player.setUserName("testplayer1");
 
@@ -42,14 +42,14 @@ public class PlayerServiceTest {
     }
 
     @Test
-    public void addPlayer_lobbyDoesNotExist(){
+    void addPlayer_lobbyDoesNotExist(){
         Player player = new Player();
         player.setUserName("testplayer1");
         assertThrows(LobbyDoesNotExistException.class, () -> {playerService.addPlayer(player, 1);});
     }
 
     @Test
-    public void addPlayer_maxPlayersReached(){
+    void addPlayer_maxPlayersReached(){
         Lobby lobby = lobbyService.createLobby();
         for(int i =0; i<EnvisageConstants.MAX_PLAYERS; i++){
             Player player = new Player();
@@ -62,7 +62,7 @@ public class PlayerServiceTest {
     }
 
     @Test
-    public void addPlayer_gameInProgress(){
+    void addPlayer_gameInProgress(){
         // create a lobby with necessary amount of players to start a game
         Lobby lobby = lobbyService.createLobby();
         for(int i =0; i<EnvisageConstants.MIN_PLAYERS; i++){
@@ -83,7 +83,7 @@ public class PlayerServiceTest {
     }
 
     @Test
-    public void addPlayer_duplicateUser(){
+    void addPlayer_duplicateUser(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testplayer");

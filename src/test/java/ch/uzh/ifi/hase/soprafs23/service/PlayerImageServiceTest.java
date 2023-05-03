@@ -34,7 +34,7 @@ public class PlayerImageServiceTest {
 
 
     @Test
-    public void createImage_playerDoesNotExist(){
+    void createImage_playerDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -49,7 +49,7 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void createImage_gameDoesNotExist(){
+    void createImage_gameDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testUser1");
@@ -60,7 +60,7 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void createImage_roundDoesNotExist(){
+    void createImage_roundDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -75,17 +75,17 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void updatesVotesImages_noSuchPlayerImage(){
+    void updatesVotesImages_noSuchPlayerImage(){
         assertThrows(PlayerImageDoesNotExistException.class, () -> playerImageService.updatesVotesImages(1));
     }
 
     @Test
-    public void getImagesFromRound_Exception(){
+    void getImagesFromRound_Exception(){
         assertThrows(ImagesDontExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
     }
 
     @Test
-    public void getImagesFromRound_success(){
+    void getImagesFromRound_success(){
         PlayerImage playerImage = new PlayerImage();
         playerImage.setLobbyId(1234L);
         playerImage.setRoundNr(1);
@@ -110,7 +110,7 @@ public class PlayerImageServiceTest {
 
 
     @Test
-    public void getWinningImage(){
+    void getWinningImage(){
         PlayerImage playerImage = new PlayerImage();
         playerImage.setLobbyId(1234L);
         playerImage.setRoundNr(1);

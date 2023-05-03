@@ -27,7 +27,7 @@ public class RoundServiceTest {
     private RoundService roundService;
 
     @Test
-    public void getRound(){
+    void getRound(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i< EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -41,12 +41,12 @@ public class RoundServiceTest {
     }
 
     @Test
-    public void getRound_roundDoesNotExist(){
+    void getRound_roundDoesNotExist(){
         assertThrows(RoundDoesNotExistException.class, () -> roundService.getRound(1, 1));
     }
 
     @Test
-    public void createRound(){
+    void createRound(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i< EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -62,12 +62,12 @@ public class RoundServiceTest {
     }
 
     @Test
-    public void createRound_lobbyDoesNotExist(){
+    void createRound_lobbyDoesNotExist(){
         assertThrows(LobbyDoesNotExistException.class, () -> roundService.createRound(1));
     }
 
     @Test
-    public void createRound_gameDoesNotExist(){
+    void createRound_gameDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i< EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();

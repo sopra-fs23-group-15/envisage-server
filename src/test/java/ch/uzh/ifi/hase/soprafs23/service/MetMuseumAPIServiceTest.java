@@ -13,7 +13,7 @@ class MetMuseumAPIServiceTest {
     private MetMuseumAPIService metMuseumAPIService;
 
     @Test
-    public void getImageFromMetMuseum(){
+    void getImageFromMetMuseum(){
         assertNotNull(metMuseumAPIService.getImageFromMetMuseum());
     }
 
