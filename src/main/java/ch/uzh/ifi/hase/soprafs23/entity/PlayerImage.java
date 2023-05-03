@@ -19,6 +19,7 @@ public class PlayerImage implements Serializable {
     @Lob
     private String image;
 
+    @Lob
     private String keywords;
 
     private int roundNr;
