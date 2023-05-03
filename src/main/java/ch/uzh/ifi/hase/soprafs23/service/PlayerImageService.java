@@ -60,10 +60,6 @@ public class PlayerImageService {
             throw new RoundDoesNotExistException(roundId);
         }
 
-        if (keywords.getKeywords().length() > 400){
-            throw new KeywordsLimitException(keywords.getKeywords().length());
-        }
-
         JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 

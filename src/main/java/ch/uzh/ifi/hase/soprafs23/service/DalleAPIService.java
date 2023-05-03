@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.exceptions.KeywordsLimitException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -46,6 +47,9 @@ public class DalleAPIService {
     }
 
     public JSONObject getImageFromDALLE(String prompt) { //its not blob
+        if (prompt.length() > 400){
+            throw new KeywordsLimitException(prompt.length());
+        }
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost(apiUrl);
