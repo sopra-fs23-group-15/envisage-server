@@ -67,6 +67,7 @@ public class PlayerService {
         newPlayer.setLobby(lobbyByPin);
 
         lobbyByPin.addPlayer(newPlayer);
+
         // saves the given entity but data is only persisted in the database once
         // flush() is called
         Player savedPlayer = playerRepository.save(newPlayer);

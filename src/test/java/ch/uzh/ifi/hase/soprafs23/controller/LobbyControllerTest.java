@@ -481,9 +481,6 @@ class LobbyControllerTest {
         PlayerImage playerImage = new PlayerImage();
         long lobbyPin = 12345678L;
         int roundNr = 1;
-        playerImage.setRoundNr(roundNr);
-
-        playerImage.setLobbyId(lobbyPin);
         playerImage.setKeywords("Envisage");
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No images for Lobby with pin %s and roundNr %s exist", lobbyPin, roundNr)))

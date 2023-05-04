@@ -78,5 +78,9 @@ public class Player implements Serializable {
         this.playerImages = playerImages;
     }
 
+    public void addPlayerImage(PlayerImage playerImage){
+        playerImages.add(playerImage);
+    }
+
 
 }

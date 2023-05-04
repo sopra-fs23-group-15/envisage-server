@@ -22,9 +22,6 @@ public class PlayerImage implements Serializable {
     @Lob
     private String keywords;
 
-    private int roundNr;
-
-    private long lobbyId;
 
     @ManyToOne()
     @JoinColumn(name="round_id")
@@ -81,19 +78,4 @@ public class PlayerImage implements Serializable {
         return keywords;
     }
 
-    public long getLobbyId() {
-        return lobbyId;
     }
-
-    public void setLobbyId(long lobbyId) {
-        this.lobbyId = lobbyId;
-    }
-
-    public int getRoundNr() {
-        return roundNr;
-    }
-
-    public void setRoundNr(int roundNr){
-        this.roundNr = roundNr;
-    }
-}

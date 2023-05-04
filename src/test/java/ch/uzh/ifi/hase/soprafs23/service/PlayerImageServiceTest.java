@@ -3,7 +3,10 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
+import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.RoundRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +34,15 @@ public class PlayerImageServiceTest {
 
     @Autowired
     GameService gameService;
+
+    @Autowired
+    RoundRepository roundRepository;
+
+    @Autowired
+    LobbyRepository lobbyRepository;
+
+    @Autowired
+    GameRepository gameRepository;
 
 
     @Test
@@ -81,24 +93,49 @@ public class PlayerImageServiceTest {
 
     @Test
     void getImagesFromRound_Exception(){
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(3);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
         assertThrows(ImagesDontExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
     }
 
     @Test
     void getImagesFromRound_success(){
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(1234L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
+
         PlayerImage playerImage = new PlayerImage();
-        playerImage.setLobbyId(1234L);
-        playerImage.setRoundNr(1);
         playerImage.setKeywords("Envisage");
         playerImage.setVotes(4);
+        playerImage.setRound(round);
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
 
         PlayerImage playerImage2 = new PlayerImage();
-        playerImage2.setLobbyId(1234L);
-        playerImage2.setRoundNr(1);
         playerImage2.setKeywords("Envisage2");
         playerImage2.setVotes(3);
+        playerImage2.setRound(round);
         playerImageRepository.save(playerImage2);
         playerImageRepository.flush();
 
@@ -112,8 +149,20 @@ public class PlayerImageServiceTest {
     @Test
     void getWinningImage(){
         PlayerImage playerImage = new PlayerImage();
-        playerImage.setLobbyId(1234L);
-        playerImage.setRoundNr(1);
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(1234L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
+        playerImage.setRound(round);
         playerImage.setKeywords("Envisage");
         playerImage.setVotes(4);
         playerImageRepository.save(playerImage);

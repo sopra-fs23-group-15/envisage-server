@@ -6,6 +6,8 @@ public class PlayerImageDTO {
 
     private String player;
 
+    private String image;
+
     private int votes;
 
     public Long getId() {
@@ -31,4 +33,10 @@ public class PlayerImageDTO {
     public void setVotes(int votes) {
         this.votes = votes;
     }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+    public String getImage(){
+        return image;}
 }

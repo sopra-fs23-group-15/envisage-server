@@ -46,10 +46,6 @@ public class PlayerImageService {
 
 
     public PlayerImage createImage(Keywords keywords, long lobbyId, int roundId, String username) {
-        Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyId);
-        if (playerFound == null){
-            throw new PlayerDoesNotExistException(username);
-        }
         Game gameFound = gameRepository.findByLobbyPin(lobbyId);
         if (gameFound == null) {
             throw new GameDoesNotExistException(lobbyId);
@@ -58,6 +54,11 @@ public class PlayerImageService {
 
         if (roundFound == null){
             throw new RoundDoesNotExistException(roundId);
+        }
+
+        Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyId);
+        if (playerFound == null){
+            throw new PlayerDoesNotExistException(username);
         }
 
         JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
@@ -71,28 +72,30 @@ public class PlayerImageService {
         playerImage.setKeywords(keywords.getKeywords());
         playerImage.setImage(generatedImage);
         playerImage.setRound(roundFound);
-        playerImage.setLobbyId(lobbyId);
-        playerImage.setRoundNr(roundId);
-        List<PlayerImage> playerImageList = playerFound.getPlayerImages();
-        playerImageList.add(playerImage);
-        playerFound.setPlayerImages(playerImageList);
+        playerFound.addPlayerImage(playerImage);
 
-        playerRepository.save(playerFound);
-
-        playerRepository.flush();
-        roundFound.setPlayerImages(getImagesFromRound(lobbyId, roundId));
-        roundRepository.save(roundFound);
-        roundRepository.flush();
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
 
         return playerImage;
     }
 
     public List<PlayerImage> getImagesFromRound(long lobbyId, int roundNr){
-      List<PlayerImage>  playerImageList = playerImageRepository.findAllByLobbyIdAndRoundNr(lobbyId, roundNr);
-      if (playerImageList.size() == 0){
-          throw new ImagesDontExistException(lobbyId, roundNr);
-      }
-      return playerImageList;
+        Game gameFound = gameRepository.findByLobbyPin(lobbyId);
+        if (gameFound == null) {
+            throw new GameDoesNotExistException(lobbyId);
+        }
+        Round roundFound = roundRepository.findByRoundNumberAndGame_Id(roundNr, gameFound.getId());
+
+        if (roundFound == null){
+            throw new RoundDoesNotExistException(roundNr);
+        }
+        List<PlayerImage>  playerImageList = playerImageRepository.findAllByRound(roundFound);
+
+        if (playerImageList.size() == 0){
+            throw new ImagesDontExistException(lobbyId, roundNr);
+        }
+        return playerImageList;
     }
 
     public PlayerImage getWinningImage(long lobbyId, int roundNr){
