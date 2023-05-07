@@ -13,7 +13,7 @@ public interface PlayerImageRepository extends JpaRepository<PlayerImage, Long> 
 
     List<PlayerImage> findAllByRound(Round round);
 
-    PlayerImage findByPlayerAndRound_RoundNumber(Player player, int roundNr);
+    PlayerImage findByPlayerAndRound(Player player, Round round);
 
     PlayerImage findById(long id);
 }

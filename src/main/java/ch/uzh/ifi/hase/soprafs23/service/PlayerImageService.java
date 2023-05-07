@@ -61,6 +61,10 @@ public class PlayerImageService {
             throw new PlayerDoesNotExistException(username);
         }
 
+        if (playerImageRepository.findByPlayerAndRound(playerFound, roundFound) != null){
+            throw  new PlayerImageDuplicateException(playerFound.getUserName());
+        }
+
         JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
         String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
 

@@ -190,6 +190,9 @@ public class LobbyController {
         } catch (KeywordsLimitException kle){
             throw new ResponseStatusException(HttpStatus.CONFLICT, kle.getMessage());
         }
+        catch(PlayerImageDuplicateException pie){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, pie.getMessage());
+        }
 
     }
 
