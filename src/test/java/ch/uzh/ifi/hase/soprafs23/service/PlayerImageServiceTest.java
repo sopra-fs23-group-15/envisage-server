@@ -105,7 +105,6 @@ public class PlayerImageServiceTest {
         List<PlayerImage> images = playerImageService.getImagesFromRound(1234L, 1);
 
         assertEquals(images.size(), 2);
-
     }
 
 
@@ -122,5 +121,54 @@ public class PlayerImageServiceTest {
         PlayerImage winner = playerImageService.getWinningImage(1234L, 1);
 
         assertEquals(winner, playerImage);
+    }
+
+    @Test
+    public void getImagesOfPlayer(){
+        // create lobby and add players
+        Lobby lobby = lobbyService.createLobby();
+        Player player1 = new Player();
+        player1.setUserName("testuser1");
+        lobby.addPlayer(player1);
+        Player player2 = new Player();
+        player2.setUserName("testuser2");
+        lobby.addPlayer(player2);
+
+        // create images (player1)
+        for(int i = 0; i<EnvisageConstants.DEFAULT_NO_OF_ROUNDS; i++){
+            PlayerImage playerImage = new PlayerImage();
+            playerImage.setLobbyId(lobby.getPin());
+            playerImage.setPlayer(player1);
+            playerImage.setRoundNr(1);
+            playerImageRepository.save(playerImage);
+            playerImageRepository.flush();
+        }
+
+        // create images (player2)
+        for(int i = 0; i<EnvisageConstants.DEFAULT_NO_OF_ROUNDS; i++) {
+            PlayerImage playerImage2 = new PlayerImage();
+            playerImage2.setLobbyId(lobby.getPin());
+            playerImage2.setRoundNr(1);
+            playerImageRepository.save(playerImage2);
+            playerImageRepository.flush();
+        }
+
+        // assert that returned images are by correct player
+        for(PlayerImage playerImage : playerImageService.getImagesOfPlayer(lobby.getPin(), player1.getUserName())){
+            assertEquals(player1.getUserName(), playerImage.getPlayer().getUserName());
+        }
+
+        for(PlayerImage playerImage : playerImageService.getImagesOfPlayer(lobby.getPin(), player2.getUserName())){
+            assertEquals(player2.getUserName(), playerImage.getPlayer().getUserName());
+        }
+    }
+
+    @Test
+    public void getImagesOfPlayer_playerDoesNotExist(){
+        Lobby lobby = lobbyService.createLobby();
+        Player player = new Player();
+        player.setUserName("testuser1");
+        lobby.addPlayer(player);
+        assertThrows(PlayerDoesNotExistException.class, () -> playerImageService.getImagesOfPlayer(lobby.getPin(), "testuser2"));
     }
 }
