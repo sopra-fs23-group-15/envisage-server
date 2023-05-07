@@ -4,8 +4,10 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.ImageType;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
+import ch.uzh.ifi.hase.soprafs23.repository.RoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
+@Transactional
 public class ChallengeService {
 
     private final MetMuseumAPIService metMuseumAPIService;
@@ -24,13 +27,19 @@ public class ChallengeService {
 
     private final RoundService roundService;
 
+    private final GameService gameService;
+
+    private final RoundRepository roundRepository;
+
     private Random rand = new SecureRandom();
 
     @Autowired
-    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService, RoundService roundService) {
+    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService, RoundService roundService, GameService gameService, RoundRepository roundRepository) {
         this.metMuseumAPIService = metMuseumAPIService;
         this.playerImageService = playerImageService;
         this.roundService = roundService;
+        this.gameService = gameService;
+        this.roundRepository = roundRepository;
     }
 
 
@@ -39,6 +48,8 @@ public class ChallengeService {
         newChallenge.setDurationInSeconds(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
         ImagePrompt imagePrompt = getPromptImage(roundNumber, lobbyPin);
         newChallenge.setImagePrompt(imagePrompt);
+
+        Round round = roundService.getRound(roundNumber, gameService.getGame(lobbyPin).getId());
         newChallenge.setRoundNr(roundNumber);
         newChallenge.setStyleRequirement(getStyleRequirement());
 
