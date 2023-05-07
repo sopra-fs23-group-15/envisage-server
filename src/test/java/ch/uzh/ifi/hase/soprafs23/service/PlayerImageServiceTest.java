@@ -92,6 +92,18 @@ public class PlayerImageServiceTest {
     }
 
     @Test
+    void updatesVotesImages_Success(){
+        PlayerImage playerImage = new PlayerImage();
+        playerImage.setVotes(0);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+        playerImageService.updatesVotesImages(playerImage.getId());
+
+        assertEquals(1, playerImage.getVotes());
+
+    }
+
+    @Test
     void getImagesFromRound_Exception(){
         Round round = new Round();
         Game game = new Game();
