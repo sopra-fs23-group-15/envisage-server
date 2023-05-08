@@ -3,10 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
-import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
-import ch.uzh.ifi.hase.soprafs23.repository.RoundRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +40,9 @@ public class PlayerImageServiceTest {
 
     @Autowired
     GameRepository gameRepository;
+
+    @Autowired
+    PlayerRepository playerRepository;
 
 
     @Test
@@ -190,17 +190,31 @@ public class PlayerImageServiceTest {
         Lobby lobby = lobbyService.createLobby();
         Player player1 = new Player();
         player1.setUserName("testuser1");
+        playerRepository.save(player1);
+        playerRepository.flush();
         lobby.addPlayer(player1);
         Player player2 = new Player();
         player2.setUserName("testuser2");
+        playerRepository.save(player2);
+        playerRepository.flush();
         lobby.addPlayer(player2);
+        Round round = new Round();
+        Game game = new Game();
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
 
         // create images (player1)
         for(int i = 0; i<EnvisageConstants.DEFAULT_NO_OF_ROUNDS; i++){
             PlayerImage playerImage = new PlayerImage();
-            playerImage.setLobbyId(lobby.getPin());
+            playerImage.setRound(round);
             playerImage.setPlayer(player1);
-            playerImage.setRoundNr(1);
             playerImageRepository.save(playerImage);
             playerImageRepository.flush();
         }
@@ -208,8 +222,7 @@ public class PlayerImageServiceTest {
         // create images (player2)
         for(int i = 0; i<EnvisageConstants.DEFAULT_NO_OF_ROUNDS; i++) {
             PlayerImage playerImage2 = new PlayerImage();
-            playerImage2.setLobbyId(lobby.getPin());
-            playerImage2.setRoundNr(1);
+            playerImage2.setRound(round);
             playerImageRepository.save(playerImage2);
             playerImageRepository.flush();
         }
