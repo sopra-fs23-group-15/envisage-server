@@ -50,6 +50,7 @@ public class Round {
     public void setPlayerImages(List<PlayerImage> playerImages) {
         this.playerImages = playerImages;
     }
+
     public void setPlayerImage(PlayerImage playerImage){
         this.playerImages.stream()
                 .filter(_playerImage -> _playerImage.getPlayer().getUserName().equals(playerImage.getPlayer().getUserName()))

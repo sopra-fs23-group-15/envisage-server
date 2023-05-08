@@ -28,6 +28,8 @@ public class PlayerImageService {
 
     private final MetMuseumAPIService metMuseumAPIService;
 
+    private final LobbyService lobbyService;
+
     private final GameRepository gameRepository;
 
     private final RoundRepository roundRepository;
@@ -35,11 +37,12 @@ public class PlayerImageService {
 
 
     @Autowired
-    public PlayerImageService(@Qualifier ("playerImageRepository")PlayerImageRepository playerImageRepository, PlayerRepository playerRepository, DalleAPIService dalleAPIService, MetMuseumAPIService metMuseumAPIService, GameRepository gameRepository, RoundRepository roundRepository) {
+    public PlayerImageService(@Qualifier ("playerImageRepository")PlayerImageRepository playerImageRepository, PlayerRepository playerRepository, DalleAPIService dalleAPIService, MetMuseumAPIService metMuseumAPIService, LobbyService lobbyService, GameRepository gameRepository, RoundRepository roundRepository) {
         this.playerImageRepository = playerImageRepository;
         this.playerRepository = playerRepository;
         this.dalleAPIService = dalleAPIService;
         this.metMuseumAPIService = metMuseumAPIService;
+        this.lobbyService = lobbyService;
         this.gameRepository = gameRepository;
         this.roundRepository = roundRepository;
     }
@@ -122,4 +125,16 @@ public class PlayerImageService {
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
     }
+
+    public List<PlayerImage> getImagesOfPlayer(long lobbyId, String username){
+        List<Player> players = lobbyService.findLobby(lobbyId).getPlayers();
+        for(int i = 0; i<players.size(); i++){
+            Player player = players.get(i);
+            if(player.getUserName().equalsIgnoreCase(username)){
+                return player.getPlayerImages();
+            }
+        }
+        throw new PlayerDoesNotExistException(username);
+    }
+
 }

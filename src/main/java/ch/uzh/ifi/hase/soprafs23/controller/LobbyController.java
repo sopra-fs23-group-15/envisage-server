@@ -213,6 +213,23 @@ public class LobbyController {
         }
     }
 
+    // retrieves images of a player (throws 404 if no such player exists)
+    @GetMapping("/lobbies/{lobbyId}/games/images/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<PlayerImageGetDTO> getImagesOfPlayer(@PathVariable long lobbyId, @PathVariable String username){
+        try {
+            List<PlayerImage> playerImages = playerImageService.getImagesOfPlayer(lobbyId, username);
+            List<PlayerImageGetDTO> playerImageGetDTOList = new ArrayList<>();
+            for(PlayerImage playerImage : playerImages){
+                playerImageGetDTOList.add(DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage));
+            }
+            return playerImageGetDTOList;
+        } catch (PlayerDoesNotExistException pdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
+        }
+    }
+
 
 
 
