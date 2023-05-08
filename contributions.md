@@ -89,23 +89,27 @@
 
 ## Xue
 **Sprint1 Week1**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/1
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/2
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/3
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/1
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/2
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/3
 
 **Sprint1 Week2**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/61
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/64
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/21 (A big commit to issue#64 also closes this issue)
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/22 (A big commit to issue#64 also closes this issue)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/61
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/64
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/21 (A big commit to issue#64 also closes this issue)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/22 (A big commit to issue#64 also closes this issue)
 
 **Sprint1 Week3**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/23
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/27
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/28
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/29
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/30
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/23
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/27
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/28
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/29
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/30
 
 **Sprint1 Week4**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/25
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/36
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/25
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/36
+
+**Sprint1 Week5**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/35
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/101
