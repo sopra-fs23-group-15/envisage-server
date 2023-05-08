@@ -25,6 +25,11 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/36 (websocket endpoint "/lobbies/{lobbyId}/challengeForRounds/{roundId}" with a new style requirement prompt)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/35 (websocket endpoint "/lobbies/{lobbyId}/challengeForRounds/{roundId}" with the most voted on image from the previous round)
 
+**Sprint2 Week1 (Week5)**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/82 (prompt is limited to 400 characters)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/102 (fix "submit" button issues, that either auto-submission or submission by click is triggered but not both)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/93 (implemented more suitable solution for createPlayerImage)
+
 ## Moritz
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/5 (if the username is already taken, prompt user to provide a new one)

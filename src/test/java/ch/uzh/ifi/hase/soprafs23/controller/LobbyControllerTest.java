@@ -8,7 +8,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.KeywordsDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerScoreDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -69,7 +68,7 @@ class LobbyControllerTest {
 
 
     @Test
-    public void createLobby_success() throws Exception {
+    void createLobby_success() throws Exception {
         // create lobby with default configuration
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
@@ -100,7 +99,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void getAllLobbies_success () throws Exception {
+    void getAllLobbies_success () throws Exception {
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
@@ -126,7 +125,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void createPlayer_success() throws Exception {
+    void createPlayer_success() throws Exception {
         Player player = new Player();
         player.setUserName("Rupert");
         player.setLobbyCreator(true);
@@ -153,7 +152,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void createPlayer_failure_noLobby() throws Exception {
+    void createPlayer_failure_noLobby() throws Exception {
         PlayerPostDTO playerPostDTO = new PlayerPostDTO();
         playerPostDTO.setUserName("Rupert");
         long lobbyPin = 12345678L;
@@ -170,7 +169,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void createPlayer_failure_nameConflict() throws Exception {
+    void createPlayer_failure_nameConflict() throws Exception {
         PlayerPostDTO playerPostDTO = new PlayerPostDTO();
         String userName = "Rupert";
         playerPostDTO.setUserName(userName);
@@ -187,7 +186,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void getLobby_success () throws Exception {
+    void getLobby_success () throws Exception {
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
         LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
@@ -210,7 +209,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void getLobby_failure_noLobbyExist () throws Exception {
+    void getLobby_failure_noLobbyExist () throws Exception {
         Lobby lobby = new Lobby();
         Long lobbyPin = 12345678L;
         lobby.setPin(lobbyPin);
@@ -229,7 +228,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void startGame_success () throws Exception {
+    void startGame_success () throws Exception {
         Game createdGame = new Game();
         Lobby lobby = new Lobby();
         List<PlayerScore> playerScoreList = new ArrayList<>();
@@ -254,7 +253,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void startGame_failure_noLobby () throws Exception {
+    void startGame_failure_noLobby () throws Exception {
         Game createdGame = new Game();
         Lobby lobby = new Lobby();
         List<PlayerScore> playerScoreList = new ArrayList<>();
@@ -276,7 +275,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void startGame_failure_notEnoughPlayers () throws Exception {
+    void startGame_failure_notEnoughPlayers () throws Exception {
         Game createdGame = new Game();
         Lobby lobby = new Lobby();
         List<PlayerScore> playerScoreList = new ArrayList<>();
@@ -298,7 +297,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void getGame_success () throws Exception {
+    void getGame_success () throws Exception {
         Game createdGame = new Game();
         Lobby lobby = new Lobby();
         List<PlayerScore> playerScoreList = new ArrayList<>();
@@ -323,7 +322,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void getGame_failure_noLobby () throws Exception {
+    void getGame_failure_noLobby () throws Exception {
         Game createdGame = new Game();
         Lobby lobby = new Lobby();
         List<PlayerScore> playerScoreList = new ArrayList<>();
@@ -345,7 +344,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void startRound_success() throws Exception{
+    void startRound_success() throws Exception{
         Round round = new Round();
         Game game = new Game();
         round.setId(1L);
@@ -362,7 +361,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void startRound_failure_noLobby() throws Exception{
+    void startRound_failure_noLobby() throws Exception{
         Round round = new Round();
         Game game = new Game();
         round.setId(1L);
@@ -379,7 +378,7 @@ class LobbyControllerTest {
 
 
     @Test
-    public void startRound_failure_noGame() throws Exception{
+    void startRound_failure_noGame() throws Exception{
         Round round = new Round();
         Game game = new Game();
         round.setId(1L);
@@ -395,7 +394,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void getRound_success() throws Exception{
+    void getRound_success() throws Exception{
         Game game = new Game();
         game.setId(1L);
         Round round = new Round();
@@ -412,7 +411,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void generateImages_success() throws Exception{
+    void generateImages_success() throws Exception{
         KeywordsDTO keywordsDTO = new KeywordsDTO();
         keywordsDTO.setKeywords("blabla");
 
@@ -436,7 +435,7 @@ class LobbyControllerTest {
 
 
     @Test
-    public void getImagesForVoting_success() throws Exception{
+    void getImagesForVoting_success() throws Exception{
         PlayerImage playerImage = new PlayerImage();
         Player player = new Player();
         player.setUserName("Tom");
@@ -454,7 +453,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    public void scoreUpdate_success() throws Exception{
+    void scoreUpdate_success() throws Exception{
         PlayerScoreDTO playerScoreDto = new PlayerScoreDTO();
         playerScoreDto.setScore(4);
         playerScoreDto.setPlayer("Tom");
@@ -476,21 +475,39 @@ class LobbyControllerTest {
         mockMvc.perform(putRequest).andExpect(status().isOk());
     }
 
+    @Test
+    void getWinnerImageOfRound_success() throws Exception {
+        PlayerImage playerImage = new PlayerImage();
+        Player player = new Player();
+        player.setUserName("Rupert");
+        playerImage.setKeywords("Envisage");
+        playerImage.setImage("url_to_image");
+        playerImage.setVotes(1);
+        playerImage.setPlayer(player);
+
+        given(playerImageService.getWinningImage(anyLong(), anyInt())).willReturn(playerImage);
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/1/winners")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(playerImage.getId())))
+                .andExpect(jsonPath("$.player", is(player.getUserName())))
+                .andExpect(jsonPath("$.image", is(playerImage.getImage())))
+                .andExpect(jsonPath("$.keywords", is(playerImage.getKeywords())));
+    }
 
     @Test
-    public void getWinnerImageOfRound_success() throws Exception {
+    void getWinnerImageOfRound_failure() throws Exception {
         PlayerImage playerImage = new PlayerImage();
         long lobbyPin = 12345678L;
         int roundNr = 1;
-        playerImage.setRoundNr(roundNr);
-
-        playerImage.setLobbyId(lobbyPin);
         playerImage.setKeywords("Envisage");
 
         willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No images for Lobby with pin %s and roundNr %s exist", lobbyPin, roundNr)))
                 .given(playerImageService).getWinningImage(anyLong(), anyInt());
 
-        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/votes/1/winners").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/1/winners").contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest).andExpect(status().isNotFound());
 

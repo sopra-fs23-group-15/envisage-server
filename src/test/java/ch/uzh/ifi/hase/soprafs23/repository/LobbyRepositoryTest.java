@@ -24,7 +24,7 @@ class LobbyRepositoryTest {
     private LobbyRepository lobbyRepository;
 
     @Test
-    public void findByPin_success() {
+    void findByPin_success() {
 
        Lobby lobby = new Lobby();
        List<Player> playerList = new ArrayList<>();
@@ -50,7 +50,7 @@ class LobbyRepositoryTest {
 
 
     @Test
-    public void findByPin_failure() {
+    void findByPin_failure() {
 
         Lobby lobby = new Lobby();
         List<Player> playerList = new ArrayList<>();

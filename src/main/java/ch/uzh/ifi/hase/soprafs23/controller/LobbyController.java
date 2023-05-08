@@ -187,6 +187,11 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
         } catch (RoundDoesNotExistException rdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        } catch (KeywordsLimitException kle){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, kle.getMessage());
+        }
+        catch(PlayerImageDuplicateException pie){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, pie.getMessage());
         }
 
     }

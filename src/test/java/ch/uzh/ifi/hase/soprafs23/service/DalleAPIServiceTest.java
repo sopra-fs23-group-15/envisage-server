@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.exceptions.KeywordsLimitException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +18,14 @@ class DalleAPIServiceTest {
     private DalleAPIService dalleAPIService;
 
     @Test
-    public void getImageFromMetMuseum(){
+    void getImageFromMetMuseum(){
         assertNotNull(dalleAPIService.getImageFromDALLE("Envisage"));
+    }
+
+    @Test
+    void getImageFromMetMuseum_exception_inputTooLong(){
+        String keywords = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk";
+        assertThrows(KeywordsLimitException.class, () -> dalleAPIService.getImageFromDALLE(keywords));
     }
 
 }

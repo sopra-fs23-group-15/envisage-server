@@ -19,7 +19,7 @@ class ChallengeServiceTest {
 
 
     @Test
-    public void createChallengeTest(){
+    void createChallengeTest(){
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
         Round round = new Round();

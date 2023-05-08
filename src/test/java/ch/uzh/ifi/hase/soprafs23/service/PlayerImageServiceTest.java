@@ -3,7 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
-import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,9 +32,21 @@ public class PlayerImageServiceTest {
     @Autowired
     GameService gameService;
 
+    @Autowired
+    RoundRepository roundRepository;
+
+    @Autowired
+    LobbyRepository lobbyRepository;
+
+    @Autowired
+    GameRepository gameRepository;
+
+    @Autowired
+    PlayerRepository playerRepository;
+
 
     @Test
-    public void createImage_playerDoesNotExist(){
+    void createImage_playerDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -49,7 +61,7 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void createImage_gameDoesNotExist(){
+    void createImage_gameDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testUser1");
@@ -60,7 +72,7 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void createImage_roundDoesNotExist(){
+    void createImage_roundDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
             Player player = new Player();
@@ -75,30 +87,67 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void updatesVotesImages_noSuchPlayerImage(){
+    void updatesVotesImages_noSuchPlayerImage(){
         assertThrows(PlayerImageDoesNotExistException.class, () -> playerImageService.updatesVotesImages(1));
     }
 
     @Test
-    public void getImagesFromRound_Exception(){
+    void updatesVotesImages_Success(){
+        PlayerImage playerImage = new PlayerImage();
+        playerImage.setVotes(0);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+        playerImageService.updatesVotesImages(playerImage.getId());
+
+        assertEquals(1, playerImage.getVotes());
+
+    }
+
+    @Test
+    void getImagesFromRound_Exception(){
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(3);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
         assertThrows(ImagesDontExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
     }
 
     @Test
-    public void getImagesFromRound_success(){
+    void getImagesFromRound_success(){
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(1234L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
+
         PlayerImage playerImage = new PlayerImage();
-        playerImage.setLobbyId(1234L);
-        playerImage.setRoundNr(1);
         playerImage.setKeywords("Envisage");
         playerImage.setVotes(4);
+        playerImage.setRound(round);
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
 
         PlayerImage playerImage2 = new PlayerImage();
-        playerImage2.setLobbyId(1234L);
-        playerImage2.setRoundNr(1);
         playerImage2.setKeywords("Envisage2");
         playerImage2.setVotes(3);
+        playerImage2.setRound(round);
         playerImageRepository.save(playerImage2);
         playerImageRepository.flush();
 
@@ -109,10 +158,22 @@ public class PlayerImageServiceTest {
 
 
     @Test
-    public void getWinningImage(){
+    void getWinningImage(){
         PlayerImage playerImage = new PlayerImage();
-        playerImage.setLobbyId(1234L);
-        playerImage.setRoundNr(1);
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(1234L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
+        playerImage.setRound(round);
         playerImage.setKeywords("Envisage");
         playerImage.setVotes(4);
         playerImageRepository.save(playerImage);
@@ -129,17 +190,31 @@ public class PlayerImageServiceTest {
         Lobby lobby = lobbyService.createLobby();
         Player player1 = new Player();
         player1.setUserName("testuser1");
+        playerRepository.save(player1);
+        playerRepository.flush();
         lobby.addPlayer(player1);
         Player player2 = new Player();
         player2.setUserName("testuser2");
+        playerRepository.save(player2);
+        playerRepository.flush();
         lobby.addPlayer(player2);
+        Round round = new Round();
+        Game game = new Game();
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
 
         // create images (player1)
         for(int i = 0; i<EnvisageConstants.DEFAULT_NO_OF_ROUNDS; i++){
             PlayerImage playerImage = new PlayerImage();
-            playerImage.setLobbyId(lobby.getPin());
+            playerImage.setRound(round);
             playerImage.setPlayer(player1);
-            playerImage.setRoundNr(1);
             playerImageRepository.save(playerImage);
             playerImageRepository.flush();
         }
@@ -147,8 +222,7 @@ public class PlayerImageServiceTest {
         // create images (player2)
         for(int i = 0; i<EnvisageConstants.DEFAULT_NO_OF_ROUNDS; i++) {
             PlayerImage playerImage2 = new PlayerImage();
-            playerImage2.setLobbyId(lobby.getPin());
-            playerImage2.setRoundNr(1);
+            playerImage2.setRound(round);
             playerImageRepository.save(playerImage2);
             playerImageRepository.flush();
         }
