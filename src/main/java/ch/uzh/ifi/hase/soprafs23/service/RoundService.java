@@ -64,25 +64,4 @@ public class RoundService {
         roundRepository.flush();
         return savedRound;
     }
-
-
-
-
-//    public Round updateRound(long lobbyPin, long roundId){
-//        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
-//        if(lobbyByPin==null){
-//            throw new LobbyDoesNotExistException(lobbyPin);
-//        }
-//        //update only required things
-//        return new Round();
-//    }
-//
-//    public Player getRoundWinner(long lobbyPin){
-//        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
-//        if(lobbyByPin==null){
-//            throw new LobbyDoesNotExistException(lobbyPin);
-//        }
-//        //get player by max vote and return Player
-//        return new Player();
-//    }
 }
