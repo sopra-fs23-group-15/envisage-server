@@ -27,19 +27,13 @@ public class ChallengeService {
 
     private final RoundService roundService;
 
-    private final GameService gameService;
-
-    private final RoundRepository roundRepository;
-
     private Random rand = new SecureRandom();
 
     @Autowired
-    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService, RoundService roundService, GameService gameService, RoundRepository roundRepository) {
+    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService, RoundService roundService) {
         this.metMuseumAPIService = metMuseumAPIService;
         this.playerImageService = playerImageService;
         this.roundService = roundService;
-        this.gameService = gameService;
-        this.roundRepository = roundRepository;
     }
 
 
@@ -49,7 +43,6 @@ public class ChallengeService {
         ImagePrompt imagePrompt = getPromptImage(roundNumber, lobbyPin);
         newChallenge.setImagePrompt(imagePrompt);
 
-        Round round = roundService.getRound(roundNumber, gameService.getGame(lobbyPin).getId());
         newChallenge.setRoundNr(roundNumber);
         newChallenge.setStyleRequirement(getStyleRequirement());
 
