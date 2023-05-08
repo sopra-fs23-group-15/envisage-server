@@ -130,7 +130,7 @@ public class PlayerImageService {
         List<Player> players = lobbyService.findLobby(lobbyId).getPlayers();
         for(int i = 0; i<players.size(); i++){
             Player player = players.get(i);
-            if(player.getUserName().equalsIgnoreCase(username)){
+            if(player.getUserName().equals(username)){
                 return player.getPlayerImages();
             }
         }
