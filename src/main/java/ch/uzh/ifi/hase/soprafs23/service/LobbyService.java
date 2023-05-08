@@ -27,8 +27,6 @@ public class LobbyService {
 
     private final LobbyRepository lobbyRepository;
 
-
-
     private Random rand = new SecureRandom();
 
     @Autowired

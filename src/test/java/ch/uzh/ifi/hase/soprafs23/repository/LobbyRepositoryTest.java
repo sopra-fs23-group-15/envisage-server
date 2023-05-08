@@ -25,7 +25,6 @@ class LobbyRepositoryTest {
 
     @Test
     void findByPin_success() {
-
        Lobby lobby = new Lobby();
        List<Player> playerList = new ArrayList<>();
        lobby.setPin(12345678L);

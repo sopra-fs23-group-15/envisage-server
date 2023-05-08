@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +19,6 @@ public class LobbyServiceTest {
 
     @Autowired
     LobbyService lobbyService;
-
-    @Autowired
-    private LobbyRepository lobbyRepository;
-
 
     @Test
     void createLobby_configureParameters(){
@@ -83,6 +78,4 @@ public class LobbyServiceTest {
         duplicatePlayer.setUserName("testplayer1");
         assertThrows(DuplicateUserException.class, () -> lobbyService.addPlayer(duplicatePlayer, newLobby.getPin()));
     }
-
-
 }
