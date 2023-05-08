@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.BlankImage;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
@@ -68,11 +69,19 @@ public class PlayerImageService {
             throw  new PlayerImageDuplicateException(playerFound.getUserName());
         }
 
-        JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
-        String generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+        String generatedImage;
+        if (keywords.getKeywords()==""){
+            generatedImage = BlankImage.WHITE;
+        }
+        else if (keywords.getEnvironment().equals("development")) {
+           generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+        }
+        else{
+            JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+            generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+        }
 
 
-        //String generatedImage = metMuseumAPIService.getImageFromMetMuseum();
 
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(playerFound);
