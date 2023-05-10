@@ -12,8 +12,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Transactional
@@ -44,6 +43,9 @@ class PlayerImageServiceTest {
     @Autowired
     PlayerRepository playerRepository;
 
+    @Autowired
+    RoundService roundService;
+
 
     @Test
     void createImage_playerDoesNotExist(){
@@ -54,7 +56,7 @@ class PlayerImageServiceTest {
             lobbyService.addPlayer(player, lobby.getPin());
         }
 
-        Game game = gameService.createGame(lobby.getPin());
+        gameService.createGame(lobby.getPin());
         Keywords keywords = new Keywords();
         keywords.setKeywords("test");
         assertThrows(PlayerDoesNotExistException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), 1,"testUser50"));
@@ -80,10 +82,30 @@ class PlayerImageServiceTest {
             lobbyService.addPlayer(player, lobby.getPin());
         }
 
-        Game game = gameService.createGame(lobby.getPin());
+        gameService.createGame(lobby.getPin());
         Keywords keywords = new Keywords();
         keywords.setKeywords("test");
         assertThrows(RoundDoesNotExistException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), 2, "testUser1"));
+    }
+
+    @Test
+    void createImage_playerImageDuplicate(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testUser"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+        gameService.createGame(lobby.getPin());
+        Round round = roundService.createRound(lobby.getPin());
+
+        Keywords keywords = new Keywords();
+        keywords.setKeywords("image1");
+        keywords.setEnvironment("development");
+        playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1");
+
+        assertThrows(PlayerImageDuplicateException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1"));
+
     }
 
     @Test
@@ -154,12 +176,15 @@ class PlayerImageServiceTest {
         List<PlayerImage> images = playerImageService.getImagesFromRound(1234L, 1);
 
         assertEquals(2, images.size());
+        assertEquals(playerImage, images.get(0));
+        assertEquals(playerImage2, images.get(1));
     }
 
 
     @Test
     void getWinningImage(){
         PlayerImage playerImage = new PlayerImage();
+        PlayerImage playerImage2 = new PlayerImage();
         Round round = new Round();
         Game game = new Game();
         Lobby lobby = new Lobby();
@@ -176,12 +201,16 @@ class PlayerImageServiceTest {
         playerImage.setRound(round);
         playerImage.setKeywords("Envisage");
         playerImage.setVotes(4);
+        playerImage2.setRound(round);
+        playerImage2.setKeywords("Envisage2");
+        playerImage2.setVotes(3);
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
 
         PlayerImage winner = playerImageService.getWinningImage(1234L, 1);
 
         assertEquals(winner, playerImage);
+        assertNotEquals(winner, playerImage2);
     }
 
     @Test
@@ -245,4 +274,54 @@ class PlayerImageServiceTest {
         lobby.addPlayer(player);
         assertThrows(PlayerDoesNotExistException.class, () -> playerImageService.getImagesOfPlayer(lobby.getPin(), "testuser2"));
     }
+
+    @Test
+    void getAllWinningImages(){
+        PlayerImage playerImage = new PlayerImage();
+        PlayerImage playerImage2 = new PlayerImage();
+        PlayerImage playerImage3 = new PlayerImage();
+        Round round = new Round();
+        Round round2 = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(1234L);
+        lobby.setNumberOfRounds(2);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        round2.setRoundNumber(2);
+        round2.setGame(game);
+        game.addRound(round);
+        game.addRound(round2);
+        roundRepository.save(round);
+        roundRepository.save(round2);
+        roundRepository.flush();
+        playerImage.setRound(round);
+        playerImage.setVotes(4);
+        playerImage2.setRound(round2);
+        playerImage2.setVotes(5);
+        playerImage3.setRound(round2);
+        playerImage3.setVotes(2);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.save(playerImage2);
+        playerImageRepository.flush();
+
+        List<PlayerImage> playerImageList = playerImageService.getAllWinningImages(lobby.getPin());
+
+        assertEquals(2, playerImageList.size());
+        assertEquals(playerImage, playerImageList.get(0));
+        assertEquals(playerImage2, playerImageList.get(1));
+        assertFalse(playerImageList.contains(playerImage3));
+    }
+
+    @Test
+    void getAllWinningImages_noLobby(){
+        assertThrows(LobbyDoesNotExistException.class, () -> playerImageService.getAllWinningImages(12345L));
+    }
+
+
 }

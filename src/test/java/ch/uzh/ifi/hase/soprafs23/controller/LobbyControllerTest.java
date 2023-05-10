@@ -510,17 +510,52 @@ class LobbyControllerTest {
         MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/1/winners").contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest).andExpect(status().isNotFound());
-
     }
 
-        private String asJsonString(final Object object) {
-        try {
-            String json =objectMapper.writeValueAsString(object);
-            return json;
-        }
-        catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("The request body could not be created.%s", e.toString()));
+    @Test
+    void getWinningImages_success() throws Exception {
+        PlayerImage playerImage = new PlayerImage();
+        Player player = new Player();
+        player.setUserName("Rupert");
+        playerImage.setKeywords("Envisage");
+        playerImage.setImage("url_to_image");
+        playerImage.setVotes(1);
+        playerImage.setPlayer(player);
+
+        List<PlayerImage> playerImageList = Collections.singletonList(playerImage);
+
+        given(playerImageService.getAllWinningImages(anyLong())).willReturn(playerImageList);
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/winners")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isOk());
+    }
+
+    @Test
+    void getWinningImages_failure_noImage() throws Exception {
+        long lobbyPin = 12345678L;
+        int roundNr = 1;
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("No images for Lobby with pin %s and roundNr %s exist", lobbyPin, roundNr)))
+                .given(playerImageService).getAllWinningImages(anyLong());
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/winners")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest).andExpect(status().isNotFound());
+    }
+
+
+
+    private String asJsonString(final Object object) {
+    try {
+        String json =objectMapper.writeValueAsString(object);
+        return json;
+    }
+    catch (JsonProcessingException e) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                String.format("The request body could not be created.%s", e.toString()));
         }
     }
 
