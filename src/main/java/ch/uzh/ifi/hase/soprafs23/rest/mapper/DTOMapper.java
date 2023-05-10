@@ -76,5 +76,6 @@ public interface DTOMapper {
   @Mapping(source = "player.userName", target = "player")
   @Mapping(source = "image", target = "image")
   @Mapping(source = "keywords", target = "keywords")
+  @Mapping(source = "round.roundNumber", target = "round")
   PlayerImageGetDTO convertEntityToPlayerImageGetDTO(PlayerImage playerImage);
 }

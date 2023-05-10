@@ -16,6 +16,8 @@ public class PlayerImageGetDTO {
 
     private String keywords;
 
+    private int round;
+
 
 
     public Long getId() {
@@ -51,4 +53,11 @@ public class PlayerImageGetDTO {
         return keywords;
     }
 
-   }
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public int getRound() {
+        return round;
+    }
+}
