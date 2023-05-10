@@ -21,7 +21,7 @@ public class PlayerImageRepositoryTest {
     private PlayerImageRepository playerImageRepository;
 
     @Test
-    public void findAllByRound(){
+    void findAllByRound(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);
@@ -50,7 +50,7 @@ public class PlayerImageRepositoryTest {
         assertEquals("2", playerImages.get(1).getKeywords());
     }
     @Test
-    public void findAllByRound_NoImagesInRound(){
+    void findAllByRound_NoImagesInRound(){
         for(int i = 0; i<2; i++){
             Player player = new Player();
             player.setUserName("testuser"+(i+1));
@@ -70,7 +70,7 @@ public class PlayerImageRepositoryTest {
         assertEquals(0, playerImages.size());
     }
     @Test
-    public void findByPlayerAndRound(){
+    void findByPlayerAndRound(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);
@@ -96,7 +96,7 @@ public class PlayerImageRepositoryTest {
         assertEquals("1", foundImage.getKeywords());
     }
     @Test
-    public void findByPlayerAndRound_PlayerHasNoImages(){
+    void findByPlayerAndRound_PlayerHasNoImages(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);
@@ -114,7 +114,7 @@ public class PlayerImageRepositoryTest {
         assertNull(foundImage);
     }
     @Test
-    public void findByPlayerAndRound_NoImagesInRound(){
+    void findByPlayerAndRound_NoImagesInRound(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);
@@ -139,7 +139,7 @@ public class PlayerImageRepositoryTest {
         assertNull(foundImage);
     }
     @Test
-    public void findById(){
+    void findById(){
         Player player = new Player();
         player.setUserName("testuser1");
         entityManager.persist(player);
@@ -160,7 +160,7 @@ public class PlayerImageRepositoryTest {
         assertEquals("1", foundImage.get().getKeywords());
     }
     @Test
-    public void findById_IdDoesNotExist() {
+    void findById_IdDoesNotExist() {
         Player player = new Player();
         player.setUserName("testuser1");
         entityManager.persist(player);

@@ -185,7 +185,7 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void getImagesOfPlayer(){
+    void getImagesOfPlayer(){
         // create lobby and add players
         Lobby lobby = lobbyService.createLobby();
         Player player1 = new Player();
@@ -238,7 +238,7 @@ public class PlayerImageServiceTest {
     }
 
     @Test
-    public void getImagesOfPlayer_playerDoesNotExist(){
+    void getImagesOfPlayer_playerDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testuser1");

@@ -19,7 +19,7 @@ public class PlayerRepositoryTest {
     private PlayerRepository playerRepository;
 
     @Test
-    public void findPlayerByUserNameAndAndLobby_Pin(){
+    void findPlayerByUserNameAndAndLobby_Pin(){
         Player player = new Player();
         player.setUserName("testuser1");
         entityManager.persist(player);
@@ -42,7 +42,7 @@ public class PlayerRepositoryTest {
     }
 
     @Test
-    public void findPlayerByUserNameAndAndLobby_Pin_PlayerDoesNotExist(){
+    void findPlayerByUserNameAndAndLobby_Pin_PlayerDoesNotExist(){
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
         entityManager.persist(lobby);
@@ -56,7 +56,7 @@ public class PlayerRepositoryTest {
     }
 
     @Test
-    public void findPlayerByUserNameAndAndLobby_Pin_LobbyDoesNotExist(){
+    void findPlayerByUserNameAndAndLobby_Pin_LobbyDoesNotExist(){
         Player player = new Player();
         player.setUserName("testuser1");
         entityManager.persist(player);

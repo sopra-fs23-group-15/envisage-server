@@ -19,7 +19,7 @@ public class RoundRepositoryTest {
     private RoundRepository roundRepository;
 
     @Test
-    public void findByRoundNumberAndGame_Id(){
+    void findByRoundNumberAndGame_Id(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);
@@ -42,7 +42,7 @@ public class RoundRepositoryTest {
     }
 
     @Test
-    public void findByRoundNumberAndGame_Id_RoundNumberDoesNotExist(){
+    void findByRoundNumberAndGame_Id_RoundNumberDoesNotExist(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);
@@ -63,7 +63,7 @@ public class RoundRepositoryTest {
     }
 
     @Test
-    public void findByRoundNumberAndGame_Id_GameIdDoesNotExist(){
+    void findByRoundNumberAndGame_Id_GameIdDoesNotExist(){
         Round round = new Round();
         round.setRoundNumber(1);
         entityManager.persist(round);

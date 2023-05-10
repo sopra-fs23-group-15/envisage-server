@@ -19,7 +19,7 @@ class GameRepositoryTest {
     private GameRepository gameRepository;
 
     @Test
-    public void findByPin() {
+    void findByPin() {
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
         entityManager.persist(lobby);
@@ -42,7 +42,7 @@ class GameRepositoryTest {
 
 
     @Test
-    public void findByPin_LobbyDoesNotExist() {
+    void findByPin_LobbyDoesNotExist() {
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
         entityManager.persist(lobby);
