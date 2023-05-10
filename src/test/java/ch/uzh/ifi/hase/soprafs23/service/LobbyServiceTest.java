@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-public class LobbyServiceTest {
+class LobbyServiceTest {
 
     @Autowired
     LobbyService lobbyService;

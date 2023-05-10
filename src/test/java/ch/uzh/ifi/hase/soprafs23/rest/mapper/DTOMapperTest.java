@@ -179,18 +179,22 @@ class DTOMapperTest {
     void test_fromEntity_toPlayerImageGetDTO(){
         PlayerImage playerImage = new PlayerImage();
         Player player = new Player();
+        Round round = new Round();
+        round.setRoundNumber(1);
         player.setUserName("Gertrude");
         playerImage.setId(1L);
         playerImage.setPlayer(player);
         playerImage.setImage("image");
         playerImage.setKeywords("running baby penguin");
+        playerImage.setRound(round);
 
         PlayerImageGetDTO playerGetImageDTO = DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
 
         assertEquals(playerGetImageDTO.getId(), playerImage.getId());
         assertEquals(playerGetImageDTO.getImage(), playerImage.getImage());
         assertEquals(playerGetImageDTO.getPlayer(), playerImage.getPlayer().getUserName());
-        assertEquals(playerGetImageDTO.getKeywords(), playerGetImageDTO.getKeywords());
+        assertEquals(playerGetImageDTO.getKeywords(), playerImage.getKeywords());
+        assertEquals(playerGetImageDTO.getRound(), playerImage.getRound().getRoundNumber());
     }
 
 

@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class RoundServiceTest {
+class RoundServiceTest {
 
     @Autowired
     private LobbyService lobbyService;

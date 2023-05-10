@@ -1,10 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.entity.Round;
-
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 
 public class PlayerImageGetDTO {
 
@@ -15,6 +10,8 @@ public class PlayerImageGetDTO {
     private String image;
 
     private String keywords;
+
+    private int round;
 
 
 
@@ -51,4 +48,11 @@ public class PlayerImageGetDTO {
         return keywords;
     }
 
-   }
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public int getRound() {
+        return round;
+    }
+}

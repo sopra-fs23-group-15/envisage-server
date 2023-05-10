@@ -25,7 +25,7 @@ class ChallengeServiceTest {
         Round round = new Round();
         round.setRoundNumber(1);
         Challenge createdChallenge = challengeService.createChallengeForRound(12345678L, 1);
-        assertEquals(createdChallenge.getDurationInSeconds(), EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
+        assertEquals(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS, createdChallenge.getDurationInSeconds());
         assertNotNull(createdChallenge.getStyleRequirement());
         assertNotNull(createdChallenge.getImagePrompt());
     }
