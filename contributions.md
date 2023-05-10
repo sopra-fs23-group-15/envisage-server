@@ -30,6 +30,11 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/102 (fix "submit" button issues, that either auto-submission or submission by click is triggered but not both)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/93 (implemented more suitable solution for createPlayerImage)
 
+**Sprint2 Week2 (Week6)**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/111 (fix issue that end view will be displayed after configured number of rounds)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/54 (implement a GET request to get all winning images)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/55 (send images with round information metadata so that frontend can show from first to last)
+
 ## Moritz
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/5 (if the username is already taken, prompt user to provide a new one)
