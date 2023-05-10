@@ -210,6 +210,10 @@ public class LobbyController {
             return playerImageGetDTOList;
         } catch (ImagesDontExistException ide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
+        } catch (GameDoesNotExistException gme){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
+        } catch (RoundDoesNotExistException rdne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         }
     }
 
@@ -265,6 +269,29 @@ public class LobbyController {
             return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(winningImage);
         } catch (ImagesDontExistException ide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
+        }
+    }
+
+    // retrieves all winning images (throws 404 if images do not exist)
+    @GetMapping("/lobbies/{lobbyId}/games/winners")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<PlayerImageGetDTO> getWinningImages(@PathVariable long lobbyId){
+        try {
+            List<PlayerImage> winningImageList = playerImageService.getAllWinningImages(lobbyId);
+            List<PlayerImageGetDTO> winningImageListDTO = new ArrayList<>();
+            for (PlayerImage playerImage : winningImageList) {
+                winningImageListDTO.add(DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage));
+            }
+            return winningImageListDTO;
+        } catch (ImagesDontExistException ide){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
+        } catch (LobbyDoesNotExistException ldne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        } catch (GameDoesNotExistException gme){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
+        } catch (RoundDoesNotExistException rdne){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         }
     }
 }

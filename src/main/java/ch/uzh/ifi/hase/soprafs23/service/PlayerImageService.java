@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.json.JSONObject;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -70,7 +71,7 @@ public class PlayerImageService {
         }
 
         String generatedImage;
-        if (keywords.getKeywords()==""){
+        if (keywords.getKeywords().equals("")){
             generatedImage = BlankImage.WHITE;
         }
         else if (keywords.getEnvironment().equals("development")) {
@@ -108,7 +109,7 @@ public class PlayerImageService {
         }
         List<PlayerImage>  playerImageList = playerImageRepository.findAllByRound(roundFound);
 
-        if (playerImageList.size() == 0){
+        if (playerImageList.isEmpty()){
             throw new ImagesDontExistException(lobbyId, roundNr);
         }
         return playerImageList;
@@ -144,6 +145,20 @@ public class PlayerImageService {
             }
         }
         throw new PlayerDoesNotExistException(username);
+    }
+
+    public List<PlayerImage> getAllWinningImages (long lobbyId){
+        List<PlayerImage> winningImageList = new ArrayList<>();
+        Lobby lobby = lobbyService.findLobby(lobbyId);
+        if (lobby == null){
+            throw new LobbyDoesNotExistException(lobbyId);
+        }
+        int numberOfRounds = lobby.getNumberOfRounds();
+        for (int currentRound = 1; currentRound <= numberOfRounds; currentRound++){
+            PlayerImage winningImage = getWinningImage(lobbyId, currentRound);
+            winningImageList.add(winningImage);
+        }
+        return winningImageList;
     }
 
 }
