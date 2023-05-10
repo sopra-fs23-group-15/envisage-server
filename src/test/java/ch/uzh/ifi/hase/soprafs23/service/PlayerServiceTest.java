@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-public class PlayerServiceTest {
+class PlayerServiceTest {
 
     @Autowired
     LobbyService lobbyService;

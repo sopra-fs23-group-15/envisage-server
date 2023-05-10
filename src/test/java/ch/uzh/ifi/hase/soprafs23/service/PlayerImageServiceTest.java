@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Transactional
 @SpringBootTest
-public class PlayerImageServiceTest {
+class PlayerImageServiceTest {
 
     @Autowired
     PlayerImageService playerImageService;
@@ -153,7 +153,7 @@ public class PlayerImageServiceTest {
 
         List<PlayerImage> images = playerImageService.getImagesFromRound(1234L, 1);
 
-        assertEquals(images.size(), 2);
+        assertEquals(2, images.size());
     }
 
 
