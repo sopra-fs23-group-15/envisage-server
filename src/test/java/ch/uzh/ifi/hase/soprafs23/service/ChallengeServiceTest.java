@@ -24,7 +24,7 @@ class ChallengeServiceTest {
         lobby.setPin(12345678L);
         Round round = new Round();
         round.setRoundNumber(1);
-        Challenge createdChallenge = challengeService.createChallengeForRound(12345678L, 1);
+        Challenge createdChallenge = challengeService.createChallengeForRound(12345678L, 1, "random");
         assertEquals(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS, createdChallenge.getDurationInSeconds());
         assertNotNull(createdChallenge.getStyleRequirement());
         assertNotNull(createdChallenge.getImagePrompt());

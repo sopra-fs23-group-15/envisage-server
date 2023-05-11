@@ -75,7 +75,7 @@ public class PlayerImageService {
             generatedImage = BlankImage.WHITE;
         }
         else if (keywords.getEnvironment().equals("development")) {
-           generatedImage = metMuseumAPIService.getImageFromMetMuseum();
+           generatedImage = metMuseumAPIService.getImageFromMetMuseum("random");
         }
         else{
             JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());

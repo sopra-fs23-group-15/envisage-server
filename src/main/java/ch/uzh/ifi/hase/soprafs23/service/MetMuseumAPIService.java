@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.ObjectIDPaths;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -28,23 +29,43 @@ public class MetMuseumAPIService {
     /**
      * method which returns an Url to a jpg form of an image of the met Museum
      */
-    public String getImageFromMetMuseum(){
-        List<Integer> objectIDList = readFile();
+    public String getImageFromMetMuseum(String category){
+        String filePath = getFilePath(category);
+        List<Integer> objectIDList = readFile(filePath);
         Integer objectID = objectIDList.get(this.rand.nextInt(objectIDList.size()));
-        String imageUrl = getImageUrl(objectID);
 
-        return imageUrl;
+        return getImageUrl(objectID);
+    }
+
+    private String getFilePath(String category){
+        if (category.equals("landscape")){
+            return ObjectIDPaths.LANDSCAPE_CATEGORY;
+        }
+        else if (category.equals("portrait")){
+            return ObjectIDPaths.PORTRAIT_CATEGORY;
+        }
+        else if (category.equals("postcard")){
+            return ObjectIDPaths.POSTCARD_CATEGORY;
+        }
+        else if(category.equals("still life")){
+            return  ObjectIDPaths.STILLLIFE_CATEGORY;
+        }
+        else if(category.equals("abstract art")){
+            return ObjectIDPaths.ABSTRACTART_CATEGORY;
+        }
+        else {
+            return ObjectIDPaths.RANDOM_CATEGORY;
+        }
     }
 
     /**
      * method which reads text file which contains ObjectsIDs of the met Museum images
      */
-    private List<Integer> readFile() {
-        String fileName ="src/main/resources/metMuseumObjectIDs.txt";
+    private List<Integer> readFile(String filePath) {
         List<Integer> result = new ArrayList<>();
         try {
             // remove all empty lines in metMuseumObjectID file, else it won't work
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null){
                 result.add(Integer.valueOf(curLine));

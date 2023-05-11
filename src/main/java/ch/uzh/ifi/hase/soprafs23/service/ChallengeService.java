@@ -22,22 +22,19 @@ public class ChallengeService {
 
     private final PlayerImageService playerImageService;
 
-    private final RoundService roundService;
-
     private Random rand = new SecureRandom();
 
     @Autowired
-    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService, RoundService roundService) {
+    public ChallengeService(MetMuseumAPIService metMuseumAPIService, PlayerImageService playerImageService){
         this.metMuseumAPIService = metMuseumAPIService;
         this.playerImageService = playerImageService;
-        this.roundService = roundService;
     }
 
 
-    public Challenge createChallengeForRound(long lobbyPin, int roundNumber){
+    public Challenge createChallengeForRound(long lobbyPin, int roundNumber, String category){
         Challenge newChallenge = new Challenge();
         newChallenge.setDurationInSeconds(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
-        ImagePrompt imagePrompt = getPromptImage(roundNumber, lobbyPin);
+        ImagePrompt imagePrompt = getPromptImage(roundNumber, lobbyPin, category);
         newChallenge.setImagePrompt(imagePrompt);
 
         newChallenge.setRoundNr(roundNumber);
@@ -47,10 +44,10 @@ public class ChallengeService {
     }
 
 
-    private ImagePrompt getPromptImage(int roundNumber, long lobbyPin){
+    private ImagePrompt getPromptImage(int roundNumber, long lobbyPin, String category){
         ImagePrompt imagePrompt = new ImagePrompt();
         if(roundNumber==1){
-            String imageUrl = metMuseumAPIService.getImageFromMetMuseum();
+            String imageUrl = metMuseumAPIService.getImageFromMetMuseum(category);
             imagePrompt.setImage(imageUrl);
             imagePrompt.setImageType(ImageType.URL);
         }

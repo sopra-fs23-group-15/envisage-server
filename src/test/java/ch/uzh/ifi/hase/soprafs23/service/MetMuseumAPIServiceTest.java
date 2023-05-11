@@ -14,7 +14,7 @@ class MetMuseumAPIServiceTest {
 
     @Test
     void getImageFromMetMuseum(){
-        assertNotNull(metMuseumAPIService.getImageFromMetMuseum());
+        assertNotNull(metMuseumAPIService.getImageFromMetMuseum("random"));
     }
 
 
