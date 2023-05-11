@@ -229,6 +229,7 @@ class LobbyControllerTest {
                 .andExpect(result -> assertEquals("404 NOT_FOUND \"Lobby with pin 87654321 does not exist\"", result.getResolvedException().getMessage()));
     }
 
+
     @Test
     void restartGame_LobbyDoesNotExist() throws Exception {
         Lobby lobby = new Lobby();
