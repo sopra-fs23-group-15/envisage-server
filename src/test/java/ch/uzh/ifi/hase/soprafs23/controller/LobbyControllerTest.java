@@ -4,10 +4,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.KeywordsDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.LobbyPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.PlayerScoreDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -228,7 +225,7 @@ class LobbyControllerTest {
     }
 
     @Test
-    void startGame_success () throws Exception {
+    void startGame_success() throws Exception {
         Game createdGame = new Game();
         Lobby lobby = new Lobby();
         List<PlayerScore> playerScoreList = new ArrayList<>();

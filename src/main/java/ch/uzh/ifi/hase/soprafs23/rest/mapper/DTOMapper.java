@@ -50,7 +50,6 @@ public interface DTOMapper {
   PlayerImageDTO convertEntityToPlayerImageDTO(PlayerImage playerImage);
 
   @Mapping(source = "roundNumber", target = "roundNumber")
-//  @Mapping(source = "game.id", target = "gameId")
   @Mapping(source = "playerImages", target = "playerImages")
   RoundDTO convertEntityToRoundDTO(Round round);
 
