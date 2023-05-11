@@ -191,9 +191,9 @@ public class LobbyController {
     @ResponseBody
     public PlayerImageGetDTO generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
-        Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
-        PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
-        return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
+            Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
+            PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
+            return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
         } catch (PlayerDoesNotExistException pdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
         } catch (GameDoesNotExistException gme){
@@ -202,8 +202,7 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         } catch (KeywordsLimitException kle){
             throw new ResponseStatusException(HttpStatus.CONFLICT, kle.getMessage());
-        }
-        catch(PlayerImageDuplicateException pie){
+        } catch(PlayerImageDuplicateException pie){
             throw new ResponseStatusException(HttpStatus.CONFLICT, pie.getMessage());
         }
     }
