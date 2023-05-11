@@ -114,11 +114,11 @@ public class LobbyController {
     }
 
     // restart game (throws 404 if no such lobby exists)
-    @PutMapping("/lobbies/{lobbyId}/games")
+    @PostMapping("/lobbies/{lobbyId}/games/restarts")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameDTO restartGame(@PathVariable long lobbyId){
-        try{
+        try {
             Game newGame = gameService.createGame(lobbyId);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
         } catch(LobbyDoesNotExistException ldne){

@@ -4,6 +4,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
+import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +24,8 @@ import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
@@ -216,12 +219,31 @@ class LobbyControllerTest {
         lobby.setRoundDuration(lobbyPostDTO.getRoundDurationInSeconds());
         lobby.setNumberOfRounds(lobbyPostDTO.getNoOfRounds());
 
-        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyPin)))
-                .given(playerService).addPlayer(Mockito.any(), anyLong());
+        given(lobbyService.findLobby(87654321)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Lobby with pin 87654321 does not exist"));
 
         MockHttpServletRequestBuilder getRequest = get("/lobbies/87654321").contentType(MediaType.APPLICATION_JSON);
 
-        mockMvc.perform(getRequest).andExpect(status().isNotFound());
+        mockMvc.perform(getRequest).andExpect(status().isNotFound())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+                .andExpect(result -> assertEquals("404 NOT_FOUND \"Lobby with pin 87654321 does not exist\"", result.getResolvedException().getMessage()));
+    }
+
+    @Test
+    void restartGame_LobbyDoesNotExist() throws Exception {
+        Lobby lobby = new Lobby();
+        Long lobbyPin = 12345678L;
+        lobby.setPin(lobbyPin);
+
+        given(gameService.createGame(1)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Lobby with pin 1 does not exist"));
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/1/games/restarts").contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(postRequest).andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+                .andExpect(result -> assertEquals("404 NOT_FOUND \"Lobby with pin 1 does not exist\"", result.getResolvedException().getMessage()));
     }
 
     @Test
