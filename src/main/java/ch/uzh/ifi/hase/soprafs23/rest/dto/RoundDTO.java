@@ -7,7 +7,6 @@ public class RoundDTO {
 
     private int roundNumber;
 
-
     private List<PlayerImageDTO> playerImages;
 
     public int getRoundNumber() {

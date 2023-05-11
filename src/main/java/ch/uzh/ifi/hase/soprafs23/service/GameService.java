@@ -48,9 +48,15 @@ public class GameService {
         }
 
         //create the game
+        return initialiseGame(lobbyByPin);
+    }
+
+    private Game initialiseGame(Lobby lobbyByPin) {
         Game game = new Game();
         game.setLobby(lobbyByPin);
-        List<PlayerScore> playerScores = new ArrayList<PlayerScore>();
+
+        // initialise player scores
+        List<PlayerScore> playerScores = new ArrayList<>();
         for(Player player : lobbyByPin.getPlayers()){
             PlayerScore ps = new PlayerScore();
             ps.setPlayer(player);
