@@ -473,6 +473,25 @@ class LobbyControllerTest {
     }
 
     @Test
+    void getImagesOfPlayer_success() throws Exception{
+        PlayerImage playerImage = new PlayerImage();
+        Player player = new Player();
+        player.setUserName("tom");
+        playerImage.setPlayer(player);
+
+        List<PlayerImage> playerImageList = Collections.singletonList(playerImage);
+
+        given(playerImageService.getImagesOfPlayer(anyLong(), anyString())).willReturn(playerImageList);
+
+        MockHttpServletRequestBuilder getRequest = get("/lobbies/12345678/games/images/tom").contentType(MediaType.APPLICATION_JSON);
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is(playerImage.getId())))
+                .andExpect(jsonPath("$[0].player", is(player.getUserName())))
+                .andExpect(jsonPath("$[0].image", is(playerImage.getImage())))
+                .andExpect(jsonPath("$[0].keywords", is(playerImage.getKeywords())));
+    }
+
+    @Test
     void scoreUpdate_success() throws Exception{
         PlayerScoreDTO playerScoreDto = new PlayerScoreDTO();
         playerScoreDto.setScore(4);

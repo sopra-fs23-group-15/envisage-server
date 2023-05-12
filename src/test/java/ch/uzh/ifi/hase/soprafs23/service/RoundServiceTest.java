@@ -42,7 +42,7 @@ class RoundServiceTest {
 
     @Test
     void getRound_roundDoesNotExist(){
-        assertThrows(RoundDoesNotExistException.class, () -> roundService.getRound(1, 1));
+        assertThrows(RoundDoesNotExistException.class, () -> roundService.getRound(100, 1));
     }
 
     @Test
@@ -54,7 +54,7 @@ class RoundServiceTest {
             lobbyService.addPlayer(player, lobby.getPin());
         }
 
-        Game game = gameService.createGame(lobby.getPin());
+        gameService.createGame(lobby.getPin());
         Round newRound = roundService.createRound(lobby.getPin());
         assertEquals(2, newRound.getRoundNumber());
         assertEquals(2, newRound.getGame().getRounds().size());

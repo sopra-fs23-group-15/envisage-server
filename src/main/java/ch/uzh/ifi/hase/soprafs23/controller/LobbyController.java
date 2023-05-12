@@ -253,7 +253,7 @@ public class LobbyController {
         try {
             PlayerScore playerScore = DTOMapper.INSTANCE.convertPlayerScoreDTOtoEntity(playerScoreDTO);
             Game updatedGame = playerScoreService.updatePlayerScore(lobbyId, playerScore);
-            playerImageService.updatesVotesImages(imageId);
+            playerImageService.updatesVotesImages(imageId, playerScore.getPlayer());
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         }
         catch (LobbyDoesNotExistException ldne) {
@@ -264,6 +264,9 @@ public class LobbyController {
         }
         catch(PlayerImageDoesNotExistException pide){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pide.getMessage());
+        }
+        catch (ImageIdDoesNotMatchPlayerException iidnmp){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, iidnmp.getMessage());
         }
     }
 
