@@ -126,10 +126,13 @@ public class PlayerImageService {
         return maxImage;
     }
 
-    public void updatesVotesImages(long id){
+    public void updatesVotesImages(long id, Player player){
         PlayerImage playerImage = playerImageRepository.findById(id);
         if (playerImage==null){
             throw new PlayerImageDoesNotExistException(id);
+        }
+        if (!playerImage.getPlayer().getUserName().equals(player.getUserName())){
+            throw  new ImageIdDoesNotMatchPlayerException(id, player.getUserName());
         }
         playerImage.setVotes(playerImage.getVotes()+1);
         playerImageRepository.save(playerImage);
