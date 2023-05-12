@@ -59,6 +59,11 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/45
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/88
 
+**Sprint2 Week2**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/44
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/107
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/114
+
 ## Nikita
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/3
