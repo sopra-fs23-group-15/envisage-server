@@ -113,6 +113,19 @@ public class LobbyController {
         }
     }
 
+    // restart game (throws 404 if no such lobby exists)
+    @PostMapping("/lobbies/{lobbyId}/games/restarts")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameDTO restartGame(@PathVariable long lobbyId){
+        try {
+            Game newGame = gameService.createGame(lobbyId);
+            return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
+        } catch(LobbyDoesNotExistException ldne){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        }
+    }
+
     // starts a game (throws 404 if no such lobby exists or 409 when there are not enough players)
     @PostMapping("/lobbies/{lobbyId}/games")
     @ResponseStatus(HttpStatus.CREATED)
@@ -178,9 +191,9 @@ public class LobbyController {
     @ResponseBody
     public PlayerImageGetDTO generateImages (@PathVariable long lobbyId, @PathVariable int roundId, @PathVariable String username, @RequestBody KeywordsDTO keywordsDTO){
         try{
-        Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
-        PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
-        return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
+            Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
+            PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
+            return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
         } catch (PlayerDoesNotExistException pdne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
         } catch (GameDoesNotExistException gme){
@@ -189,11 +202,9 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
         } catch (KeywordsLimitException kle){
             throw new ResponseStatusException(HttpStatus.CONFLICT, kle.getMessage());
-        }
-        catch(PlayerImageDuplicateException pie){
+        } catch(PlayerImageDuplicateException pie){
             throw new ResponseStatusException(HttpStatus.CONFLICT, pie.getMessage());
         }
-
     }
 
     // retrieves images (throws 404 if images do not exist)
@@ -233,9 +244,6 @@ public class LobbyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
         }
     }
-
-
-
 
     // updates score (throws 404 if no such lobby, game or playerImage exist)
     @PutMapping("/lobbies/{lobbyId}/games/votes/{imageId}")

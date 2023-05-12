@@ -59,6 +59,11 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/45
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/88
 
+**Sprint2 Week2**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/44
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/107
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/114
+
 ## Nikita
 **Sprint1 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/3
@@ -83,6 +88,10 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/78
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/53
 
+**Sprint2 Week2**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/42
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/41
+
 ## Shantam
 **Sprint1 Week1**
 * [#27](https://github.com/sopra-fs23-group-15/envisage-server/issues/27)
@@ -106,6 +115,8 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/83
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/79
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/29
+* PPT Slides and Presentation with Marion
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/26
 
 **Sprint2 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/111
@@ -116,6 +127,12 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/106
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/108
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/109
+
+**Sprint2 Week3**
+
+
+**Sprint2 Week4**
+
 
 ## Xue
 **Sprint1 Week1**
