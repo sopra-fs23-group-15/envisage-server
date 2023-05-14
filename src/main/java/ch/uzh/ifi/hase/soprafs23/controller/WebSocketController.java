@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import javax.transaction.Transactional;
+
 @Controller
 public class WebSocketController {
 
@@ -33,19 +35,18 @@ public class WebSocketController {
     @MessageMapping("/lobbies/{lobbyId}/lobbyJoin")
     //return value is broadcast to all subscribers of /topic/{lobbyId}
     @SendTo("/topic/lobbies/{lobbyId}")
+    @Transactional
     public void getLobby(@DestinationVariable long lobbyId){
         Lobby foundLobby = lobbyService.findLobby(lobbyId);
 
         LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
-
         webSocketService.sendMessageToClients("/topic/lobbies/" + lobbyId, lobbyGetDTO);
     }
 
-
     @MessageMapping("/lobbies/{lobbyId}/challengeForRounds/{roundId}")
     @SendTo("/topic/lobbies/{lobbyId}/challenges")
-    public void getChallenge(@DestinationVariable long lobbyId, @DestinationVariable int roundId){
-        Challenge challenge = challengeService.createChallengeForRound(lobbyId, roundId);
+    public void getChallenge(String category, @DestinationVariable long lobbyId, @DestinationVariable int roundId){
+        Challenge challenge = challengeService.createChallengeForRound(lobbyId, roundId, category);
         webSocketService.sendMessageToClients("/topic/lobbies/" + lobbyId + "/challenges", challenge);
     }
 

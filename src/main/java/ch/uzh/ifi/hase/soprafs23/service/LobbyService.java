@@ -62,9 +62,9 @@ public class LobbyService {
      * if there already exists a Lobby with this Pin a new one will be generated
      */
     private long createPin(){
-        long tryPin = 10000000 + this.rand.nextLong(90000000);
+        long tryPin = 100000 + this.rand.nextLong(900000);
         while(checkIfPinExists(tryPin)){
-            tryPin = 10000000 + this.rand.nextLong(90000000);
+            tryPin = 100000 + this.rand.nextLong(900000);
         }
         return tryPin;
     }

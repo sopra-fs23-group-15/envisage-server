@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.BlankImage;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
@@ -63,6 +64,25 @@ class PlayerImageServiceTest {
     }
 
     @Test
+    void createImage_blankImage(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testUser"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+        gameService.createGame(lobby.getPin());
+        Round round = roundService.createRound(lobby.getPin());
+
+        Keywords keywords = new Keywords();
+        keywords.setKeywords("");
+        keywords.setEnvironment("development");
+        PlayerImage playerImage = playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1");
+        assertEquals(BlankImage.WHITE, playerImage.getImage());
+
+    }
+
+    @Test
     void createImage_gameDoesNotExist(){
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
@@ -110,16 +130,37 @@ class PlayerImageServiceTest {
 
     @Test
     void updatesVotesImages_noSuchPlayerImage(){
-        assertThrows(PlayerImageDoesNotExistException.class, () -> playerImageService.updatesVotesImages(1));
+        Player player = new Player();
+        assertThrows(PlayerImageDoesNotExistException.class, () -> playerImageService.updatesVotesImages(1L, player));
+    }
+
+    @Test
+    void updatesVotesImages_IdAndPlayerDontMatch(){
+        Player player = new Player();
+        player.setUserName("Hans");
+        Player player2 = new Player();
+        player2.setUserName("Albert");
+        playerRepository.save(player2);
+        playerRepository.flush();
+        PlayerImage playerImage = new PlayerImage();
+        playerImage.setPlayer(player2);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+        assertThrows(ImageIdDoesNotMatchPlayerException.class, () -> playerImageService.updatesVotesImages(playerImage.getId(), player));
     }
 
     @Test
     void updatesVotesImages_Success(){
         PlayerImage playerImage = new PlayerImage();
         playerImage.setVotes(0);
+        Player player = new Player();
+        player.setUserName("Bernd");
+        playerRepository.save(player);
+        playerRepository.flush();
+        playerImage.setPlayer(player);
         playerImageRepository.save(playerImage);
         playerImageRepository.flush();
-        playerImageService.updatesVotesImages(playerImage.getId());
+        playerImageService.updatesVotesImages(playerImage.getId(), player);
 
         assertEquals(1, playerImage.getVotes());
 
@@ -141,6 +182,30 @@ class PlayerImageServiceTest {
         roundRepository.save(round);
         roundRepository.flush();
         assertThrows(ImagesDontExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
+    }
+
+    @Test
+    void getImagesFromRound_ExceptionGame(){
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+
+        assertThrows(GameDoesNotExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
+    }
+
+    @Test
+    void getImagesFromRound_ExceptionRound(){
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+
+        assertThrows(RoundDoesNotExistException.class, () -> playerImageService.getImagesFromRound(12345L, 3));
     }
 
     @Test

@@ -4,12 +4,15 @@ import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
+import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +22,9 @@ class LobbyServiceTest {
 
     @Autowired
     LobbyService lobbyService;
+
+    @Autowired
+    LobbyRepository lobbyRepository;
 
     @Test
     void createLobby_configureParameters(){
@@ -63,7 +69,7 @@ class LobbyServiceTest {
         Lobby lobby = lobbyService.createLobby();
         Player player = new Player();
         player.setUserName("testplayer1");
-        Lobby newLobby = lobbyService.addPlayer(player, lobby.getPin());
+        lobbyService.addPlayer(player, lobby.getPin());
         assertThrows(LobbyDoesNotExistException.class, () -> lobbyService.addPlayer(player, 2));
     }
 
@@ -77,5 +83,24 @@ class LobbyServiceTest {
         Player duplicatePlayer = new Player();
         duplicatePlayer.setUserName("testplayer1");
         assertThrows(DuplicateUserException.class, () -> lobbyService.addPlayer(duplicatePlayer, newLobby.getPin()));
+    }
+
+    @Test
+    void getLobbies(){
+        Lobby lobby = new Lobby();
+        lobby.setPin(123L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+
+        List<Lobby> lobbyList = lobbyService.getLobbies();
+
+        Lobby lobby2 = new Lobby();
+        lobby2.setPin(234L);
+        lobbyRepository.save(lobby2);
+        lobbyRepository.flush();
+
+        List<Lobby> lobbyList2 = lobbyService.getLobbies();
+
+        assertEquals( lobbyList.size()+1, lobbyList2.size());
     }
 }

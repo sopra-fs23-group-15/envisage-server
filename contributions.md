@@ -10,7 +10,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/38 (implement method to get the first image prompt from the met museum API)
 
 **Sprint1 Week3**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/81 (subscribe to websocket to get notified when player joined the lobby and when a game starts all players get navigated to next page)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/131 (subscribe to websocket to get notified when player joined the lobby and when a game starts all players get navigated to next page)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/32 (show same requirement to each player in the same lobby)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/38 (show same requirement to each player in the same lobby)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/31 (show same image to each player in the same image)
@@ -21,9 +21,11 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/77 (create challenge entity that has StyleRequirement Entity and ImagePrompt Entity (Xue and I came up with imagePromptIdeas=StyleRequirements) and implement logic for challenge Entity)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/37 (if there are multiple winning images then one of the images is chosen randomly (not really randomly because that would lead to a conflict with the challengeEntity))
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/43 (with finishing the challenge entity this is done as well, because a met Museum image is chosen again)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/50 (is completed as well with the server task above)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/37 (players get a new style requirement each round with websocket)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/36 (websocket endpoint "/lobbies/{lobbyId}/challengeForRounds/{roundId}" with a new style requirement prompt)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/35 (websocket endpoint "/lobbies/{lobbyId}/challengeForRounds/{roundId}" with the most voted on image from the previous round)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/30 (submit prompt to dall e API)
 
 **Sprint2 Week1 (Week5)**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/82 (prompt is limited to 400 characters)
@@ -34,6 +36,14 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/111 (fix issue that end view will be displayed after configured number of rounds)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/54 (implement a GET request to get all winning images)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/55 (send images with round information metadata so that frontend can show from first to last)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/129 (Fix issue why subsequent rounds can't be started anymore)
+
+**Sprint2 Week3 (Week7)**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/57 (send chosen category to the server and get the corresponding image for all players in the first round)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/56 (show categories to the lobby creator for the image displayed in the first round)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/58 (chosen category is passed as a parameter to the server)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/59 (upon receiving the category the server sends an image from that category to the UI for the first round)
+
 
 ## Moritz
 **Sprint1 Week1**
@@ -158,6 +168,7 @@
 **Sprint1 Week4**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/25
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/36
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/78
 
 **Sprint1 Week5**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/35

@@ -77,12 +77,14 @@ class DTOMapperTest {
         playerImage.setId(3L);
         playerImage.setPlayer(player);
         playerImage.setVotes(3);
+        playerImage.setImage("imageUrl");
 
         PlayerImageDTO playerImageDTO = DTOMapper.INSTANCE.convertEntityToPlayerImageDTO(playerImage);
 
         assertEquals(playerImageDTO.getId(), playerImage.getId());
         assertEquals(playerImageDTO.getPlayer(), playerImage.getPlayer().getUserName());
         assertEquals(playerImageDTO.getVotes(), playerImage.getVotes());
+        assertEquals(playerImageDTO.getImage(), playerImage.getImage());
     }
 
     @Test
