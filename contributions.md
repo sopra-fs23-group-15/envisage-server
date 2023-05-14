@@ -66,7 +66,6 @@
 
 ## Nikita
 **Sprint1 Week1**
-* https://github.com/sopra-fs23-group-15/envisage-server/issues/3
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/25
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/26
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/62
