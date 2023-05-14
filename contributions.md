@@ -139,7 +139,8 @@
 
 **Sprint2 Week3**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/105
-* 
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/124
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/133
 
 **Sprint2 Week4**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/104
