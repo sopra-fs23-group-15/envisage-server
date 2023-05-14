@@ -33,7 +33,6 @@ public class MetMuseumAPIService {
         String filePath = getFilePath(category);
         List<Integer> objectIDList = readFile(filePath);
         Integer objectID = objectIDList.get(this.rand.nextInt(objectIDList.size()));
-
         return getImageUrl(objectID);
     }
 
