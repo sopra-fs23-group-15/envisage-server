@@ -170,6 +170,13 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/36
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/78
 
-**Sprint1 Week5**
+**Sprint2 Week1(Week5)**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/35
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/101
+
+**Sprint2 Week2(Week6)**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/39 (Fixed issues of the final page leaderboard to make it dynamic)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/40 (Fixed issues of the final page leaderboard to make it dynamic)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/41 (Made the final winner only appear after all votes get collected)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/78
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/103 
