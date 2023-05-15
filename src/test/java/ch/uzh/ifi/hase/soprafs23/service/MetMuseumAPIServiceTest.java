@@ -13,9 +13,34 @@ class MetMuseumAPIServiceTest {
     private MetMuseumAPIService metMuseumAPIService;
 
     @Test
-    void getImageFromMetMuseum(){
+    void getImageFromMetMuseum_random(){
         assertNotNull(metMuseumAPIService.getImageFromMetMuseum("random"));
     }
 
+
+    @Test
+    void getImageFromMetMuseum_abstract_art(){
+        assertNotNull(metMuseumAPIService.getImageFromMetMuseum("abstract art"));
+    }
+
+    @Test
+    void getImageFromMetMuseum_still_life(){
+        assertNotNull(metMuseumAPIService.getImageFromMetMuseum("still_life"));
+    }
+
+    @Test
+    void getImageFromMetMuseum_postcard(){
+        assertNotNull(metMuseumAPIService.getImageFromMetMuseum("postcard"));
+    }
+
+    @Test
+    void getImageFromMetMuseum_portrait(){
+        assertNotNull(metMuseumAPIService.getImageFromMetMuseum("portrait"));
+    }
+
+    @Test
+    void getImageFromMetMuseum_landscape(){
+        assertNotNull(metMuseumAPIService.getImageFromMetMuseum("landscape"));
+    }
 
 }

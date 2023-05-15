@@ -50,7 +50,6 @@ public class DalleAPIService {
             httppost.setHeader("Authorization", "Bearer " + apiKey);
 
 // Set request body
-//            StringEntity requestEntity = new StringEntity("{\"response_format\":\"" + responseFormat + "\", \"prompt\": \"" + prompt + "\", \"n\": numImages, \"size\": \"256x256\"}");
             // Define the JSON request body
             JSONObject requestBody = new JSONObject();
             requestBody.put("prompt", prompt);

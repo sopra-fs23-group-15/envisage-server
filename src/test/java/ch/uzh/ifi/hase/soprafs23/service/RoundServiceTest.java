@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
+import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
@@ -54,10 +55,28 @@ class RoundServiceTest {
             lobbyService.addPlayer(player, lobby.getPin());
         }
 
-        gameService.createGame(lobby.getPin());
+        Game game = gameService.createGame(lobby.getPin());
         Round newRound = roundService.createRound(lobby.getPin());
         assertEquals(2, newRound.getRoundNumber());
         assertEquals(2, newRound.getGame().getRounds().size());
+        assertEquals(GameStatus.IN_PROGRESS, game.getStatus());
+        assertNotNull(newRound.getGame());
+    }
+
+    @Test
+    void createRound_2(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i< EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testplayer"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+
+        gameService.createGame(lobby.getPin());
+        roundService.createRound(lobby.getPin());
+        Round newRound = roundService.createRound(lobby.getPin());
+        assertEquals(3, newRound.getRoundNumber());
+        assertEquals(3, newRound.getGame().getRounds().size());
         assertNotNull(newRound.getGame());
     }
 
