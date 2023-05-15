@@ -4,7 +4,6 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
-import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -229,6 +228,24 @@ class LobbyControllerTest {
                 .andExpect(result -> assertEquals("404 NOT_FOUND \"Lobby with pin 87654321 does not exist\"", result.getResolvedException().getMessage()));
     }
 
+
+    @Test
+    void restartGame_success() throws Exception {
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(12345678L);
+        game.setLobby(lobby);
+
+        given(gameService.createGame(anyLong())).willReturn(game);
+
+        MockHttpServletRequestBuilder postRequest = post("/lobbies/12345678/games/restarts").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(postRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.rounds", is(game.getRounds())))
+                .andExpect(jsonPath("$.playerScores", is(game.getPlayerScores())))
+                .andExpect(jsonPath("$.lobbyPin", is(game.getLobby().getPin().intValue())))
+                .andExpect(jsonPath("$.status", is(game.getStatus())));
+    }
 
     @Test
     void restartGame_LobbyDoesNotExist() throws Exception {

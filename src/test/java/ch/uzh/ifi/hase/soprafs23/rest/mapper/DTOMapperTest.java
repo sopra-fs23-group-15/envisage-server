@@ -20,14 +20,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class DTOMapperTest {
 
     @Test
-    void test_fromEntity_toLobbyGetDTO_success() {
+    void test_fromEntity_toLobbyGetDTO() {
         Lobby lobby = new Lobby();
         List<Player> playerList = new ArrayList<>();
 
         lobby.setPin(1L);
         lobby.setPlayers(playerList);
+        lobby.setNumberOfRounds(1);
+        lobby.setRoundDuration(20);
 
         LobbyGetDTO lobbyGetDTO = DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+
+        GameDTO game = DTOMapper.INSTANCE.convertEntityToGameDTO(lobby.getGame());
 
         List<Player> playerList1 = lobby.getPlayers();
         List<PlayerGetDTO> playerGetDTOS = new ArrayList<>();
@@ -35,24 +39,37 @@ class DTOMapperTest {
             playerGetDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player));
         }
 
-
         assertEquals(lobby.getPin(), lobbyGetDTO.getPin());
+        assertEquals(lobby.getNumberOfRounds(), lobbyGetDTO.getNumberOfRounds());
+        assertEquals(lobby.getRoundDuration(), lobbyGetDTO.getRoundDuration());
         assertEquals(playerGetDTOS, lobbyGetDTO.getPlayers());
-        assertEquals(DTOMapper.INSTANCE.convertEntityToGameDTO(lobby.getGame()), lobbyGetDTO.getGame());
+        assertEquals(game, lobbyGetDTO.getGame());
     }
 
     @Test
-    void test_fromPlayerPostDTO_toEntity_success() {
+    void test_fromLobbyPostDTO_toEntity(){
+        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
+        lobbyPostDTO.setNoOfRounds(3);
+        lobbyPostDTO.setRoundDurationInSeconds(40);
+
+        Lobby lobby = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
+
+        assertEquals(lobbyPostDTO.getNoOfRounds(), lobby.getNumberOfRounds());
+        assertEquals(lobbyPostDTO.getRoundDurationInSeconds(), lobby.getRoundDuration());
+    }
+
+    @Test
+    void test_fromPlayerPostDTO_toEntity() {
         PlayerPostDTO playerPostDTO = new PlayerPostDTO();
         playerPostDTO.setUserName("Gertrude");
 
         Player player = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
 
-        assertEquals(player.getUserName(), playerPostDTO.getUserName());
+        assertEquals(playerPostDTO.getUserName(), player.getUserName());
     }
 
     @Test
-    void test_fromEntity_toPlayerGetDTO_success() {
+    void test_fromEntity_toPlayerGetDTO() {
         Player player = new Player();
         Lobby lobby = new Lobby();
         lobby.setPin(12345678L);
@@ -199,18 +216,6 @@ class DTOMapperTest {
         assertEquals(playerGetImageDTO.getRound(), playerImage.getRound().getRoundNumber());
     }
 
-
-    @Test
-    void test_fromLobbyPostDTO_toEntity(){
-        LobbyPostDTO lobbyPostDTO = new LobbyPostDTO();
-        lobbyPostDTO.setNoOfRounds(3);
-        lobbyPostDTO.setRoundDurationInSeconds(40);
-
-        Lobby lobby = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
-
-        assertEquals(lobbyPostDTO.getNoOfRounds(), lobby.getNumberOfRounds());
-        assertEquals(lobbyPostDTO.getRoundDurationInSeconds(), lobby.getRoundDuration());
-    }
 
 
 }

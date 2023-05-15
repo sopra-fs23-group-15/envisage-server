@@ -60,10 +60,6 @@ public class Game {
                 );
     }
 
-    public void addPlayerScore(PlayerScore playerScore){
-        playerScores.add(playerScore);
-    }
-
     public Lobby getLobby() {
         return lobby;
     }

@@ -279,6 +279,38 @@ class PlayerImageServiceTest {
     }
 
     @Test
+    void getWinningImage_2(){
+        PlayerImage playerImage = new PlayerImage();
+        PlayerImage playerImage2 = new PlayerImage();
+        Round round = new Round();
+        Game game = new Game();
+        Lobby lobby = new Lobby();
+        lobby.setPin(1234L);
+        lobbyRepository.save(lobby);
+        lobbyRepository.flush();
+        game.setLobby(lobby);
+        gameRepository.save(game);
+        gameRepository.flush();
+        round.setRoundNumber(1);
+        round.setGame(game);
+        roundRepository.save(round);
+        roundRepository.flush();
+        playerImage.setRound(round);
+        playerImage.setKeywords("Envisage");
+        playerImage.setVotes(3);
+        playerImage2.setRound(round);
+        playerImage2.setKeywords("Envisage2");
+        playerImage2.setVotes(4);
+        playerImageRepository.save(playerImage);
+        playerImageRepository.flush();
+
+        PlayerImage winner = playerImageService.getWinningImage(1234L, 1);
+
+        assertEquals(winner, playerImage);
+        assertNotEquals(winner, playerImage2);
+    }
+
+    @Test
     void getImagesOfPlayer(){
         // create lobby and add players
         Lobby lobby = lobbyService.createLobby();

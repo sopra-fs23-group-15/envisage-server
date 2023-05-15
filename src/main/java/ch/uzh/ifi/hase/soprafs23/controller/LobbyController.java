@@ -100,7 +100,6 @@ public class LobbyController {
     }
 
 
-    // might be not needed anymore as Websocket returns lobby when player joins lobby
     // retrieves lobby (throws 404 if no such lobby exists)
     @GetMapping("/lobbies/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)

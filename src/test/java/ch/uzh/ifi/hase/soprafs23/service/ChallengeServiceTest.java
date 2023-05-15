@@ -81,6 +81,7 @@ class ChallengeServiceTest {
         assertNotNull(createdChallenge.getImagePrompt());
         assertEquals( playerImage.getImage(), createdChallenge.getImagePrompt().getImage());
         assertEquals(ImageType.URL, createdChallenge.getImagePrompt().getImageType());
+        assertEquals(2, createdChallenge.getRoundNr());
     }
 
 }
