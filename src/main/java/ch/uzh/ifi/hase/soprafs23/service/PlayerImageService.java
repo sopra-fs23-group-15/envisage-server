@@ -78,7 +78,7 @@ public class PlayerImageService {
            generatedImage = metMuseumAPIService.getImageFromMetMuseum("random");
         }
         else{
-            JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords.getKeywords());
+            JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords);
             generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
         }
 
