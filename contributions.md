@@ -43,6 +43,8 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/56 (show categories to the lobby creator for the image displayed in the first round)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/58 (chosen category is passed as a parameter to the server)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/59 (upon receiving the category the server sends an image from that category to the UI for the first round)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/145 (ensure that websockets work after reloading page)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/144 (create logo and change the favicon to the logo)
 
 
 ## Moritz

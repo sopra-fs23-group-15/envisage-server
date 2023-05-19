@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.entity.Keywords;
 import ch.uzh.ifi.hase.soprafs23.exceptions.KeywordsLimitException;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -37,7 +38,8 @@ public class DalleAPIService {
         }
     }
 
-    public JSONObject getImageFromDALLE(String prompt) { //its not blob
+    public JSONObject getImageFromDALLE(Keywords keywords) { //its not blob
+        String prompt = keywords.getKeywords();
         if (prompt.length() > 400){
             throw new KeywordsLimitException(prompt.length());
         }
@@ -52,7 +54,7 @@ public class DalleAPIService {
 // Set request body
             // Define the JSON request body
             JSONObject requestBody = new JSONObject();
-            requestBody.put("prompt", prompt);
+            requestBody.put("prompt", keywords.getKeywords());
             requestBody.put("n", numImages);
             requestBody.put("size", "256x256");
             requestBody.put("response_format", responseFormat);
@@ -73,7 +75,6 @@ public class DalleAPIService {
             jsonResponse.put("DUMMY_VAR", System.getenv("DUMMY_ENV_VAR"));
             jsonResponse.put("request", requestBody);
 // Download image and save locally
-            System.out.println(apiKey);
 // Clean up resources
             EntityUtils.consume(entity);
             response.close();
