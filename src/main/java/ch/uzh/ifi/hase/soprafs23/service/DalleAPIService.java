@@ -57,7 +57,7 @@ public class DalleAPIService {
             JSONObject requestBody = new JSONObject();
             requestBody.put("prompt", keywords.getKeywords());
             requestBody.put("n", numImages);
-            requestBody.put("size", "256x256");
+            requestBody.put("size", ImageSize.SMALL.strSize);
             requestBody.put("response_format", responseFormat);
 
 // Create a StringEntity from the JSON request body
