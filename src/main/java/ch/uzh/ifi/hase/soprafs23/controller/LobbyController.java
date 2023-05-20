@@ -82,12 +82,8 @@ public class LobbyController {
             return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(createdPlayer);
         } catch(LobbyDoesNotExistException lde){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, lde.getMessage());
-        } catch(DuplicateUserException due){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, due.getMessage());
-        } catch(MaxPlayersReachedException mpre){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, mpre.getMessage());
-        } catch(GameInProgressException gipe){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, gipe.getMessage());
+        } catch(DuplicateUserException | MaxPlayersReachedException | GameInProgressException exception){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, exception.getMessage());
         }
     }
 
@@ -154,10 +150,8 @@ public class LobbyController {
         try {
             Round roundAddedGame = roundService.createRound(lobbyId);
             return DTOMapper.INSTANCE.convertEntityToRoundDTO(roundAddedGame);
-        } catch(LobbyDoesNotExistException ldne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
-        } catch(GameDoesNotExistException gdne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
+        } catch(LobbyDoesNotExistException | GameDoesNotExistException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
     }
 
@@ -169,10 +163,8 @@ public class LobbyController {
             long gameId = gameService.getGame(lobbyId).getId();
             Round foundRound = roundService.getRound(roundId, gameId);
             return DTOMapper.INSTANCE.convertEntityToRoundDTO(foundRound);
-        } catch (LobbyDoesNotExistException ldne) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
-        } catch (RoundDoesNotExistException rdne) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        } catch (LobbyDoesNotExistException | RoundDoesNotExistException exception) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
     }
 
@@ -185,16 +177,10 @@ public class LobbyController {
             Keywords keywords = DTOMapper.INSTANCE.convertKeywordsDTOtoEntity(keywordsDTO);
             PlayerImage playerImage = playerImageService.createImage(keywords, lobbyId, roundId, username);
             return DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage);
-        } catch (PlayerDoesNotExistException pdne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pdne.getMessage());
-        } catch (GameDoesNotExistException gme){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
-        } catch (RoundDoesNotExistException rdne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
-        } catch (KeywordsLimitException kle){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, kle.getMessage());
-        } catch(PlayerImageDuplicateException pie){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, pie.getMessage());
+        } catch (PlayerDoesNotExistException | GameDoesNotExistException | RoundDoesNotExistException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        } catch (KeywordsLimitException | PlayerImageDuplicateException exception){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, exception.getMessage());
         }
     }
 
@@ -210,12 +196,8 @@ public class LobbyController {
                 playerImageGetDTOList.add(DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage));
             }
             return playerImageGetDTOList;
-        } catch (ImagesDontExistException ide){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
-        } catch (GameDoesNotExistException gme){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
-        } catch (RoundDoesNotExistException rdne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        } catch (ImagesDontExistException | GameDoesNotExistException | RoundDoesNotExistException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
     }
 
@@ -247,16 +229,9 @@ public class LobbyController {
             playerImageService.updatesVotesImages(imageId, playerScore.getPlayer());
             return DTOMapper.INSTANCE.convertEntityToGameDTO(updatedGame);
         }
-        catch (LobbyDoesNotExistException ldne) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
-        }
-        catch (GameDoesNotExistException gdne) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gdne.getMessage());
-        }
-        catch(PlayerImageDoesNotExistException pide){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, pide.getMessage());
-        }
-        catch (ImageIdDoesNotMatchPlayerException iidnmp){
+        catch (LobbyDoesNotExistException | GameDoesNotExistException | PlayerImageDoesNotExistException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        } catch (ImageIdDoesNotMatchPlayerException iidnmp){
             throw new ResponseStatusException(HttpStatus.CONFLICT, iidnmp.getMessage());
         }
     }
@@ -286,14 +261,8 @@ public class LobbyController {
                 winningImageListDTO.add(DTOMapper.INSTANCE.convertEntityToPlayerImageGetDTO(playerImage));
             }
             return winningImageListDTO;
-        } catch (ImagesDontExistException ide){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ide.getMessage());
-        } catch (LobbyDoesNotExistException ldne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
-        } catch (GameDoesNotExistException gme){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, gme.getMessage());
-        } catch (RoundDoesNotExistException rdne){
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, rdne.getMessage());
+        } catch (ImagesDontExistException | LobbyDoesNotExistException | GameDoesNotExistException | RoundDoesNotExistException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
     }
 }
