@@ -8,4 +8,6 @@ public interface EnvisageConstants {
     int DEFAULT_NO_OF_ROUNDS = 5;
 
     int DEFAULT_ROUND_DURATION_IN_SECONDS = 60;
+
+    int MAX_KEYWORDS_LENGTH = 400;
 }

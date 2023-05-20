@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.Keywords;
 import ch.uzh.ifi.hase.soprafs23.exceptions.KeywordsLimitException;
 import org.apache.http.HttpEntity;
@@ -40,7 +41,7 @@ public class DalleAPIService {
 
     public JSONObject getImageFromDALLE(Keywords keywords) { //its not blob
         String prompt = keywords.getKeywords();
-        if (prompt.length() > 400){
+        if (prompt.length() > EnvisageConstants.MAX_KEYWORDS_LENGTH){
             throw new KeywordsLimitException(prompt.length());
         }
         try {

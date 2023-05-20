@@ -6,9 +6,6 @@ public class PlayerGetDTO {
 
     private String userName;
 
-    // true == lobbyCreator
-    // false == not LobbyCreator
-
     private boolean lobbyCreator;
 
     // pin is lobbyId

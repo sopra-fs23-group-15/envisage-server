@@ -18,12 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-/**
- * Player Service
- * This class is the "worker" and responsible for all functionality related to
- * the player
- */
-
 @Service
 @Transactional
 public class PlayerService {

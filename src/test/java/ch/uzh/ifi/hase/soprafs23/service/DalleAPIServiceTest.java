@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.Keywords;
 import ch.uzh.ifi.hase.soprafs23.exceptions.KeywordsLimitException;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,10 @@ class DalleAPIServiceTest {
     @Test
     void getImageFromMetMuseum_exception_inputTooLong(){
         Keywords keywords = new Keywords();
-        String prompt = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijk";
+        String prompt = "";
+        for(int i = 0; i<=EnvisageConstants.MAX_KEYWORDS_LENGTH; i++){
+            prompt += "a";
+        }
         keywords.setKeywords(prompt);
         assertThrows(KeywordsLimitException.class, () -> dalleAPIService.getImageFromDALLE(keywords));
     }

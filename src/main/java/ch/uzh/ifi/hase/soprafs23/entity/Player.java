@@ -6,13 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Internal Player Representation
- * - nullable = false -> this cannot be left empty
- * - unique = true -> this value must be unqiue across the database -> composes
- * the primary key
- */
-
 @Entity
 @Table(name = "PLAYER")
 public class Player implements Serializable {

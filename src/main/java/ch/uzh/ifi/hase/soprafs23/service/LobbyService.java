@@ -16,11 +16,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.List;
 
-/**
-* Lobby Service
-* This class is the "worker" and responsible for all functionality related to
-* the lobby
-*/
+
 @Service
 @Transactional
 public class LobbyService {

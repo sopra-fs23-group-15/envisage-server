@@ -11,12 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-/**
- * DTOMapperTest
- * Tests if the mapping between the internal and the external/API representation
- * works.
- */
-
 class DTOMapperTest {
 
     @Test
