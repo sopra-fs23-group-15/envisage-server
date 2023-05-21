@@ -19,7 +19,6 @@ public class PlayerScore {
     private int score;
 
 
-    // getters and setters
     public Long getId() {
         return id;
     }

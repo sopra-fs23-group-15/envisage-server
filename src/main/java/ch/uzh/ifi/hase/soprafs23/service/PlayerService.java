@@ -30,12 +30,7 @@ public class PlayerService {
         this.lobbyRepository = lobbyRepository;
     }
 
-    /**
-     * method to create a new player
-     * @param newPlayer
-     * @param lobbyPin
-     * @return
-     */
+
     public Player addPlayer(Player newPlayer, long lobbyPin) {
         Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
 

@@ -24,7 +24,6 @@ public class Lobby{
         players.add(player);
     }
 
-    // getters and setters
     public Long getPin() {
         return pin;
     }

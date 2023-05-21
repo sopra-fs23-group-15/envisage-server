@@ -100,7 +100,7 @@ public class LobbyController {
         }
     }
 
-    // restart game (throws 404 if no such lobby exists)
+    // restart game (throws 404 if no such lobby/game exists or 409 if not enough players are in lobby)
     @PostMapping("/lobbies/{lobbyId}/games/restarts")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

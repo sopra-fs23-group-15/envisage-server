@@ -61,10 +61,8 @@ class LobbyRepositoryTest {
         entityManager.persist(lobby);
         entityManager.flush();
 
-        // when
         Lobby found = lobbyRepository.findByPin(123L);
 
-        // then
         assertNull(found);
     }
 

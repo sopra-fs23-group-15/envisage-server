@@ -32,10 +32,8 @@ class PlayerRepositoryTest {
         entityManager.persist(lobby);
         entityManager.flush();
 
-        // when
         Player foundPlayer = playerRepository.findPlayerByUserNameAndAndLobby_Pin(player.getUserName(), lobby.getPin());
 
-        // then
         assertNotNull(foundPlayer);
         assertEquals(player.getUserName(), foundPlayer.getUserName());
         assertEquals(lobby.getPin(), foundPlayer.getLobby().getPin());
@@ -48,10 +46,8 @@ class PlayerRepositoryTest {
         entityManager.persist(lobby);
         entityManager.flush();
 
-        // when
         Player foundPlayer = playerRepository.findPlayerByUserNameAndAndLobby_Pin("testuser1", lobby.getPin());
 
-        // then
         assertNull(foundPlayer);
     }
 
@@ -62,10 +58,8 @@ class PlayerRepositoryTest {
         entityManager.persist(player);
         entityManager.flush();
 
-        // when
         Player foundPlayer = playerRepository.findPlayerByUserNameAndAndLobby_Pin(player.getUserName(), 1L);
 
-        // then
         assertNull(foundPlayer);
     }
 }

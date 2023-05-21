@@ -41,10 +41,8 @@ class PlayerImageRepositoryTest {
             entityManager.flush();
         }
 
-        // when
         List<PlayerImage> playerImages = playerImageRepository.findAllByRound(round);
 
-        // then
         assertEquals(2, playerImages.size());
         assertEquals("1", playerImages.get(0).getKeywords());
         assertEquals("2", playerImages.get(1).getKeywords());
@@ -63,12 +61,11 @@ class PlayerImageRepositoryTest {
         entityManager.persist(round);
         entityManager.flush();
 
-        // when
         List<PlayerImage> playerImages = playerImageRepository.findAllByRound(round);
 
-        // then
         assertEquals(0, playerImages.size());
     }
+
     @Test
     void findByPlayerAndRound(){
         Round round = new Round();
@@ -88,13 +85,12 @@ class PlayerImageRepositoryTest {
         entityManager.persist(playerImage);
         entityManager.flush();
 
-        // when
         PlayerImage foundImage = playerImageRepository.findByPlayerAndRound(player, round);
 
-        // then
         assertNotNull(foundImage);
         assertEquals("1", foundImage.getKeywords());
     }
+
     @Test
     void findByPlayerAndRound_PlayerHasNoImages(){
         Round round = new Round();
@@ -107,12 +103,11 @@ class PlayerImageRepositoryTest {
         entityManager.persist(player);
         entityManager.flush();
 
-        // when
         PlayerImage foundImage = playerImageRepository.findByPlayerAndRound(player, round);
 
-        // then
         assertNull(foundImage);
     }
+
     @Test
     void findByPlayerAndRound_NoImagesInRound(){
         Round round = new Round();
@@ -125,17 +120,14 @@ class PlayerImageRepositoryTest {
         entityManager.persist(player);
         entityManager.flush();
 
-        // image created but not assigned to round
         PlayerImage playerImage = new PlayerImage();
         playerImage.setPlayer(player);
         playerImage.setKeywords("1");
         entityManager.persist(playerImage);
         entityManager.flush();
 
-        // when
         PlayerImage foundImage = playerImageRepository.findByPlayerAndRound(player, round);
 
-        // then
         assertNull(foundImage);
     }
     @Test
@@ -172,10 +164,8 @@ class PlayerImageRepositoryTest {
         entityManager.persist(playerImage);
         entityManager.flush();
 
-        // when
         PlayerImage foundImage = playerImageRepository.findById(1L);
 
-        // then
         assertNull(foundImage);
     }
 

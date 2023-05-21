@@ -26,7 +26,6 @@ public class Round {
         this.id = id;
     }
 
-    // getters and setters
     public int getRoundNumber() {
         return roundNumber;
     }

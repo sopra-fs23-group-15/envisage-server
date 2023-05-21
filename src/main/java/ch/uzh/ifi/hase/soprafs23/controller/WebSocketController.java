@@ -31,9 +31,7 @@ public class WebSocketController {
 
 
 
-    // @MessageMapping is used for repetitive messaging from server to clients
     @MessageMapping("/lobbies/{lobbyId}/lobbyJoin")
-    //return value is broadcast to all subscribers of /topic/{lobbyId}
     @SendTo("/topic/lobbies/{lobbyId}")
     @Transactional
     public void getLobby(@DestinationVariable long lobbyId){

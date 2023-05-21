@@ -29,7 +29,6 @@ public class PlayerImage implements Serializable {
 
     private int votes;
 
-    // getters and setters
     public Long getId() {
         return id;
     }
