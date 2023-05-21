@@ -6,8 +6,11 @@ import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
 import ch.uzh.ifi.hase.soprafs23.entity.PlayerScore;
+import ch.uzh.ifi.hase.soprafs23.exceptions.GameAlreadyExistsException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.NotEnoughPlayersException;
+import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,13 +18,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class GameServiceTest {
+class GameServiceTest {
 
     @Autowired
     private GameService gameService;
 
     @Autowired
     private LobbyService lobbyService;
+
+    @Autowired
+    private GameRepository gameRepository;
 
 
     @Test
@@ -32,7 +38,7 @@ public class GameServiceTest {
            player.setUserName("testplayer"+(i+1));
            lobbyService.addPlayer(player, lobby.getPin());
        }
-       Game game = gameService.createGame(lobby.getPin());
+       gameService.createGame(lobby.getPin());
 
        assertEquals(lobby.getPin(), gameService.getGame(lobby.getPin()).getLobby().getPin());
     }
@@ -81,5 +87,59 @@ public class GameServiceTest {
         player.setUserName("testplayer");
         lobbyService.addPlayer(player, lobby.getPin());
         assertThrows(NotEnoughPlayersException.class, () -> {gameService.createGame(lobby.getPin());});
+    }
+
+    @Test
+    void createGame_GameAlreadyExists(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testplayer"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+
+        gameService.createGame(lobby.getPin());
+
+        assertThrows(GameAlreadyExistsException.class, () -> {gameService.createGame(lobby.getPin());});
+    }
+
+    @Test
+    void restartGame_LobbyDoesntExist(){
+        assertThrows(LobbyDoesNotExistException.class, () -> {gameService.restartGame(99999999L);});
+    }
+
+    @Test
+    void restartGame_GameDoesntExist(){
+        Lobby lobby = lobbyService.createLobby();
+        assertThrows(GameDoesNotExistException.class, () -> {gameService.restartGame(lobby.getPin());});
+    }
+
+    @Test
+    void restartGame_notEnoughPlayers(){
+        Lobby lobby = lobbyService.createLobby();
+        Player player = new Player();
+        player.setUserName("Timothy");
+        Player player2 = new Player();
+        player2.setUserName("Hubertus");
+        lobbyService.addPlayer(player, lobby.getPin());
+        lobbyService.addPlayer(player2, lobby.getPin());
+        assertThrows(NotEnoughPlayersException.class, () -> {gameService.createGame(lobby.getPin());});
+    }
+
+    @Test
+    void restartGame_success(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testplayer"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+
+        gameService.createGame(lobby.getPin());
+
+        gameService.restartGame(lobby.getPin());
+
+        assertNull(lobby.getGame());
+        assertNull(gameRepository.findByLobbyPin(lobby.getPin()));
     }
 }
