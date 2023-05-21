@@ -14,7 +14,6 @@ public class ImagePrompt {
 
     private String image;
 
-    // getters and setters
     public Long getId() {
         return id;
     }

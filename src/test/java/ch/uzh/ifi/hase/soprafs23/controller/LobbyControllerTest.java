@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -182,6 +183,46 @@ class LobbyControllerTest {
 
         mockMvc.perform(postRequest)
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    void removePlayer_success () throws Exception{
+        long lobbyId = 12345678L;
+        String username = "Rupert";
+
+        doNothing().when(playerService).removePlayerFromLobby(lobbyId, username);
+        doNothing().when(lobbyService).deleteLobby(lobbyId);
+
+        MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/12345678/Rupert").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(deleteRequest).andExpect(status().isOk());
+    }
+
+    @Test
+    void removePlayer_failurePlayerDoesNotExist () throws Exception{
+        String username = "Rupert";
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(String.format("Player with username %s does not exist", username))))
+                .given(playerService).removePlayerFromLobby(anyLong(), anyString());
+
+        MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/12345678/Rupert").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(deleteRequest).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void removePlayer_failureLobbyDoesNotExist () throws Exception{
+        long lobbyId = 12345678L;
+        String username = "Rupert";
+
+        doNothing().when(playerService).removePlayerFromLobby(lobbyId, username);
+
+        willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Lobby with pin %s does not exist", lobbyId)))
+                .given(lobbyService).deleteLobby(anyLong());
+
+        MockHttpServletRequestBuilder deleteRequest = delete("/lobbies/12345678/Rupert").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(deleteRequest).andExpect(status().isNotFound());
     }
 
     @Test

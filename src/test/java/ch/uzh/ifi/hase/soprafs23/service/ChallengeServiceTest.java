@@ -40,9 +40,13 @@ class ChallengeServiceTest {
         Round round = new Round();
         round.setRoundNumber(1);
         Challenge createdChallenge = challengeService.createChallengeForRound(12345678L, 1, "random");
+        createdChallenge.setId(1L);
         assertEquals(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS, createdChallenge.getDurationInSeconds());
+        assertEquals(1L, createdChallenge.getId());
         assertNotNull(createdChallenge.getStyleRequirement());
+        assertNotNull(createdChallenge.getStyleRequirement().getStyle());
         assertNotNull(createdChallenge.getImagePrompt());
+        assertEquals("random", createdChallenge.getCategory());
         assertEquals(ImageType.URL, createdChallenge.getImagePrompt().getImageType());
 
     }
@@ -81,6 +85,7 @@ class ChallengeServiceTest {
         assertNotNull(createdChallenge.getImagePrompt());
         assertEquals( playerImage.getImage(), createdChallenge.getImagePrompt().getImage());
         assertEquals(ImageType.URL, createdChallenge.getImagePrompt().getImageType());
+        assertEquals("random", createdChallenge.getCategory());
         assertEquals(2, createdChallenge.getRoundNr());
     }
 

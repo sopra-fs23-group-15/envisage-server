@@ -26,6 +26,9 @@ class LobbyServiceTest {
     @Autowired
     LobbyRepository lobbyRepository;
 
+    @Autowired
+    PlayerService playerService;
+
     @Test
     void createLobby_configureParameters(){
         Lobby lobby = lobbyService.createLobby(2, 30);
@@ -102,5 +105,37 @@ class LobbyServiceTest {
         List<Lobby> lobbyList2 = lobbyService.getLobbies();
 
         assertEquals( lobbyList.size()+1, lobbyList2.size());
+    }
+
+    @Test
+    void deleteLobby_noLobby(){
+        assertThrows(LobbyDoesNotExistException.class, () -> lobbyService.deleteLobby(888888888L));
+    }
+
+    @Test
+    void deleteLobby_success(){
+        Lobby lobby = lobbyService.createLobby();
+        long lobbyPin = lobby.getPin();
+
+        Player player = new Player();
+        player.setUserName("Anna");
+        Player player2 = new Player();
+        player2.setUserName("Simon");
+
+        playerService.addPlayer(player, lobbyPin);
+        playerService.addPlayer(player2, lobbyPin);
+
+        assertEquals(2, lobby.getPlayers().size());
+
+        playerService.removePlayerFromLobby(lobbyPin, "Simon");
+        lobbyService.deleteLobby(lobbyPin);
+
+        assertNotNull(lobbyRepository.findByPin(lobbyPin));
+
+        playerService.removePlayerFromLobby(lobbyPin, "Anna");
+        lobbyService.deleteLobby(lobbyPin);
+
+        assertNull(lobbyRepository.findByPin(lobbyPin));
+
     }
 }
