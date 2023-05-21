@@ -31,6 +31,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/82 (prompt is limited to 400 characters)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/102 (fix "submit" button issues, that either auto-submission or submission by click is triggered but not both)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/93 (implemented more suitable solution for createPlayerImage)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/111 (Beta testing of group 16 - HanZikon)
 
 **Sprint2 Week2 (Week6)**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/111 (fix issue that end view will be displayed after configured number of rounds)
@@ -46,6 +47,12 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/145 (ensure that websockets work after reloading page)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/144 (create logo and change the favicon to the logo)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/126 (fix bug why dall e didn't generate an image for each prompt)
+
+**Sprint2 Week4 (Week8)**
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/130 (tests for the remaining REST endpoints and test coverage > 75%)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/129 (fix restart method)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/131 (create REST endpoint and methods when someone leaves lobby when the game has ended)
+
 
 
 ## Moritz
@@ -71,6 +78,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/43
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/45
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/88
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/111
 
 **Sprint2 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/44
@@ -103,6 +111,7 @@
 **Sprint2 Week1**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/78
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/53
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/111
 
 **Sprint2 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/42
@@ -186,6 +195,7 @@
 **Sprint2 Week1(Week5)**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/35
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/101
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/111
 
 **Sprint2 Week2(Week6)**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/39 (fixed issues of the final page leaderboard to make it dynamic)
