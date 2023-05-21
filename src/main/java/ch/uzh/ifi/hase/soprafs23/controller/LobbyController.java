@@ -124,8 +124,8 @@ public class LobbyController {
             return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
         } catch(LobbyDoesNotExistException ldne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
-        } catch(NotEnoughPlayersException nepe){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, nepe.getMessage());
+        } catch(NotEnoughPlayersException  | GameAlreadyExistsException msg){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, msg.getMessage());
         }
     }
 
