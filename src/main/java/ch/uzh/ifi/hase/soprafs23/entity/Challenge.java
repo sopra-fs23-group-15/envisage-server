@@ -13,6 +13,8 @@ public class Challenge {
 
     private int roundNr;
 
+    private String category;
+
     @OneToOne
     private StyleRequirement styleRequirement;
 
@@ -59,4 +61,11 @@ public class Challenge {
         return imagePrompt;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCategory(){
+        return category;
+    }
 }
