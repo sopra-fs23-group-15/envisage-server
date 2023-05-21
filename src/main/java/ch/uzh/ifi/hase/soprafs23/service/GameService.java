@@ -67,6 +67,9 @@ public class GameService {
         if (gameByPin == null){
             throw new GameDoesNotExistException(lobbyPin);
         }
+        if(lobbyByPin.getPlayers().size() < EnvisageConstants.MIN_PLAYERS){
+            throw new NotEnoughPlayersException();
+        }
 
         lobbyByPin.setGame(null);
         lobbyRepository.save(lobbyByPin);
