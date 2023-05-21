@@ -93,4 +93,14 @@ public class LobbyService {
     public List<Lobby> getLobbies() {
         return this.lobbyRepository.findAll();
     }
+
+    public void deleteLobby(long lobbyPin){
+        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
+        if(lobbyByPin==null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+        if (lobbyByPin.getPlayers().isEmpty()){
+            lobbyRepository.delete(lobbyByPin);
+        }
+    }
 }

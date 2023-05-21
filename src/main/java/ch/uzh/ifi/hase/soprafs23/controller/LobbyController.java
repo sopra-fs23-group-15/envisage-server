@@ -107,6 +107,7 @@ public class LobbyController {
     public void removePlayer(@PathVariable long lobbyId, @PathVariable String username) {
         try{
             playerService.removePlayerFromLobby(lobbyId, username);
+            lobbyService.deleteLobby(lobbyId);
         } catch (PlayerDoesNotExistException | LobbyDoesNotExistException exception){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
         }
