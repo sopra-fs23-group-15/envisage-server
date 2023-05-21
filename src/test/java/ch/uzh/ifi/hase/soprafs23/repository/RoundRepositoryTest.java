@@ -55,10 +55,8 @@ public class RoundRepositoryTest {
         entityManager.persist(round);
         entityManager.flush();
 
-        // when
         Round foundRound = roundRepository.findByRoundNumberAndGame_Id(2, game.getId());
 
-        // then
         assertNull(foundRound);
     }
 
@@ -69,10 +67,8 @@ public class RoundRepositoryTest {
         entityManager.persist(round);
         entityManager.flush();
 
-        // when
         Round foundRound = roundRepository.findByRoundNumberAndGame_Id(round.getRoundNumber(), 1L);
 
-        // then
         assertNull(foundRound);
     }
 }

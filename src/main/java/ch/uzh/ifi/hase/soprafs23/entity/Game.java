@@ -26,7 +26,6 @@ public class Game {
     @Enumerated(EnumType.STRING)
     private GameStatus status;
 
-    // getters and setters
     public Long getId() {
         return id;
     }

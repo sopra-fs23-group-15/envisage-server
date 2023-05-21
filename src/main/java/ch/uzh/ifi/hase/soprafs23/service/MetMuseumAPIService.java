@@ -26,9 +26,7 @@ public class MetMuseumAPIService {
     private String apiUrlImage = "https://collectionapi.metmuseum.org/public/collection/v1/objects/"; // +objectID
 
 
-    /**
-     * method which returns an Url to a jpg form of an image of the met Museum
-     */
+
     public String getImageFromMetMuseum(String category){
         String filePath = getFilePath(category);
         List<Integer> objectIDList = readFile(filePath);
@@ -57,9 +55,7 @@ public class MetMuseumAPIService {
         }
     }
 
-    /**
-     * method which reads text file which contains ObjectsIDs of the met Museum images
-     */
+
     private List<Integer> readFile(String filePath) {
         List<Integer> result = new ArrayList<>();
         try {
@@ -78,11 +74,6 @@ public class MetMuseumAPIService {
 
     }
 
-    /**
-     * Method which returns the URL to jpg image
-     * @param objectID
-     * @return
-     */
     private String getImageUrl(Integer objectID){
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpGet httpget = new HttpGet(apiUrlImage + objectID);

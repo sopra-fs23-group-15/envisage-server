@@ -100,16 +100,33 @@ public class LobbyController {
         }
     }
 
-    // restart game (throws 404 if no such lobby exists)
+    // delete a player from a lobby and delete lobby when no player is left
+    @DeleteMapping("/lobbies/{lobbyId}/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void removePlayer(@PathVariable long lobbyId, @PathVariable String username) {
+        try{
+            playerService.removePlayerFromLobby(lobbyId, username);
+            lobbyService.deleteLobby(lobbyId);
+        } catch (PlayerDoesNotExistException | LobbyDoesNotExistException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        }
+
+    }
+
+    // restart game (throws 404 if no such lobby/game exists )
     @PostMapping("/lobbies/{lobbyId}/games/restarts")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GameDTO restartGame(@PathVariable long lobbyId){
         try {
+            gameService.restartGame(lobbyId);
             Game newGame = gameService.createGame(lobbyId);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
-        } catch(LobbyDoesNotExistException ldne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        } catch(LobbyDoesNotExistException |GameDoesNotExistException exmsg){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exmsg.getMessage());
+        } catch(NotEnoughPlayersException  | GameAlreadyExistsException msg){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, msg.getMessage());
         }
     }
 
@@ -124,8 +141,8 @@ public class LobbyController {
             return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
         } catch(LobbyDoesNotExistException ldne){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
-        } catch(NotEnoughPlayersException nepe){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, nepe.getMessage());
+        } catch(NotEnoughPlayersException  | GameAlreadyExistsException msg){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, msg.getMessage());
         }
     }
 

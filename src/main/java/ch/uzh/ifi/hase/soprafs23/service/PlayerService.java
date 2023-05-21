@@ -6,16 +6,15 @@ import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.GameInProgressException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.MaxPlayersReachedException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @Service
@@ -30,12 +29,7 @@ public class PlayerService {
         this.lobbyRepository = lobbyRepository;
     }
 
-    /**
-     * method to create a new player
-     * @param newPlayer
-     * @param lobbyPin
-     * @return
-     */
+
     public Player addPlayer(Player newPlayer, long lobbyPin) {
         Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
 
@@ -62,11 +56,41 @@ public class PlayerService {
 
         lobbyByPin.addPlayer(newPlayer);
 
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
         Player savedPlayer = playerRepository.save(newPlayer);
         playerRepository.flush();
         return savedPlayer;
+    }
+
+    public void removePlayerFromLobby(long lobbyPin, String username){
+        Lobby lobbyFound = lobbyRepository.findByPin(lobbyPin);
+        if (lobbyFound == null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+
+        Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyPin);
+        if (playerFound == null){
+            throw new PlayerDoesNotExistException(username);
+        }
+
+        lobbyFound.removePlayer(playerFound);
+        lobbyRepository.save(lobbyFound);
+        lobbyRepository.flush();
+
+        if (playerFound.isLobbyCreator()){
+            newLobbyCreator(lobbyFound);
+        }
+
+        playerFound.setLobby(null);
+        playerRepository.save(playerFound);
+        playerRepository.flush();
+    }
+
+    private void newLobbyCreator(Lobby lobby){
+        List<Player> remainingPlayers = lobby.getPlayers();
+        if(!remainingPlayers.isEmpty()){
+            Player newCreator = remainingPlayers.get(0);
+            newCreator.setLobbyCreator(true);
+        }
     }
 
 

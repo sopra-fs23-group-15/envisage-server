@@ -258,7 +258,6 @@ class LobbyControllerTest {
 
         MockHttpServletRequestBuilder postRequest = post("/lobbies/1/games/restarts").contentType(MediaType.APPLICATION_JSON);
 
-        // then
         mockMvc.perform(postRequest).andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
                 .andExpect(result -> assertEquals("404 NOT_FOUND \"Lobby with pin 1 does not exist\"", result.getResolvedException().getMessage()));

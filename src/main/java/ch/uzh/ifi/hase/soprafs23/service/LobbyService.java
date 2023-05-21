@@ -30,9 +30,7 @@ public class LobbyService {
         this.lobbyRepository = lobbyRepository;
     }
 
-    /**
-     * create a Lobby entity with parameter configurations and save it to the lobbyRepository
-     */
+
     public Lobby createLobby(int numberOfRounds, int roundDuration) {
         Lobby newLobby = new Lobby();
         newLobby.setPin(createPin());
@@ -46,17 +44,12 @@ public class LobbyService {
         return newLobby;
     }
 
-    /**
-     * create a Lobby entity with default configurations and save it to the lobbyRepository
-     */
+
     public Lobby createLobby() {
         return createLobby(EnvisageConstants.DEFAULT_NO_OF_ROUNDS, EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
     }
 
-    /**
-     * helper function which generates a random 8-digit number
-     * if there already exists a Lobby with this Pin a new one will be generated
-     */
+
     private long createPin(){
         long tryPin = 100000 + this.rand.nextLong(900000);
         while(checkIfPinExists(tryPin)){
@@ -65,12 +58,7 @@ public class LobbyService {
         return tryPin;
     }
 
-    /**
-     * helper function if there already exists a lobby with this Pin
-     * if not false is returned
-     * else true is returned
-     * @param pin
-     */
+
     public boolean checkIfPinExists(long pin){
         Lobby lobbyByPin = lobbyRepository.findByPin(pin);
         return lobbyByPin != null;
@@ -80,12 +68,7 @@ public class LobbyService {
         return lobbyRepository.findByPin(lobbyPin);
     }
 
-    /**
-     * method to create a new player
-     * @param newPlayer
-     * @param lobbyPin
-     * @return
-     */
+
     public Lobby addPlayer(Player newPlayer, long lobbyPin) {
         Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
         if(lobbyByPin==null){
@@ -100,8 +83,7 @@ public class LobbyService {
             }
         }
         newPlayer.setLobby(lobbyByPin);
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
+
         lobbyByPin.addPlayer(newPlayer);
         Lobby newLobby = lobbyRepository.save(lobbyByPin);
         lobbyRepository.flush();
@@ -110,5 +92,15 @@ public class LobbyService {
 
     public List<Lobby> getLobbies() {
         return this.lobbyRepository.findAll();
+    }
+
+    public void deleteLobby(long lobbyPin){
+        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
+        if(lobbyByPin==null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+        if (lobbyByPin.getPlayers().isEmpty()){
+            lobbyRepository.delete(lobbyByPin);
+        }
     }
 }

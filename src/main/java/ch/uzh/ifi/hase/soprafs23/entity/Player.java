@@ -24,7 +24,6 @@ public class Player implements Serializable {
     @Column(nullable = false)
     private boolean lobbyCreator;
 
-    // foreign key with JoinColumn to create association
     @ManyToOne
     @JoinColumn(name="lobby_id")
     private Lobby lobby;

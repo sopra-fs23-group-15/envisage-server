@@ -36,7 +36,7 @@ public class ChallengeService {
         newChallenge.setDurationInSeconds(EnvisageConstants.DEFAULT_ROUND_DURATION_IN_SECONDS);
         ImagePrompt imagePrompt = getPromptImage(roundNumber, lobbyPin, category);
         newChallenge.setImagePrompt(imagePrompt);
-
+        newChallenge.setCategory(category);
         newChallenge.setRoundNr(roundNumber);
         newChallenge.setStyleRequirement(getStyleRequirement());
 

@@ -54,10 +54,8 @@ class GameRepositoryTest {
         entityManager.persist(game);
         entityManager.flush();
 
-        // when
         Game foundGame = gameRepository.findByLobbyPin(1L);
 
-        // then
         assertNull(foundGame);
     }
 

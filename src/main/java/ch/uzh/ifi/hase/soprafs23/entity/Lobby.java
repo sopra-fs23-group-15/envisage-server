@@ -24,7 +24,6 @@ public class Lobby{
         players.add(player);
     }
 
-    // getters and setters
     public Long getPin() {
         return pin;
     }
@@ -55,6 +54,10 @@ public class Lobby{
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public void removePlayer(Player player){
+        players.remove(player);
     }
 
     public Game getGame() {
