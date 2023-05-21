@@ -106,10 +106,13 @@ public class LobbyController {
     @ResponseBody
     public GameDTO restartGame(@PathVariable long lobbyId){
         try {
+            gameService.restartGame(lobbyId);
             Game newGame = gameService.createGame(lobbyId);
             return DTOMapper.INSTANCE.convertEntityToGameDTO(newGame);
-        } catch(LobbyDoesNotExistException ldne){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ldne.getMessage());
+        } catch(LobbyDoesNotExistException |GameDoesNotExistException exmsg){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exmsg.getMessage());
+        } catch(NotEnoughPlayersException  | GameAlreadyExistsException msg){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, msg.getMessage());
         }
     }
 

@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.GameAlreadyExistsException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.GameDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
 import ch.uzh.ifi.hase.soprafs23.exceptions.NotEnoughPlayersException;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
@@ -55,6 +56,23 @@ public class GameService {
 
         //create the game
         return initialiseGame(lobbyByPin);
+    }
+
+    public void restartGame(long lobbyPin){
+        Lobby lobbyByPin = lobbyRepository.findByPin(lobbyPin);
+        if(lobbyByPin==null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+        Game gameByPin = gameRepository.findByLobbyPin(lobbyPin);
+        if (gameByPin == null){
+            throw new GameDoesNotExistException(lobbyPin);
+        }
+
+        lobbyByPin.setGame(null);
+        lobbyRepository.save(lobbyByPin);
+        lobbyRepository.flush();
+        gameRepository.deleteById(gameByPin.getId());
+        gameRepository.flush();
     }
 
     private Game initialiseGame(Lobby lobbyByPin) {
