@@ -100,7 +100,20 @@ public class LobbyController {
         }
     }
 
-    // restart game (throws 404 if no such lobby/game exists or 409 if not enough players are in lobby)
+    // delete a player from a lobby and delete lobby when no player is left
+    @DeleteMapping("/lobbies/{lobbyId}/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void removePlayer(@PathVariable long lobbyId, @PathVariable String username) {
+        try{
+            playerService.removePlayerFromLobby(lobbyId, username);
+        } catch (PlayerDoesNotExistException | LobbyDoesNotExistException exception){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, exception.getMessage());
+        }
+
+    }
+
+    // restart game (throws 404 if no such lobby/game exists )
     @PostMapping("/lobbies/{lobbyId}/games/restarts")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

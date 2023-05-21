@@ -6,10 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.GameStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs23.entity.Player;
-import ch.uzh.ifi.hase.soprafs23.exceptions.DuplicateUserException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.GameInProgressException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.LobbyDoesNotExistException;
-import ch.uzh.ifi.hase.soprafs23.exceptions.MaxPlayersReachedException;
+import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +59,27 @@ public class PlayerService {
         Player savedPlayer = playerRepository.save(newPlayer);
         playerRepository.flush();
         return savedPlayer;
+    }
+
+    public void removePlayerFromLobby(long lobbyPin, String username){
+        Lobby lobbyFound = lobbyRepository.findByPin(lobbyPin);
+        if (lobbyFound == null){
+            throw new LobbyDoesNotExistException(lobbyPin);
+        }
+
+        Player playerFound = playerRepository.findPlayerByUserNameAndAndLobby_Pin(username, lobbyPin);
+        if (playerFound == null){
+            throw new PlayerDoesNotExistException(username);
+        }
+
+        lobbyFound.removePlayer(playerFound);
+        lobbyRepository.save(lobbyFound);
+        lobbyRepository.flush();
+
+        playerFound.setLobby(null);
+        playerRepository.save(playerFound);
+        playerRepository.flush();
+
     }
 
 
