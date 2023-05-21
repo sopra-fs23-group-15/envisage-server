@@ -168,8 +168,8 @@
 **Sprint1 Week2**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/61
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/64
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/21 (A big commit to issue#64 also closes this issue)
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/22 (A big commit to issue#64 also closes this issue)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/21 (a big commit to issue#64 also closes this issue)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/22 (a big commit to issue#64 also closes this issue)
 
 **Sprint1 Week3**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/23
@@ -188,8 +188,14 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/101
 
 **Sprint2 Week2(Week6)**
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/39 (Fixed issues of the final page leaderboard to make it dynamic)
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/40 (Fixed issues of the final page leaderboard to make it dynamic)
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/41 (Made the final winner only appear after all votes get collected)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/39 (fixed issues of the final page leaderboard to make it dynamic)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/40 (fixed issues of the final page leaderboard to make it dynamic)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/41 (made the final winner only appear after all votes get collected)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/78
-* https://github.com/sopra-fs23-group-15/envisage-client/issues/103 
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/103
+
+**Sprint2 Week3(Week7)**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/48 (styled the exhibition page and made it responsive, all images moving with repect to the screen size at the correct aspect ratio)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/158 (divided the initial issue #122 into subissues #158, #159, #161, #162, since there are too many pages to restyle, also restyled lobby configuration page according to the mockup design)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/159
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/161
