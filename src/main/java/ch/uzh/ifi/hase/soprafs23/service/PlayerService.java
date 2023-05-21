@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -54,8 +56,6 @@ public class PlayerService {
 
         lobbyByPin.addPlayer(newPlayer);
 
-        // saves the given entity but data is only persisted in the database once
-        // flush() is called
         Player savedPlayer = playerRepository.save(newPlayer);
         playerRepository.flush();
         return savedPlayer;
@@ -76,10 +76,21 @@ public class PlayerService {
         lobbyRepository.save(lobbyFound);
         lobbyRepository.flush();
 
+        if (playerFound.isLobbyCreator()){
+            newLobbyCreator(lobbyFound);
+        }
+
         playerFound.setLobby(null);
         playerRepository.save(playerFound);
         playerRepository.flush();
+    }
 
+    private void newLobbyCreator(Lobby lobby){
+        List<Player> remainingPlayers = lobby.getPlayers();
+        if(!remainingPlayers.isEmpty()){
+            Player newCreator = remainingPlayers.get(0);
+            newCreator.setLobbyCreator(true);
+        }
     }
 
 
