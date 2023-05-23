@@ -7,8 +7,8 @@ In ENVISAGE, you and your friends can compete against each other over multiple r
 
 
 ## Technologies
-For the backend we used the following technologies:
-* Java
+* Programming Language: Java
+
 * Spring Boot
 * JPA
 * Communication with the client:
