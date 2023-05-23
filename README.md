@@ -7,18 +7,18 @@ In ENVISAGE, you and your friends can compete against each other over multiple r
 
 
 ## Technologies
-* Programming Language: Java
+Programming Language: Java
 
 * Spring Boot
 * JPA
-* Communication with the client:
+* Communication with the client
     - REST
     - Stomp (websockets)
-* External APIs:
+* External APIs
     - [DALL-E API](https://platform.openai.com/docs/api-reference/introduction)
     - [Met Collection API](https://metmuseum.github.io/)
-* Testing:
-    - JUnit Juniper
+* Testing
+    - JUnit 
     - Mockito
 * Hosted on Google App Engine
 
