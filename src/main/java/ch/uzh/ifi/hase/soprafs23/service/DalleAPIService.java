@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 
 @Service
@@ -44,6 +45,7 @@ public class DalleAPIService {
         if (prompt.length() > EnvisageConstants.MAX_KEYWORDS_LENGTH){
             throw new KeywordsLimitException(prompt.length());
         }
+        StringEntity promptUTF8 = new StringEntity(keywords.getKeywords(), StandardCharsets.UTF_8);
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost(apiUrl);
@@ -55,7 +57,7 @@ public class DalleAPIService {
 // Set request body
             // Define the JSON request body
             JSONObject requestBody = new JSONObject();
-            requestBody.put("prompt", keywords.getKeywords());
+            requestBody.put("prompt", promptUTF8);
             requestBody.put("n", numImages);
             requestBody.put("size", ImageSize.SMALL.strSize);
             requestBody.put("response_format", responseFormat);
