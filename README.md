@@ -14,7 +14,7 @@ In ENVISAGE, you and your friends can compete against each other over multiple r
 ### Prerequisites
 Clone the server repository:
 
-```git@github.com:sopra-fs23-group-15/envisage-server.git```
+```git clone git@github.com:sopra-fs23-group-15/envisage-server.git```
 
 
 ### Building with Gradle
