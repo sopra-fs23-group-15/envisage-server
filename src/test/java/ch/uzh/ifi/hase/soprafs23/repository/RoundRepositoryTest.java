@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-public class RoundRepositoryTest {
+class RoundRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;

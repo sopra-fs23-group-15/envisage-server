@@ -1,13 +1,14 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
-import ch.uzh.ifi.hase.soprafs23.constant.BlankImage;
+import ch.uzh.ifi.hase.soprafs23.constant.Image;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
 import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerImageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.PlayerRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoundRepository;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -72,14 +73,18 @@ public class PlayerImageService {
 
         String generatedImage;
         if (keywords.getKeywords().equals("")){
-            generatedImage = BlankImage.WHITE;
+            generatedImage = Image.WHITE;
         }
         else if (keywords.getEnvironment().equals("development")) {
            generatedImage = metMuseumAPIService.getImageFromMetMuseum("random");
         }
         else{
             JSONObject jsonObject = dalleAPIService.getImageFromDALLE(keywords);
-            generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+            try {
+                generatedImage = jsonObject.getJSONArray("data").getJSONObject(0).getString("url");
+            } catch (JSONException e){
+                generatedImage = Image.DALL_E;
+            }
         }
 
 
