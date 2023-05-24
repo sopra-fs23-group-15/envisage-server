@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.constant.BlankImage;
+import ch.uzh.ifi.hase.soprafs23.constant.Image;
 import ch.uzh.ifi.hase.soprafs23.constant.EnvisageConstants;
 import ch.uzh.ifi.hase.soprafs23.entity.*;
 import ch.uzh.ifi.hase.soprafs23.exceptions.*;
@@ -78,7 +78,7 @@ class PlayerImageServiceTest {
         keywords.setKeywords("");
         keywords.setEnvironment("development");
         PlayerImage playerImage = playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1");
-        assertEquals(BlankImage.WHITE, playerImage.getImage());
+        assertEquals(Image.WHITE, playerImage.getImage());
 
     }
 
@@ -125,6 +125,27 @@ class PlayerImageServiceTest {
         playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1");
 
         assertThrows(PlayerImageDuplicateException.class, () -> playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1"));
+
+    }
+
+    @Test
+    void createImage_dall_E_default(){
+        Lobby lobby = lobbyService.createLobby();
+        for(int i = 0; i<EnvisageConstants.MIN_PLAYERS; i++){
+            Player player = new Player();
+            player.setUserName("testUser"+(i+1));
+            lobbyService.addPlayer(player, lobby.getPin());
+        }
+        gameService.createGame(lobby.getPin());
+        Round round = roundService.createRound(lobby.getPin());
+
+        Keywords keywords = new Keywords();
+        keywords.setKeywords("image1");
+        keywords.setEnvironment("production");
+        PlayerImage playerImage = playerImageService.createImage(keywords, lobby.getPin(), round.getRoundNumber(), "testUser1");
+
+        assertEquals(Image.DALL_E, playerImage.getImage());
+        assertEquals("image1", playerImage.getKeywords());
 
     }
 
