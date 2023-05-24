@@ -24,6 +24,9 @@ Programming Language: Java
 
 
 ## High-level components
+### [ChallengeService](https://github.com/sopra-fs23-group-15/envisage-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/ChallengeService.java)
+The ChallengeService is responsible for creating a challenge. A challenge consists of a category which gets passed from the client to the server. The prompt image for the first round is then chosen according to the category. For the subsequent rounds the prompt image is the winning image of the previous round. Furthermore, the challenge has a style requirement. Style requirements are artists or art styles.
+
 
 
 ## Launch & Deployment
