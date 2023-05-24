@@ -218,3 +218,10 @@
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/158 (divided the initial issue #122 into subissues #158, #159, #161, #162, since there are too many pages to restyle, also restyled lobby configuration page according to the mockup design)
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/159
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/161
+
+**Sprint2 Week4(Week8)**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/162
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/163 (removing the unnecessary 5-second waiting spinners; modifying notifications to let players wait before all votes are collected; fixing tie situations to display multiple winners)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/122 (final round of styling touches)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/114 (Presentation slides)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/113 (Report for Milestone 4)
