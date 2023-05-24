@@ -33,6 +33,8 @@ When the players decide to restart a game, the old game will be deleted and a ne
 ### [ChallengeService](https://github.com/sopra-fs23-group-15/envisage-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/ChallengeService.java)
 The ChallengeService is responsible for creating a [challenge](https://github.com/sopra-fs23-group-15/envisage-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/Challenge.java). A challenge consists of a category which gets passed from the client to the server. The prompt image for the first round is then chosen according to the category. For the subsequent rounds the prompt image is the winning image of the previous round. Furthermore, the challenge has a style requirement. Style requirements are artists or art styles.
 
+### [PlayerImageService](https://github.com/sopra-fs23-group-15/envisage-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/service/PlayerImageService.java)
+The PlayerImageService handles all resposibilities concerning a [playerImage]("https://github.com/sopra-fs23-group-15/envisage-server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs23/entity/PlayerImage.java). First of all it handles the creation of an image. We use the [DALL-E API](https://platform.openai.com/docs/api-reference/introduction) to create unique images according to a prompt the player has entered. Furthermore, the playerImage service is responsible to retrieve playerImages from the database.
 
 
 ## Launch & Deployment
