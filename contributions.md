@@ -52,6 +52,10 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/130 (tests for the remaining REST endpoints and test coverage > 75%)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/129 (fix restart method)
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/131 (create REST endpoint and methods when someone leaves lobby when the game has ended)
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/104 (README Frontend)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/112 (README Backend)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/114 (Presentation slides)
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/113 (Report for Milestone 4)
 
 
 
