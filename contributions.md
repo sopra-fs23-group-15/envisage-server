@@ -128,6 +128,15 @@
 **Sprint2 Week3**
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/125
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/132
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/155
+* 
+**Sprint2 Week4**
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/153
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/154
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/156
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/112
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/113
+* https://github.com/sopra-fs23-group-15/envisage-client/issues/114
 
 ## Shantam
 **Sprint1 Week1**
