@@ -45,7 +45,7 @@ public class DalleAPIService {
         if (prompt.length() > EnvisageConstants.MAX_KEYWORDS_LENGTH){
             throw new KeywordsLimitException(prompt.length());
         }
-        StringEntity promptUTF8 = new StringEntity(keywords.getKeywords(), StandardCharsets.UTF_8);
+        String promptUTF8 = new String(keywords.getKeywords().getBytes(), StandardCharsets.UTF_8);
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httppost = new HttpPost(apiUrl);
