@@ -184,6 +184,7 @@
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/114
 * https://github.com/sopra-fs23-group-15/envisage-server/issues/113
 * https://github.com/sopra-fs23-group-15/envisage-client/issues/168
+* https://github.com/sopra-fs23-group-15/envisage-server/issues/115
 
 
 ## Xue
